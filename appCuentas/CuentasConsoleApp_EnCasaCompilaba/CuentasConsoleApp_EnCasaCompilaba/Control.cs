@@ -27,7 +27,7 @@ namespace CuentasConsoleApp_EnCasaCompilaba
 					return cliente;
 				}
 			}
-			return null; //agregar exception para null
+			return null;
 		}
 
 		public int cantCuentasDeConSaldoMinimo(string doc, double valor)
