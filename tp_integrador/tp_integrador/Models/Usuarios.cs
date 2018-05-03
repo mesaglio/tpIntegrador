@@ -13,5 +13,15 @@ namespace tp_integrador.Models
         public string domicilio;
         public string usuario;
         public string password;
+    
+
+    public bool Singin(string u, string p)
+        {
+            if (p == password && u == usuario)
+                return true;
+            else
+                return false;
     }
+
+}
 }

@@ -145,6 +145,7 @@
     <Compile Include="Models\Administrador.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\DAOUsuario.cs" />
     <Compile Include="Models\Dispositivo.cs" />
     <Compile Include="Models\Usuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -186,6 +187,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Login.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,13 @@ namespace tp_integrador.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpPost]
+        public ActionResult Login(string returnUrl)
+        {
+            returnUrl = returnUrl + "1";
+            return View();
+        }
+
         public ActionResult Index()
         {
             return View();
