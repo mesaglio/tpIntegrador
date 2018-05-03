@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using tp_integrador.Models;
 
 namespace tp_integrador.Controllers
 {
     public class HomeController : Controller
     {
         [HttpPost]
-        public ActionResult Login(string returnUrl)
+        [AllowAnonymous]
+        public ActionResult Login(Usuarios model, string ReturnUrl)
         {
-            returnUrl = returnUrl + "1";
+           
+
+
             return View();
         }
 

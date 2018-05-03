@@ -9,12 +9,12 @@ namespace tp_integrador.Models
     {
         public List<Usuarios> listusuarios;
 
-        public Usuarios InicioSecion(string u, string p)
+        public Usuarios InicioSecion(Usuarios u)
         {
             Usuarios retur = new Usuarios();
             foreach (Usuarios item in listusuarios)
             {
-                if (item.Singin(u, p))
+                if (item.Singin(u))
                     retur = item;
                 else
                     retur = null;
