@@ -11,12 +11,17 @@ namespace tp_integrador.Controllers
     {
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(Usuarios model, string ReturnUrl)
+        public ActionResult Login(Usuarios model)
         {
-           
-
-
-            return View();
+            DAOUsuario data = new DAOUsuario();
+           Usuarios u =  data.InicioSecion(model);
+            if (u == null)
+         {
+                ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
+                return View();
+            }
+            else
+                return View(u);
         }
 
         public ActionResult Index()

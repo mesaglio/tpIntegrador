@@ -7,6 +7,16 @@ namespace tp_integrador.Models
 {
     public class Usuarios 
     {
+        public Usuarios()
+        {
+        }
+
+        public Usuarios(string v1, string v2)
+        {
+            this.usuario = v1;
+            this.password = v2;
+        }
+
         public int idusuario { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
