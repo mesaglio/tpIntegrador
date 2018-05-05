@@ -23,8 +23,8 @@ namespace tp_integrador.Models
             this.usuario = v1;
             this.password = v2;
         }
-		
-		public Usuarios(int id, string name, string lastname, string home, string user, string clave)
+
+        public Usuarios(int id, string name, string lastname, string home, string user, string clave)
         {
             idUsuario = id;
             nombre = name;
