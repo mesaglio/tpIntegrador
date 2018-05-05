@@ -7,6 +7,13 @@ namespace tp_integrador.Models
 {
     public class Usuarios 
     {
+        public int idUsuario { get; set; }
+        public string nombre { get; set; }
+        public string apellido { get; set; }
+        public string domicilio { get; set; }
+        public string usuario { get; set; }
+        public string password { get; set; }
+
         public Usuarios()
         {
         }
@@ -16,22 +23,23 @@ namespace tp_integrador.Models
             this.usuario = v1;
             this.password = v2;
         }
-
-        public int idusuario { get; set; }
-        public string nombre { get; set; }
-        public string apellido { get; set; }
-        public string domicilio { get; set; }
-        public string usuario { get; set; }
-        public string password { get; set; }
-
-
-        public bool Singin(Usuarios u)
+		
+		public Usuarios(int id, string name, string lastname, string home, string user, string clave)
         {
-            if (u.password == password && u.usuario == usuario)
+            idUsuario = id;
+            nombre = name;
+            apellido = lastname;
+            domicilio = home;
+            usuario = user;
+            password = clave;
+        }
+        
+        public bool Singin(string u, string p)
+        {
+            if (p == password && u == usuario)
                 return true;
             else
                 return false;
+        }
     }
-
-}
 }

@@ -28,7 +28,7 @@ namespace tp_integrador.Models
             Usuarios retur = new Usuarios();
             foreach (Usuarios item in Listusuarios)
             {
-                if (item.Singin(u))
+                if (item.Singin(u.usuario,u.password))
                     retur = item;
                 else
                     retur = null;
