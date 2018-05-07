@@ -29,9 +29,7 @@ C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\System.Web
 C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\System.Web.WebPages.Razor.xml
 C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Antlr3.Runtime.pdb
 C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Newtonsoft.Json.xml
-C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Microsoft.ApplicationInsights.xml
 C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Microsoft.AI.DependencyCollector.xml
-C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Microsoft.AI.Web.xml
 C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\es\System.Web.Helpers.resources.dll
@@ -96,3 +94,7 @@ C:\Users\juan\Desktop\VSProjects\tpintegrador\tp_integrador\tp_integrador\bin\Mi
 C:\Users\juan\Desktop\VSProjects\tpintegrador\tp_integrador\tp_integrador\bin\System.Diagnostics.DiagnosticSource.dll
 C:\Users\juan\Desktop\VSProjects\tpintegrador\tp_integrador\tp_integrador\bin\Microsoft.AspNet.TelemetryCorrelation.xml
 C:\Users\juan\Desktop\VSProjects\tpintegrador\tp_integrador\tp_integrador\bin\System.Diagnostics.DiagnosticSource.xml
+C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+C:\Users\Nicolas\Desktop\tpIntegrador\tp_integrador\tp_integrador\bin\System.Diagnostics.DiagnosticSource.xml

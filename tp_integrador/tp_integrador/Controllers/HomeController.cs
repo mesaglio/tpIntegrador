@@ -15,14 +15,15 @@ namespace tp_integrador.Controllers
         {
             DAOUsuario data = new DAOUsuario();
            Usuarios u =  data.InicioSecion(model);
-            if (u == null)
-         {
-                ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
-                return View();
-            }
-            else
+            if (u.usuario == null)
                 return View(u);
-        }
+            else
+            {
+                u.SetLoginOn();
+                return View(u);
+            
+              }
+            }
 
         public ActionResult Index()
         {

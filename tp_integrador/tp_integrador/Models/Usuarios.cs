@@ -13,6 +13,7 @@ namespace tp_integrador.Models
         public string domicilio { get; set; }
         public string usuario { get; set; }
         public string password { get; set; }
+        private bool islogin { get; set; }
 
         public Usuarios()
         {
@@ -32,11 +33,28 @@ namespace tp_integrador.Models
             domicilio = home;
             usuario = user;
             password = clave;
+            islogin = false;
         }
-        
-        public bool Singin(string u, string p)
+        public bool IsAuthenticated()
         {
-            if (p == password && u == usuario)
+            if (islogin)
+                return true;
+            else
+                return false;
+        }
+
+       public Usuarios nulluser()
+        { Usuarios user = new Usuarios(0, null, null, null, null, null);
+        user.islogin = false;
+            return user;
+        }
+
+    public void SetLoginOn() => islogin = true;
+
+
+        public bool Singin(Usuarios u)
+        {
+            if (u.password == password && u.usuario == usuario)
                 return true;
             else
                 return false;

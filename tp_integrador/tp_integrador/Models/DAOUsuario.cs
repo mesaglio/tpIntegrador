@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using tp_integrador.Models;
 
 namespace tp_integrador.Models
 {
@@ -28,10 +29,10 @@ namespace tp_integrador.Models
             Usuarios retur = new Usuarios();
             foreach (Usuarios item in Listusuarios)
             {
-                if (item.Singin(u.usuario,u.password))
-                    retur = item;
+                if (item.Singin(u))
+                    return  item;
                 else
-                    retur = null;
+                    retur = item.nulluser();
             }
             return retur;
         }
