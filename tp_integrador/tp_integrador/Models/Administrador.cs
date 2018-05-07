@@ -25,11 +25,15 @@ namespace tp_integrador.Models
             AltaSistema = alta;
         }
 
-        public Cliente NuevoCliente(int id, string name, string lastname, string home, string user, string clave, string phone, Categoria categ, string doc_t, string doc_n)
+        public void NuevoCliente(Cliente unCliente)
         {
-            Cliente unCliente = new Cliente(id, name, lastname, home, user, clave, phone, categ, doc_t, doc_n);
             clientes.Add(unCliente);
-            return unCliente;
+        }
+
+        public void NuevoCliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n)
+        {
+            Cliente unCliente = new Cliente(id, name, lastname, home, user, clave, phone, alta, categ, doc_t, doc_n);
+            clientes.Add(unCliente);
         }
 
         public Cliente BuscarCliente(int id)

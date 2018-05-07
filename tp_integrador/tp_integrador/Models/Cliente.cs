@@ -56,14 +56,14 @@ namespace tp_integrador.Models
             aparato.Encender();
         }
 
-        public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, Categoria categ, string doc_t, string doc_n) : base(id,name,lastname,home,user,clave)
+        public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n) : base(id, name, lastname, home, user, clave)
         {
             Telefono = phone;
             Categoria = categ;
             Documento_tipo = doc_t;
             Documento_numero = doc_n;
-            AltaServicio = DateTime.Now;
+            AltaServicio = alta;
         }
-        
+
     }
 }

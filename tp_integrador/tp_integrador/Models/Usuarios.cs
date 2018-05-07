@@ -43,13 +43,14 @@ namespace tp_integrador.Models
                 return false;
         }
 
-       public Usuarios nulluser()
-        { Usuarios user = new Usuarios(0, null, null, null, null, null);
-        user.islogin = false;
+        public Usuarios nulluser()
+        {
+            Usuarios user = new Usuarios(0, null, null, null, null, null);
+            user.islogin = false;
             return user;
         }
 
-    public void SetLoginOn() => islogin = true;
+        public void SetLoginOn() => islogin = true;
 
 
         public bool Singin(Usuarios u)
