@@ -9,25 +9,23 @@ namespace tp_integrador.Models
     public class DAOUsuario
     {
 
-        public List<Usuarios> Listusuarios;
-        public void listusuarios()
+        public List<Usuarios> listusuarios;
+        public void Listusuarios()
         {
-            Listusuarios = new List<Usuarios>();
+            listusuarios = new List<Usuarios>();
         }
 
         public DAOUsuario()
         {
-            listusuarios();   
+            Listusuarios();   
             Usuarios u = new Usuarios("nico","1234");
-            Listusuarios.Add(u);
+            listusuarios.Add(u);
         }
-
-        
-
+              
         public Usuarios InicioSecion(Usuarios u)
         {
             Usuarios retur = new Usuarios();
-            foreach (Usuarios item in Listusuarios)
+            foreach (Usuarios item in listusuarios)
             {
                 if (item.Singin(u))
                     return  item;
@@ -36,5 +34,33 @@ namespace tp_integrador.Models
             }
             return retur;
         }
+
+        public void CargarCliente(Cliente unCliente)
+        {
+            listusuarios.Add(unCliente);
+        }
+        public void CargarCliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n)
+        {
+            Cliente unCliente = new Cliente(id, name, lastname, home, user, clave, phone, alta, categ, doc_t, doc_n);
+            listusuarios.Add(unCliente);
+        }
+
+        public Cliente BuscarUsuario(int id)
+        {
+            foreach (Cliente usuario in listusuarios)
+            {
+                if (usuario.idUsuario == id)
+                {
+                    return usuario;
+                }
+            }
+            return null;
+        }
+
+        public void QuitarUsuario(int id)
+        {
+            listusuarios.Remove(BuscarUsuario(id));
+        }
     }
+
 }
