@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using tp_integrador.Models;
+using System.IO;
 
 namespace tp_integrador.Controllers
 {
@@ -42,6 +43,26 @@ namespace tp_integrador.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+
+
+
+        public ActionResult JsonImport()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        [HttpPost]
+        public void CargarArchivo(HttpPostedFileBase file)
+        {
+            if (file == null) return;
+
+            string archivo = (DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + file.FileName).ToLower();
+
+            file.SaveAs(Server.MapPath("~/Upload/" + archivo));
         }
     }
 }

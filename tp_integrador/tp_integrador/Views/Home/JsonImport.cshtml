@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "JsonImport";
+}
+
+<h2>JsonImport</h2>
+
+       @using (Html.BeginForm("CargarArchivo", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+<input type="file" name="file" />
+<button type="submit">Subir archivo</button>
+        }
