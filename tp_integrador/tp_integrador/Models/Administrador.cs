@@ -20,21 +20,22 @@ namespace tp_integrador.Models
 
         public Administrador()
         {
-        }
+            Dao = MvcApplication.Daobjeto;
+    }
 
         public Administrador(int id, string name, string lastname, string home, string user, string clave, DateTime alta, DAOUsuario dao) : base(id, name, lastname, home, user, clave)
         {
             AltaSistema = alta;
-            Dao = dao;
+            Dao = MvcApplication.Daobjeto;
         }
 
         public void NuevoCliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n)
         {
             Cliente unCliente = new Cliente(id, name, lastname, home, user, clave, phone, alta, categ, doc_t, doc_n);
-            Dao.CargarCliente(unCliente);
+            Dao.CargarUsuario(unCliente);
         }
 
-        public Cliente BuscarCliente(int id)
+        public Usuarios BuscarCliente(int id)
         {
             return Dao.BuscarUsuario(id);
         }
