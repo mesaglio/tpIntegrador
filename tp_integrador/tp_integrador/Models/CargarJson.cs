@@ -19,13 +19,12 @@ namespace tp_integrador.Models
         public void LoadUsuarios(Stream path)
         {
             string json = (new StreamReader(path)).ReadToEnd();            
-            List<Usuarios> djson = JsonConvert.DeserializeObject<List<Usuarios>>(json);
-            
-            foreach(Usuarios usuario in djson)
+            List<Cliente> djson = JsonConvert.DeserializeObject<List<Cliente>>(json);
+
+            foreach(Cliente usuario in djson)
             {
                 Dao.CargarUsuario(usuario);
             }
-        }
-
+        }        
     }
 }

@@ -1,0 +1,36 @@
+[
+  {
+    "idUsuario": 21,
+    "nombre": "esteban",
+    "apellido": "quito",
+    "domicilio": "av.algo 123",
+    "usuario": "equito",
+    "password": 1234,
+    "telefono": "41235678",
+	"categoria": {
+      "idCategoria": "R1",
+      "consumo": 24,
+      "cargoFijo": 42.4,
+      "cargoVariable": 0.31
+    },
+    "documento_tipo": "DNI",
+    "documento_numero": "12345678"
+  },
+  {
+    "idUsuario": 45,
+    "nombre": "elsa",
+    "apellido": "pato",
+    "domicilio": "calle sinnombre 123",
+    "usuario": "epato",
+    "password": 2567,
+    "telefono": "42359342",
+	"categoria": {
+      "idCategoria": "R2",
+      "consumo": 34,
+      "cargoFijo": 54.4,
+      "cargoVariable": 0.45
+    },
+    "documento_tipo": "DNI",
+    "documento_numero": "42345678"
+  }
+]

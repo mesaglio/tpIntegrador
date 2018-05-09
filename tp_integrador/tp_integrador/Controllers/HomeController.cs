@@ -44,10 +44,7 @@ namespace tp_integrador.Controllers
 
             return View();
         }
-
-
-
-
+        
         public ActionResult JsonImport()
         {
             ViewBag.Message = "Your contact page.";
@@ -60,9 +57,8 @@ namespace tp_integrador.Controllers
         {
             if (file == null) return;
 
-            string archivo = (DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + file.FileName).ToLower();
-
-            file.SaveAs(Server.MapPath("~/Upload/" + archivo));
+            CargarJson cargar = new CargarJson();
+            cargar.LoadUsuarios(file.InputStream);
         }
     }
 }

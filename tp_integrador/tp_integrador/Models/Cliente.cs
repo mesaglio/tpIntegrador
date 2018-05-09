@@ -7,11 +7,11 @@ namespace tp_integrador.Models
 {
     public class Cliente : Usuarios
     {
-        public string Telefono { get; private set; }
-        public DateTime AltaServicio { get; private set; }
-        public Categoria Categoria { get; private set; }
-        public string Documento_tipo { get; private set; }
-        public string Documento_numero { get; private set; }
+        public string Telefono { get; set; }
+        public DateTime AltaServicio { get; set; }
+        public Categoria Categoria { get; set; }
+        public string Documento_tipo { get; set; }
+        public string Documento_numero { get; set; }
         private List<Dispositivo> dispositivos = new List<Dispositivo>();
 
         

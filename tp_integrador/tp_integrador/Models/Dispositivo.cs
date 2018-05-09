@@ -7,9 +7,9 @@ namespace tp_integrador.Models
 {
     public class Dispositivo
     {
-        public string Nombre { get; private set; }
-        public int Consumo { get; private set; }
-        public bool Estado { get; private set; }
+        public string Nombre { get; set; }
+        public int Consumo { get; set; }
+        public bool Estado { get; set; }
         private DateTime encendidoDesde;
 
 
