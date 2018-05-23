@@ -10,22 +10,30 @@ namespace tp_integrador.Models
     {
         public DateTime AltaSistema { get; set; }
         public DAOUsuario Dao { get; set; }
-
+   
 
         public int CantMeses()
         {
             return Math.Abs(DateTime.Now.Year - AltaSistema.Year) * 12 + (DateTime.Now.Month - AltaSistema.Month);
         }
+        public Administrador(string v1, string v2)
+        {
+            this.usuario = v1;
+            this.password = v2;
+            esadmin =true;
 
+    }
 
-        public Administrador()
+    public Administrador()
         {
             Dao = MvcApplication.Daobjeto;
-    }
+            esadmin = true;
+        }
 
         public Administrador(int id, string name, string lastname, string home, string user, string clave, DateTime alta, DAOUsuario dao) : base(id, name, lastname, home, user, clave)
         {
             AltaSistema = alta;
+            esadmin = true;
             Dao = MvcApplication.Daobjeto;
         }
 

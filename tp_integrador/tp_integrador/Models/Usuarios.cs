@@ -14,6 +14,9 @@ namespace tp_integrador.Models
         public string usuario { get; set; }
         public string password { get; set; }
         private bool islogin { get; set; }
+        public bool esadmin { get; set; }
+
+        public bool Esadmin() {return esadmin;}
 
         public Usuarios()
         {
@@ -23,6 +26,7 @@ namespace tp_integrador.Models
         {
             this.usuario = v1;
             this.password = v2;
+            esadmin = false;
         }
 
         public Usuarios(int id, string name, string lastname, string home, string user, string clave)
@@ -34,13 +38,19 @@ namespace tp_integrador.Models
             usuario = user;
             password = clave;
             islogin = false;
+            esadmin = false;
+
+
+
         }
         public bool IsAuthenticated()
         {
             if (islogin)
                 return true;
             else
+            {
                 return false;
+            }
         }
 
         public Usuarios nulluser()
@@ -60,5 +70,7 @@ namespace tp_integrador.Models
             else
                 return false;
         }
+
+
     }
 }

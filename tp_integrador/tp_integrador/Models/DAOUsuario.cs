@@ -20,6 +20,8 @@ namespace tp_integrador.Models
             Listusuarios();   
             Usuarios u = new Usuarios("nico","1234");
             listusuarios.Add(u);
+            Administrador a = new Administrador("pepe","1234");
+            listusuarios.Add(a);
         }
               
         public Usuarios InicioSecion(Usuarios u)

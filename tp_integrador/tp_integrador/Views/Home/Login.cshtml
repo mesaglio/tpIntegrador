@@ -8,16 +8,23 @@
 @*   @if (Request.IsAuthenticated) *@
 @if (Model.IsAuthenticated())
 {
+    if (Model.Esadmin())
 
     {
         <div class="jumbotron">
             <p><h3>Aplicaciones</h3></p>
 
             @Html.ActionLink("Cantidad de meses", "Listar", "Home", "/Home/listar", new { @class = "btn btn-primary btn-lg" })
-        
+
             @Html.ActionLink("Importar desde json", "JsonImport", "Home", "/Home/JsonImport", new { @class = "btn btn-primary btn-lg" })
         </div>
 
+    }
+    else
+    {
+        @Html.ActionLink("Acceder al Dashboard", "Dashboard", "Cliente", "/Cliente/Dashboard", new { @class = "btn btn-primary btn-lg" })
+
+        @Html.ActionLink("Gestionar Dispositibos", "JsonImport", "Home", "/Home/JsonImport", new { @class = "btn btn-primary btn-lg" })
     }
 }
 else
