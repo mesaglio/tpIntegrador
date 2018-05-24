@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using tp_integrador.Models;
 
 namespace tp_integrador.Controllers
 {
     public class ClienteController : Controller
     {
         // GET: Cliente
-        public ActionResult Dashboard()
+        public ActionResult Dashboard(Administrador user)
         {
-            return View();
+            return View(user);
         }
 
-        public ActionResult GestionDeDispositivos()
+        public ActionResult GestionDeDispositivos(Administrador user)
         {
-            return View();
+            return View(user);
         }
     }
 }
