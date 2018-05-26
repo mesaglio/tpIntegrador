@@ -1,7 +1,13 @@
-﻿
+﻿@model tp_integrador.Models.Cliente
+
 @{
     ViewBag.Title = "Dashboard";
 }
 
 <h2>Dashboard</h2>
+
+@Html.ActionLink("hola", "Dashboard", "Cliente", new { user = Model }, new { @class = "btn btn-primary btn-lg" })
+
+<span class="label label-default">Model.CantEncendidos()</span>
+
 

@@ -5,18 +5,28 @@ using System.Web;
 using System.Web.Mvc;
 using tp_integrador.Models;
 
+
 namespace tp_integrador.Controllers
 {
     public class ClienteController : Controller
     {
+        private Cliente Tocliente(Usuarios user) => (Cliente)user;
+
         // GET: Cliente
-        public ActionResult Dashboard(Administrador user)
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Dashboard(Usuarios user)
         {
+            Tocliente(user);
+   
             return View(user);
         }
-
-        public ActionResult GestionDeDispositivos(Administrador user)
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult GestionDeDispositivos(Usuarios user)
         {
+            Tocliente(user);
+
             return View(user);
         }
     }
