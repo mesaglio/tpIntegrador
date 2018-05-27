@@ -7,14 +7,14 @@ namespace tp_integrador.Models
 {
     public class Sensor
     {
-        public string tipoSensor { get; set; }
-        public int magnitud { get; set; }
-       private List<Regla> observador;
+        public string TipoSensor { get; set; }
+        public int Magnitud { get; set; }
+        private List<Regla> observador;
 
 
 
-        public void agregarregla(Regla reg) => observador.Add(reg);
-        public void removerregla(Regla reg) => observador.Remove(reg);
+        public void AgregarRegla(Regla reg) => observador.Add(reg);
+        public void QuitarRegla(Regla reg) => observador.Remove(reg);
     }
 
 

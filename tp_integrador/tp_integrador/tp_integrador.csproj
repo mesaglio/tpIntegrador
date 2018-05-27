@@ -140,12 +140,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Actuador.cs" />
     <Compile Include="Models\Administrador.cs" />
     <Compile Include="Models\CargarJson.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\DAOHistorialEstado.cs" />
     <Compile Include="Models\DAOUsuario.cs" />
     <Compile Include="Models\Dispositivo.cs" />
+    <Compile Include="Models\EstadoGuardado.cs" />
+    <Compile Include="Models\Estandar.cs" />
+    <Compile Include="Models\Inteligente.cs" />
+    <Compile Include="Models\Regla.cs" />
+    <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\Usuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

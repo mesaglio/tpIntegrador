@@ -25,6 +25,7 @@ namespace tp_integrador.Models
             {
                 Dao.CargarUsuario(usuario);
             }
-        }        
+        }
+                
     }
 }

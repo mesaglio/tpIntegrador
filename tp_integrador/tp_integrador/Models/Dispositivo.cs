@@ -8,45 +8,14 @@ namespace tp_integrador.Models
     public class Dispositivo
     {
         public string Nombre { get; set; }
-        public int Consumo { get; set; }
-        public bool Estado { get; set; }
-        private DateTime encendidoDesde;
+        public byte Consumo;
 
 
-        public double EnergiaConsumida()
-        {
-            if (Estado == true) { 
-                TimeSpan tiempo = DateTime.Now.Subtract(encendidoDesde);
-                long horas = (tiempo.Days * 24) + tiempo.Hours;
-                return Consumo * horas;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        public Dispositivo(string nombre, int consumo)
+        public Dispositivo(string nombre, byte consumo)
         {
             Nombre = nombre;
             Consumo = consumo;
-            Estado = false;
-            encendidoDesde = DateTime.MinValue;
         }
 
-        public void Apagar()
-        {
-            Estado = false;
-        }
-        
-        public void Encender()
-        {
-            if (Estado == false)
-            {
-                Estado = true;
-                encendidoDesde = DateTime.Now;
-            }
-        }
-        
-    }   
+    }
 }

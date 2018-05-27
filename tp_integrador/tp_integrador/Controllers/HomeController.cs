@@ -15,16 +15,15 @@ namespace tp_integrador.Controllers
         public ActionResult Login(Usuarios model)
         {
             DAOUsuario data = new DAOUsuario();
-           Usuarios u =  data.InicioSecion(model);
+            Usuarios u =  data.InicioSecion(model);
             if (u.usuario == null)
                 return View(u);
             else
             {
                 u.SetLoginOn();
-                return View(u);
-            
-              }
+                return View(u);            
             }
+        }
 
         public ActionResult Index()
         {
