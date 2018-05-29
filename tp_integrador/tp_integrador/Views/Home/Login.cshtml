@@ -25,7 +25,7 @@
     {
         using (Html.BeginForm("Dashboard", "Cliente", FormMethod.Post))
         {
-            @Html.ActionLink("Acceder al Dashboard", "", null, new { user = @Model }, new { @class = "btn btn-primary btn-lg" });
+            @Html.ActionLink("Acceder al Dashboard", "Dashboard", "Cliente", new { user = @Model }, new { @class = "btn btn-primary btn-lg" });
         }
 
         @Html.ActionLink("Gestionar Dispositibos", "GestionDeDispositivos", "Cliente", "/Cliente/GestionDeDispositivos", new { @class = "btn btn-primary btn-lg" })
