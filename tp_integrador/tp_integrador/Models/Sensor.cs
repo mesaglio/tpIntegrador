@@ -8,7 +8,7 @@ namespace tp_integrador.Models
     public class Sensor
     {
         public string TipoSensor { get; set; }
-        public int Magnitud { get; set ; }
+        public int Magnitud { get => Magnitud; set { Magnitud = value; Notify(); } }
         private List<Regla> observador;
 
 

@@ -7,7 +7,7 @@ namespace tp_integrador.Models
 {
     public class Regla
     {
-
+        List<Actuador> actuadores { get; set; }
         // recive la notificacion de un cambio en magnitud del sensor
         internal void Cambio(int mag)
         {

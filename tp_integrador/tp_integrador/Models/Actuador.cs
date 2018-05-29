@@ -7,5 +7,7 @@ namespace tp_integrador.Models
 {
     public class Actuador
     {
+        public string actuadorTipo { get; set; }
+        List<Dispositivo> dispositivos { get; set; }
     }
 }
