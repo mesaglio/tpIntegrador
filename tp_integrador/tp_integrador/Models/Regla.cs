@@ -7,11 +7,17 @@ namespace tp_integrador.Models
 {
     public class Regla
     {
+        int regla { get; set; }
         List<Actuador> actuadores { get; set; }
         // recive la notificacion de un cambio en magnitud del sensor
-        internal void Cambio(int mag)
+         public void Cambio(int mag)
         {
-            throw new NotImplementedException();
+           foreach (Actuador ac in actuadores)
+            { if (regla == mag)
+                {
+                    ac.Actuar();
+                }
+            }
         }
     }
 }

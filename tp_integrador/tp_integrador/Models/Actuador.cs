@@ -8,6 +8,12 @@ namespace tp_integrador.Models
     public class Actuador
     {
         public string actuadorTipo { get; set; }
-        List<Dispositivo> dispositivos { get; set; }
+        List<Inteligente> dispositivos { get; set; }
+
+        // TODO: hacer la logica para mandar acciones al dispositivo
+        public void Actuar()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
