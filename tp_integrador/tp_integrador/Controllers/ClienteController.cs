@@ -21,6 +21,12 @@ namespace tp_integrador.Controllers
    
             return View(user);
         }
+        public ActionResult Dashboard()
+        {
+
+            return View();
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult GestionDeDispositivos(Usuarios user)
