@@ -9,14 +9,14 @@ namespace tp_integrador.Models
     {
         public string Telefono { get; set; }
         public DateTime AltaServicio { get; set; }
-        public string Categoria { get; set; }
+        public Categoria Categoria { get; set; }
         public string Documento_tipo { get; set; }
         public string Documento_numero { get; set; }
         public int Puntos { get; set; }
         private List<Dispositivo> dispositivos;
         
         
-        public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, string categ, string doc_t, string doc_n) : base(id, name, lastname, home, user, clave)
+        public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n) : base(id, name, lastname, home, user, clave)
         {
             Telefono = phone;
             Categoria = categ;

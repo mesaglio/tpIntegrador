@@ -11,7 +11,7 @@
 @*   @if (Request.IsAuthenticated) *@
 @if (Model.IsAuthenticated())
 {
-    Session["user"] = Model.usuario;
+    Session["User"] = Model.usuario;
     if (Model.Esadmin())
 
     {

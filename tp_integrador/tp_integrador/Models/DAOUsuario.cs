@@ -42,7 +42,7 @@ namespace tp_integrador.Models
             listusuarios.Add(unUsuario);
         }
 
-        public void CargarCliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, string categ, string doc_t, string doc_n)
+        public void CargarCliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n)
         {
             Cliente unCliente = new Cliente(id, name, lastname, home, user, clave, phone, alta, categ, doc_t, doc_n);
             listusuarios.Add(unCliente);
