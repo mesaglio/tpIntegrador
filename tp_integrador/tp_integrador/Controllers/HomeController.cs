@@ -53,12 +53,13 @@ namespace tp_integrador.Controllers
         }
 
         [HttpPost]
-        public void CargarArchivo(HttpPostedFileBase file)
+        public ActionResult CargarArchivo(HttpPostedFileBase file)
         {
-            if (file == null) return;
+            if (file == null) return View("JsonImport");
 
             CargarJson cargar = new CargarJson();
             cargar.LoadUsuarios(file.InputStream);
+            return View();
         }
     }
 }
