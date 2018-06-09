@@ -35,5 +35,22 @@ namespace tp_integrador.Controllers
 
             return View(user);
         }
+
+        public ActionResult CargarDispositivo()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LoadDispositivoJson(HttpPostedFileBase file)
+        {
+            if (file == null) return View("CargarDispositivo");
+
+            CargarJson cargar = new CargarJson();
+            cargar.LoadDispositivos(file.InputStream);
+            return View();
+        }
+        
     }
 }

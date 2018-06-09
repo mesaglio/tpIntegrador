@@ -10,6 +10,7 @@ namespace tp_integrador.Models
     public class CargarJson
     {
         public DAOUsuario Dao;
+        public DAODispositivo DaoDis;
 
         public CargarJson()
         {
@@ -26,6 +27,16 @@ namespace tp_integrador.Models
                 Dao.CargarUsuario(usuario);
             }
         }
-                
+        public void LoadDispositivos(Stream path)
+        {
+            string json = (new StreamReader(path)).ReadToEnd();
+            List<Dispositivo> djson = JsonConvert.DeserializeObject<List<Dispositivo>>(json);
+
+            foreach (Dispositivo disositivo in djson)
+            {
+                DaoDis.CargarDispositivo(disositivo);
+            }
+        }
+
     }
 }

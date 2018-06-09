@@ -146,6 +146,7 @@
     <Compile Include="Models\CargarJson.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\DAODispositivo.cs" />
     <Compile Include="Models\DAOHistorialEstado.cs" />
     <Compile Include="Models\DAOUsuario.cs" />
     <Compile Include="Models\Dispositivo.cs" />
@@ -245,6 +246,7 @@
     <Content Include="Views\Cliente\Dashboard.cshtml" />
     <Content Include="Views\Cliente\GestionDeDispositivos.cshtml" />
     <Content Include="Views\Errors\Error404.cshtml" />
+    <Content Include="Views\Cliente\CargarDispositivo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
