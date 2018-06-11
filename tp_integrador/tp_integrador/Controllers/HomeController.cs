@@ -58,7 +58,7 @@ namespace tp_integrador.Controllers
             if (file == null) return View("JsonImport");
 
             CargarJson cargar = new CargarJson();
-            cargar.LoadUsuarios(file.InputStream);
+            cargar.LoadJson<Cliente>(file.InputStream);
             return View();
         }
     }

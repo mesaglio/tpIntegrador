@@ -13,11 +13,10 @@ namespace tp_integrador.Models
             listdispositivo = new List<Dispositivo>();
         }
 
-
-
         public void CargarDispositivo(Dispositivo dispositivo)
         {
             listdispositivo.Add(dispositivo);
         }
+        
     }
 }

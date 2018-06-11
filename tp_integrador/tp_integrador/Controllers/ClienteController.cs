@@ -48,9 +48,11 @@ namespace tp_integrador.Controllers
             if (file == null) return View("CargarDispositivo");
 
             CargarJson cargar = new CargarJson();
-            cargar.LoadDispositivos(file.InputStream);
+            cargar.LoadJson<Inteligente>(file.InputStream);
+
             return View();
-        }
+        }       
         
+
     }
 }

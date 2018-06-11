@@ -9,7 +9,7 @@ namespace tp_integrador.Models
     public class Administrador : Usuarios
     {
         public DateTime AltaSistema { get; set; }
-        public DAOUsuario Dao { get; set; }
+        public DAOUsuario Dao;
    
 
         public int CantMeses()
@@ -19,8 +19,8 @@ namespace tp_integrador.Models
 
         public Administrador(string v1, string v2)
         {
-            this.usuario = v1;
-            this.password = v2;
+            usuario = v1;
+            password = v2;
             esadmin =true;
 
     }
@@ -31,7 +31,7 @@ namespace tp_integrador.Models
             esadmin = true;
         }
 
-        public Administrador(int id, string name, string lastname, string home, string user, string clave, DateTime alta, DAOUsuario dao) : base(id, name, lastname, home, user, clave)
+        public Administrador(int id, string name, string lastname, string home, string user, string clave, DateTime alta) : base(id, name, lastname, home, user, clave)
         {
             AltaSistema = alta;
             esadmin = true;
@@ -44,9 +44,9 @@ namespace tp_integrador.Models
             Dao.CargarUsuario(unCliente);
         }
 
-        public Usuarios BuscarCliente(int id)
+        public Cliente BuscarCliente(int id)
         {
-            return Dao.BuscarUsuario(id);
+            return Dao.BuscarCliente(id);
         }
 
         public void BajaCliente(int id)

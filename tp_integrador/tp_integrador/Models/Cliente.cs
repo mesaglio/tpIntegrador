@@ -39,9 +39,8 @@ namespace tp_integrador.Models
 
         public int CantEncendidos()
         {
-            int i = 0;
-            IEnumerable<Inteligente> ilist = dispositivos.OfType<Inteligente>();
-            foreach (Inteligente aparato in ilist)
+            int i = 0;            
+            foreach (Inteligente aparato in dispositivos.OfType<Inteligente>())
             {
                 if (aparato.Encendido()) { i++; }
             }
@@ -55,8 +54,7 @@ namespace tp_integrador.Models
 
         public int CantApagados()
         {
-            IEnumerable<Inteligente> iList = dispositivos.OfType<Inteligente>();
-            return iList.Count() - CantEncendidos();
+            return dispositivos.OfType<Inteligente>().Count() - CantEncendidos();
         }
 
         
@@ -104,5 +102,9 @@ namespace tp_integrador.Models
             Puntos += 10;
         }
 
+        public void AgregarDispositivo(Dispositivo dispositivo)
+        {
+            dispositivos.Add(dispositivo);
+        }
     }
 }

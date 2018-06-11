@@ -17,10 +17,11 @@ namespace tp_integrador.Models
 
         public DAOUsuario()
         {
-            Listusuarios();   
-            Usuarios u = new Usuarios("nico","1234");
+            Listusuarios();
+            Categoria categoria = new Categoria("R1", 150, 18.76m, 0.644m);
+            Cliente u = new Cliente(31,"nicolas","perez","calle cualquiera 123", "nico", "1234", "44112233",DateTime.Now.AddYears(-20).AddMonths(-3), categoria, "DNI", "12345678");
             listusuarios.Add(u);
-            Administrador a = new Administrador("pepe","1234");
+            Administrador a = new Administrador(1, "pepe", "lado", "av algo 1234", "pepe", "1234", DateTime.Now.AddYears(-2).AddMonths(-3));
             listusuarios.Add(a);
         }
               
@@ -48,9 +49,9 @@ namespace tp_integrador.Models
             listusuarios.Add(unCliente);
         }
 
-        public Usuarios BuscarUsuario(int id)
+        public Cliente BuscarCliente(int id)
         {
-            foreach (Usuarios usuario in listusuarios)
+            foreach (Cliente usuario in listusuarios.OfType<Cliente>())
             {
                 if (usuario.idUsuario == id)
                 {
@@ -62,7 +63,7 @@ namespace tp_integrador.Models
 
         public void QuitarUsuario(int id)
         {
-            listusuarios.Remove(BuscarUsuario(id));
+            listusuarios.Remove(BuscarCliente(id));
         }
     }
 

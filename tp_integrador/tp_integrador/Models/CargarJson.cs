@@ -9,33 +9,54 @@ namespace tp_integrador.Models
 {
     public class CargarJson
     {
-        public DAOUsuario Dao;
+        public DAOUsuario DaoUser;
         public DAODispositivo DaoDis;
 
         public CargarJson()
         {
-            Dao = MvcApplication.Daobjeto;
+            DaoUser = MvcApplication.Daobjeto;
         }
-
-        public void LoadUsuarios(Stream path)
+              
+        public void LoadJson<T>(Stream path)
         {
-            string json = (new StreamReader(path)).ReadToEnd();            
-            List<Cliente> djson = JsonConvert.DeserializeObject<List<Cliente>>(json);
-
-            foreach(Cliente usuario in djson)
-            {
-                Dao.CargarUsuario(usuario);
-            }
-        }
-        public void LoadDispositivos(Stream path)
-        {
+            Type type = typeof(T);
             string json = (new StreamReader(path)).ReadToEnd();
-            List<Dispositivo> djson = JsonConvert.DeserializeObject<List<Dispositivo>>(json);
+            dynamic djson;            
 
-            foreach (Dispositivo disositivo in djson)
+            if (type == typeof(Cliente))
             {
-                DaoDis.CargarDispositivo(disositivo);
+                djson = JsonConvert.DeserializeObject<List<Cliente>>(json);                
             }
+            else if (type == typeof(Administrador))
+            {
+                djson = JsonConvert.DeserializeObject<List<Administrador>>(json);               
+            }
+            else if (type == typeof(Inteligente))
+            {
+                djson = JsonConvert.DeserializeObject<List<Inteligente>>(json);
+            }
+            else if (type == typeof(Estandar))
+            {
+                djson = JsonConvert.DeserializeObject<List<Estandar>>(json);
+            }
+            else return;
+
+            if (type == typeof(Cliente) || type == typeof(Administrador))
+            {
+                foreach (var usuario in djson)
+                {
+                    DaoUser.CargarUsuario(usuario);
+                }
+            }
+            else
+            {
+                foreach (var dispositivo in djson)
+                {
+                    //DaoDis.CargarDispositivo(dispositivo);
+                    DaoUser.BuscarCliente(31).AgregarDispositivo(dispositivo);
+                }
+            }
+            
         }
 
     }
