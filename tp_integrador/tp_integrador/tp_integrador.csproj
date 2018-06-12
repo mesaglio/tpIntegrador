@@ -247,6 +247,7 @@
     <Content Include="Views\Cliente\GestionDeDispositivos.cshtml" />
     <Content Include="Views\Errors\Error404.cshtml" />
     <Content Include="Views\Cliente\CargarDispositivo.cshtml" />
+    <Content Include="Views\Cliente\LoadDispositivoJson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
