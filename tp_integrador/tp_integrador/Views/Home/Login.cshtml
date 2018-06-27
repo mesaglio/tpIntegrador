@@ -1,18 +1,18 @@
 ﻿@model tp_integrador.Models.Usuarios
 @{
+    /**/
+
     ViewBag.Title = "Login";
-    
+
+
 
 }
 
 
-
-
-@*   @if (Request.IsAuthenticated) *@
 @if (Model.IsAuthenticated())
 {
-    Session["User"] = Model.usuario;
-    if (Model.Esadmin())
+
+    if ((Boolean)Session["Admin"])
 
     {
         <div class="jumbotron">
@@ -25,7 +25,7 @@
 
     }
     else
-    { 
+    {
         <div class="jumbotron">
             <p><h3>Aplicaciones</h3></p>
             @Html.ActionLink("Cargar Dispositivos", "CargarDispositivo", "Cliente", "/Cliente/CargarDispositivo", new { @class = "btn btn-primary btn-lg" })

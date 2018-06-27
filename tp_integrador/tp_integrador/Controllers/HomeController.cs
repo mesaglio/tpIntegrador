@@ -20,6 +20,10 @@ namespace tp_integrador.Controllers
                 return View(u);
             else
             {
+                Session["IDUsuario"] = u.idUsuario;
+                Session["Usuario"] = u.usuario;
+                Session["Password"] = u.password;
+                Session["Admin"] = u.Esadmin();
                 u.SetLoginOn();
                 
                 return View(u);            
