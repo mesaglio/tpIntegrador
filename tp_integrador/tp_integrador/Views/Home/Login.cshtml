@@ -11,12 +11,13 @@
 
 @if (Model.IsAuthenticated())
 {
-
+    <p><h4>idusuario = @Session["IDUsuario"] </h4></p>
     if ((Boolean)Session["Admin"])
 
     {
         <div class="jumbotron">
             <p><h3>Aplicaciones</h3></p>
+
 
             @Html.ActionLink("Cantidad de meses", "Listar", "Home", "/Home/listar", new { @class = "btn btn-primary btn-lg" })
 

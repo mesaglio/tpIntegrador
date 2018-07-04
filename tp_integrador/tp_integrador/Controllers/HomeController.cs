@@ -17,16 +17,17 @@ namespace tp_integrador.Controllers
             DAOUsuario data = new DAOUsuario();
             Usuarios u =  data.InicioSecion(model);
             if (u.usuario == null)
+            {
+                Session["IDUsuario"] = -1;
                 return View(u);
+            }
             else
             {
                 Session["IDUsuario"] = u.idUsuario;
-                Session["Usuario"] = u.usuario;
-                Session["Password"] = u.password;
                 Session["Admin"] = u.Esadmin();
                 u.SetLoginOn();
-                
-                return View(u);            
+
+                return View(u);
             }
         }
 
