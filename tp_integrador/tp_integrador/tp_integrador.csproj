@@ -155,6 +155,7 @@
     <Compile Include="Models\Inteligente.cs" />
     <Compile Include="Models\Regla.cs" />
     <Compile Include="Models\Sensor.cs" />
+    <Compile Include="Models\SIMPLEX.cs" />
     <Compile Include="Models\Usuarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
