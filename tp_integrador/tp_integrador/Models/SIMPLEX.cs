@@ -17,9 +17,6 @@ namespace tp_integrador.Models
             WebRequest request = WebRequest.Create(API);
             request.Method = "POST";
 
-            postData = " ";
-
-
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
             // Set the ContentType property of the WebRequest.  
            // request.ContentType = "application/x-www-form-urlencoded";
