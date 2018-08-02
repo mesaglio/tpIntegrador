@@ -10,7 +10,47 @@ namespace tp_integrador.Models
 {
     public class SIMPLEX
     {
+        private int A1;
+        private int A2;
+        private string B1 = "MAX";
+        private int B2 = 1;
+        private int BNmas1 = 0;
+        private int Bn = 1;
+        private List<ArraySegment<string>> variables;
+        private List<ArraySegment<string>> restricciones;
+        
+        private string[,] cvs; 
         private string API = "https://dds-simplexapi.herokuapp.com/consultar";
+
+        private string zeroforvariable()
+        {
+            string c = "";
+            for (int i = A1; i == 0; i++)
+                { c = c + "," + Bn.ToString();}
+            return c;
+        }
+
+        private string boleano()
+        {
+            string c = "";
+            for (int i = A1; i == 0; i++)
+            { c = c + ",TRUE"; }
+            return c;
+        }
+
+        private void SetA1() => A1 = variables.Count();
+        private void SetA2() => A2 = restricciones.Count();
+        private string FilaA(){ return A1.ToString() + "," + A2.ToString() + Environment.NewLine;}
+        private string FilaB() { return B1 + "," + B2.ToString() + zeroforvariable() + "," + BNmas1.ToString() + Environment.NewLine; }
+        private string FikaC() { return boleano(); }
+
+        public SIMPLEX(List<ArraySegment<string>> variables, List<ArraySegment<string>> restricciones)
+        {
+            this.variables = variables;
+            this.restricciones = restricciones;
+            SetA1();
+            SetA2();
+        }
 
         public string Simplex(string postData)
         {
