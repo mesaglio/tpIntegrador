@@ -20,9 +20,9 @@ namespace tp_integrador
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Daobjeto = new DAOUsuario();
-            
-        }
+		}
     }
+
     public class Global : System.Web.HttpApplication
     {
             Usuarios user = new Usuarios();
