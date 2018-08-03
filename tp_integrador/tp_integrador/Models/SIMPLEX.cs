@@ -5,53 +5,28 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace tp_integrador.Models
 {
     public class SIMPLEX
     {
-        private int A1;
-        private int A2;
-        private string B1 = "MAX";
-        private int B2 = 1;
-        private int BNmas1 = 0;
-        private int Bn = 1;
-        private List<ArraySegment<string>> variables;
-        private List<ArraySegment<string>> restricciones;
-        
-        private string[,] cvs; 
-        private string API = "https://dds-simplexapi.herokuapp.com/consultar";
-
-        private string zeroforvariable()
-        {
-            string c = "";
-            for (int i = A1; i == 0; i++)
-                { c = c + "," + Bn.ToString();}
-            return c;
-        }
-
-        private string boleano()
-        {
-            string c = "";
-            for (int i = A1; i == 0; i++)
-            { c = c + ",TRUE"; }
-            return c;
-        }
-
-        private void SetA1() => A1 = variables.Count();
-        private void SetA2() => A2 = restricciones.Count();
-        private string FilaA(){ return A1.ToString() + "," + A2.ToString() + Environment.NewLine;}
-        private string FilaB() { return B1 + "," + B2.ToString() + zeroforvariable() + "," + BNmas1.ToString() + Environment.NewLine; }
-        private string FikaC() { return boleano(); }
-
-        public SIMPLEX(List<ArraySegment<string>> variables, List<ArraySegment<string>> restricciones)
-        {
-            this.variables = variables;
-            this.restricciones = restricciones;
-            SetA1();
-            SetA2();
-        }
-
+		private readonly string API = "https://dds-simplexapi.herokuapp.com/consultar";
+		
+		private List<Tuple<string, double, double>> datosRestricciones; //dispositivo,minimo,maximo
+		public SIMPLEX()
+		{
+			datosRestricciones = new List<Tuple<string, double, double>>();
+			datosRestricciones.Add(Tuple.Create("Aire Acondicionado", 90d, 360d));
+			datosRestricciones.Add(Tuple.Create("Lámpara", 90d, 360d));
+			datosRestricciones.Add(Tuple.Create("Televisor", 90d, 360d));
+			datosRestricciones.Add(Tuple.Create("Lavarropas", 6d, 30d));
+			datosRestricciones.Add(Tuple.Create("Computadora", 60d, 360d));
+			datosRestricciones.Add(Tuple.Create("Microondas", 3d, 15d));
+			datosRestricciones.Add(Tuple.Create("Plancha", 3d, 30d));
+			datosRestricciones.Add(Tuple.Create("Ventilador", 120d, 360d));
+		}
+				
         public string Simplex(string postData)
         {
             WebRequest request = WebRequest.Create(API);
@@ -84,5 +59,73 @@ namespace tp_integrador.Models
             return responseFromServer;
         }
 
-    }
+		public string CrearConsulta(List<Dispositivo> dispositivos)
+		{
+			var json = new JSONObject(dispositivos);		
+			json.Restrictions.Add(new Restriction(dispositivos));
+
+			var cantidad = dispositivos.Count();						
+			for(int i = 0; i < cantidad; i++)
+			{				
+				foreach (var res in datosRestricciones)
+				{
+					if (res.Item1 == dispositivos[i].Nombre.Substring(0, dispositivos[i].Nombre.Length-2))
+					{
+						json.Restrictions.Add(new Restriction(">=", res.Item2, i, cantidad));						
+						json.Restrictions.Add(new Restriction("<=", res.Item3, i, cantidad));
+					}
+				}				
+			}
+
+			return JsonConvert.SerializeObject(json);
+		}
+
+		//Clases Para Crear JSON
+		private class Restriction
+		{
+			public List<double> Values { get; set; }
+			public string Operator { get; set; }
+
+			public Restriction(string operador, double valor, int pos, int cant)
+			{
+				Operator = operador;
+				Values = new List<double>();
+				for (int i = 0; i <= cant; i++)
+				{
+					Values.Add(0);
+				}
+				Values[0] = valor;
+				Values[pos + 1] = 1;
+
+			}
+
+			public Restriction(List<Dispositivo> lista)
+			{
+				Values = new List<double>();
+				Operator = "<=";
+				Values.Add(612);
+				foreach (var item in lista)
+				{
+					Values.Add(item.Consumo);
+				}
+			}
+
+		}
+
+		private class JSONObject
+		{
+			public List<int> Vars { get; set; }
+			public List<Restriction> Restrictions { get; set; }
+
+			public JSONObject(List<Dispositivo> lista)
+			{
+				Vars = new List<int>();
+				Restrictions = new List<Restriction>();
+				foreach (var item in lista)
+				{
+					Vars.Add(1);
+				}
+			}
+		}
+	}
 }

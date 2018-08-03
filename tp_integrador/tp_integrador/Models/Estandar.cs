@@ -9,7 +9,7 @@ namespace tp_integrador.Models
     {
         private byte usoDiario;
 
-        public Estandar(string nombre, byte consumo, byte horasPromedio) : base(nombre, consumo)
+        public Estandar(string nombre, double consumo, byte horasPromedio) : base(nombre, consumo)
         {
             Nombre = nombre;
             Consumo = consumo;
@@ -17,12 +17,12 @@ namespace tp_integrador.Models
         }
 
 
-        private byte EnergiaPorHora()
+        private double EnergiaPorHora()
         {
             return Consumo;
         }
 
-        public int ConsumoEstimado()
+        public double ConsumoEstimado()
         {
             return EnergiaPorHora() * usoDiario;
         }

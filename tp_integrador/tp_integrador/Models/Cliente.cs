@@ -73,7 +73,7 @@ namespace tp_integrador.Models
             aparato.ModoAhorro();
         }
 
-        public int GetEstimado(Estandar aparato)
+        public double GetEstimado(Estandar aparato)
         {
             return aparato.ConsumoEstimado();
         }

@@ -8,10 +8,10 @@ namespace tp_integrador.Models
     public class Dispositivo
     {
         public string Nombre { get; set; }
-        public byte Consumo;
+        public double Consumo;
 
 
-        public Dispositivo(string nombre, byte consumo)
+        public Dispositivo(string nombre, double consumo)
         {
             Nombre = nombre;
             Consumo = consumo;
