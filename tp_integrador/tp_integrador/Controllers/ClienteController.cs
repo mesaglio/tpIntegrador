@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using tp_integrador.Models;
+
 
 
 namespace tp_integrador.Controllers
@@ -38,21 +36,34 @@ namespace tp_integrador.Controllers
 
         public ActionResult CargarDispositivo()
         {
+            DAO_t_dispositivostemplate a = new DAO_t_dispositivostemplate();
 
-            return View();
+            return View(model: a);
         }
 
         [HttpPost]
         public ActionResult LoadDispositivoJson(HttpPostedFileBase file)
         {
-            if (file == null) return View("CargarDispositivo");
+            if (file == null) return CargarDispositivo();
 
             CargarJson cargar = new CargarJson();
             cargar.LoadJson<Inteligente>(file.InputStream);
 
             return View();
-        }       
-        
+        }
+        [HttpPost]
+        public ActionResult SelecTemplate_dis(templateDisp disp)
+        {
+            if (disp is null)
+            {
+                return CargarDispositivo();
+            }
+            else
+            {
+                disp.consumo = disp.consumo + 1;
+                return View("LoadDispositivoJson");
+            }
+        }
 
     }
 }

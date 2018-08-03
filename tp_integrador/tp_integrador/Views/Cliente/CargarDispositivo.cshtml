@@ -1,4 +1,4 @@
-﻿
+﻿@model tp_integrador.Models.DAO_t_dispositivostemplate
 
 
 <h2>View</h2>
@@ -7,4 +7,21 @@
 {
     <input type="file" name="file" />
     <button type="submit">Subir archivo</button>
+}
+
+@using (Html.BeginForm("SelecTemplate_dis","Cliente", FormMethod.Post)) {
+<fieldset>
+    Seleccione un Dispositivo <select id="templateType" name="templateType">
+
+    <option selected="selected" value=""></option>
+
+    @foreach (var item in Model.templateDisps)
+    {
+    <option value= @item >@item.getNombreEntero()</option>
+    }
+
+</select>
+     <button type="submit">Agregar</button>
+
+</fieldset>
 }

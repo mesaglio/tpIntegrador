@@ -148,6 +148,7 @@
     <Compile Include="Models\Administrador.cs" />
     <Compile Include="Models\CargarJson.cs" />
     <Compile Include="Models\Categoria.cs" />
+    <Compile Include="Models\DAO_t_dispositivostemplate.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\DAODispositivo.cs" />
     <Compile Include="Models\DAOHistorialEstado.cs" />
@@ -163,6 +164,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\SistemaDeGestionEnergetica.mdf" />
+    <Content Include="App_Data\SistemaDeGestionEnergetica_log.ldf">
+      <DependentUpon>SistemaDeGestionEnergetica.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -254,8 +259,8 @@
     <Content Include="Views\Cliente\LoadDispositivoJson.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Upload\" />
+    <Folder Include="Views\kendo\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
