@@ -38,7 +38,7 @@ namespace tp_integrador.Controllers
         {
             DAO_t_dispositivostemplate a = new DAO_t_dispositivostemplate();
 
-            return View(model: a);
+            return View("CargarDispositivo",model: a);
         }
 
         [HttpPost]
@@ -52,15 +52,17 @@ namespace tp_integrador.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult SelecTemplate_dis(templateDisp disp)
+        [AllowAnonymous]
+        public ActionResult SelecTemplate_dis(int disp)
         {
-            if (disp is null)
+            if (disp == 0)
             {
                 return CargarDispositivo();
             }
             else
             {
-                disp.consumo = disp.consumo + 1;
+                DAO_t_dispositivostemplate a = new DAO_t_dispositivostemplate();
+                templateDisp dispositivo = a.Searchtemplatebyid(disp);
                 return View("LoadDispositivoJson");
             }
         }

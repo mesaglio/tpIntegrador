@@ -9,15 +9,15 @@
     <button type="submit">Subir archivo</button>
 }
 
-@using (Html.BeginForm("SelecTemplate_dis","Cliente", FormMethod.Post)) {
+@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post)) {
 <fieldset>
-    Seleccione un Dispositivo <select id="templateType" name="templateType">
+    Seleccione un Dispositivo <select name="disp">
 
-    <option selected="selected" value=""></option>
-
+    <option selected="selected" value=0></option>
+    
     @foreach (var item in Model.templateDisps)
     {
-    <option value= @item >@item.getNombreEntero()</option>
+    <option value= @item.ID>@item.getNombreEntero()</option>
     }
 
 </select>
