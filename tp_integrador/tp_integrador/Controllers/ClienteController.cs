@@ -77,6 +77,10 @@ namespace tp_integrador.Controllers
             {
                 DAO_t_dispositivostemplate a = new DAO_t_dispositivostemplate();
                 templateDisp dispositivo = a.Searchtemplatebyid(disp);
+                Cliente unclietne = (Cliente)Session["Usuario"];
+                if (dispositivo.inteligente == "si") { unclietne.NuevoDispositivoInteligente(dispositivo.getNombreEntero(), (byte)dispositivo.consumo); }
+                else
+                    { unclietne.NuevoDispositivoEstandar(dispositivo.getNombreEntero(), (byte)dispositivo.consumo,0); }
                 return View("LoadDispositivoJson");
             }
         }
