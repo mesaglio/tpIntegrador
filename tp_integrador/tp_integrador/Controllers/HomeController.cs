@@ -10,6 +10,10 @@ namespace tp_integrador.Controllers
 {
     public class HomeController : Controller
     {
+        private ActionResult PermisoDenegado()
+        {
+            return new HttpNotFoundResult();
+        }
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Login(Usuarios model)
@@ -23,6 +27,7 @@ namespace tp_integrador.Controllers
             }
             else
             {
+                Session["Usuario"] = u;
                 Session["IDUsuario"] = u.idUsuario;
                 Session["Admin"] = u.Esadmin();
                 u.SetLoginOn();
@@ -49,9 +54,10 @@ namespace tp_integrador.Controllers
 
             return View();
         }
-        
+        // ADMINISTRADOR
         public ActionResult JsonImport()
         {
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
             ViewBag.Message = "Your contact page.";
 
             return View();
@@ -60,6 +66,7 @@ namespace tp_integrador.Controllers
         [HttpPost]
         public ActionResult CargarArchivo(HttpPostedFileBase file)
         {
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
             if (file == null) return View("JsonImport");
 
             CargarJson cargar = new CargarJson();
