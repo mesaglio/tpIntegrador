@@ -11,7 +11,7 @@ namespace tp_integrador.Controllers
         private Cliente Tocliente(Usuarios user) => (Cliente)user;
         private ActionResult PermisoDenegado()
         {
-            return new HttpNotFoundResult();
+            return PartialView("_NotFound");
         }
 
 
@@ -33,11 +33,11 @@ namespace tp_integrador.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult GestionDeDispositivos(Usuarios user)
+        public ActionResult GestionDeDispositivos()
         {
             if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            Tocliente(user);
+            Cliente user = (Cliente)Session["Usuario"];
 
             return View(user);
         }

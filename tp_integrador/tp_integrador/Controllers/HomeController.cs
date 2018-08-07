@@ -12,7 +12,7 @@ namespace tp_integrador.Controllers
     {
         private ActionResult PermisoDenegado()
         {
-            return new HttpNotFoundResult();
+            return PartialView("_NotFound"); ;
         }
         [HttpPost]
         [AllowAnonymous]
