@@ -6,8 +6,25 @@
 
 <h2>Dashboard</h2>
 
-@Html.ActionLink("hola", "Dashboard", "Cliente", new { user = Model }, new { @class = "btn btn-primary btn-lg" })
+<span class="label label-default">Dispositivos Encendidos: @Model.CantEncendidos()</span><br />
 
-<span class="label label-default">@Model.CantEncendidos()</span>
+<span class="label label-default">Dispositivos Apagados: @Model.CantApagados()</span><br />
 
+<span class="label label-default">Dispositivos:</span><br />
+@foreach (var item in Model.dispositivos)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Consumo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr><br />
+}
 
