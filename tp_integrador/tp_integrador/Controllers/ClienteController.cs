@@ -22,7 +22,6 @@ namespace tp_integrador.Controllers
         {
             if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            // Tocliente(user);
             Cliente user = (Cliente)Session["Usuario"];
 
 

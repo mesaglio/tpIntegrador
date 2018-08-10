@@ -57,7 +57,7 @@ namespace tp_integrador.Models
         public string inteligente;
         public string bajoconsumo;
         public double consumo;
-        public string getNombreEntero() { return Dispositivo + concreto; }
+        public string getNombreEntero() { return Dispositivo + " " + concreto; }
         public templateDisp(int ID ,string dispositivo, string concreto, string inteligente, string bajoconsumo, double consumo)
         {
             Dispositivo = dispositivo;
