@@ -21,9 +21,12 @@
             @Html.DisplayFor(modelItem => item.Consumo)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+ 
+            @using (Html.BeginForm("EncenderDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" })){
+                <input type="hidden" name="postdispositivo" value="@item.Nombre" /><button type="submit">Encender</button>}
+
+            @using (Html.BeginForm("ApagarDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {<input type="hidden" name="postdispositivo" value="@item.Nombre" /> <button type="submit">Apagar</button>}
         </td>
     </tr><br />
 }

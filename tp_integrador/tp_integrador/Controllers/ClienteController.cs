@@ -84,5 +84,31 @@ namespace tp_integrador.Controllers
             }
         }
 
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult EncenderDispositivo(string postdispositivo)
+        {
+            Cliente unclietne = (Cliente)Session["Usuario"];
+            foreach (Inteligente undispo in unclietne.dispositivos)
+            { if (undispo.Nombre == postdispositivo) undispo.Encender(); }
+
+            return View("Dashboard", model: unclietne);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ApagarDispositivo(string postdispositivo)
+        {
+            Cliente unclietne = (Cliente)Session["Usuario"];
+            foreach (Inteligente undispo in unclietne.dispositivos)
+            { if (undispo.Nombre == postdispositivo) undispo.Apagar(); }
+
+            return View("Dashboard", model: unclietne);
+        }
+
+
+
+
+
     }
 }
