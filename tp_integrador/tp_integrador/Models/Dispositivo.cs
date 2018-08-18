@@ -9,13 +9,16 @@ namespace tp_integrador.Models
     {
         public string Nombre { get; set; }
         public double Consumo;
-
+        public bool EsInteligente = false;
 
         public Dispositivo(string nombre, double consumo)
         {
             Nombre = nombre;
             Consumo = consumo;
+            
         }
+
+       
 
     }
 }

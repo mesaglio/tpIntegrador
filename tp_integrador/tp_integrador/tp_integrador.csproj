@@ -260,7 +260,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />
-    <Folder Include="Views\kendo\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

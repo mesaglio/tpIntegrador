@@ -19,6 +19,7 @@ namespace tp_integrador.Models
             Estado = estado;
             fechaEstado = estadoFecha;
             daoEstado = new DAOHistorialEstado(id, Nombre);
+            EsInteligente = true;
         }
 
         private double ConsumoEnPor(int estado, double horas)
@@ -46,6 +47,9 @@ namespace tp_integrador.Models
             Estado = nuevoEstado;
             fechaEstado = nuevaFecha;
         }
+
+       
+
 
 
         public bool Encendido()

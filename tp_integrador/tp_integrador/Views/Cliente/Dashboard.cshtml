@@ -21,12 +21,17 @@
             @Html.DisplayFor(modelItem => item.Consumo)
         </td>
         <td>
- 
-            @using (Html.BeginForm("EncenderDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" })){
+            @if (item.EsInteligente)
+    {
+
+            <div class="btn-group">
+                @using (Html.BeginForm("EncenderDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" })){
                 <input type="hidden" name="postdispositivo" value="@item.Nombre" /><button type="submit">Encender</button>}
 
-            @using (Html.BeginForm("ApagarDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {<input type="hidden" name="postdispositivo" value="@item.Nombre" /> <button type="submit">Apagar</button>}
+                @using (Html.BeginForm("ApagarDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {<input type="hidden" name="postdispositivo" value="@item.Nombre" /> <button type="submit">Apagar</button>}
+            </div>
+            }
         </td>
     </tr><br />
 }
