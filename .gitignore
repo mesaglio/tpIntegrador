@@ -42,6 +42,9 @@ TestResult.xml
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
+# parche nico
+*/obj/Debug/*
+*/bin/*
 
 # .NET Core
 project.lock.json
