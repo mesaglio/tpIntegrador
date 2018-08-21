@@ -87,20 +87,20 @@ namespace tp_integrador.Models
             aparato.SetUsoDiario(horas);
         }
 
-        public void NuevoDispositivoInteligente(string nombre, byte consumo)
+        public void NuevoDispositivoInteligente(string nombre, double consumo)
         {
-            dispositivos.Add(new Inteligente(idUsuario, nombre, consumo, 0, DateTime.Now));
+            dispositivos.Add(new Inteligente(idUsuario, dispositivos.Count()+1, nombre, consumo, 0, DateTime.Now));
             Puntos += 15;
         }
 
-        public void NuevoDispositivoEstandar(string nombre, byte consumo, byte usoPromedio)
+        public void NuevoDispositivoEstandar(string nombre, double consumo, byte usoPromedio)
         {
-            dispositivos.Add(new Estandar(nombre, consumo, usoPromedio));
+            dispositivos.Add(new Estandar(dispositivos.Count+1, nombre, consumo, usoPromedio));
         }
 
         public void ConvertirAInteligente(Estandar aparato)
         {
-            Inteligente adaptado = new Inteligente(idUsuario,aparato.Nombre,aparato.Consumo,0,DateTime.Now);
+            Inteligente adaptado = new Inteligente(idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, 0, DateTime.Now);
             dispositivos.Remove(aparato);
             dispositivos.Add(adaptado);
             Puntos += 10;

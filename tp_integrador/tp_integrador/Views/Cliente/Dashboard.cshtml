@@ -21,8 +21,7 @@
             @Html.DisplayFor(modelItem => item.Consumo)
         </td>
         <td>
-            @if (item.EsInteligente)
-    {
+            @if (item.EsInteligente)    {
 
             <div class="btn-group">
                 @using (Html.BeginForm("EncenderDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" })){

@@ -12,8 +12,9 @@ namespace tp_integrador.Models
         private DAOHistorialEstado daoEstado;
 
 
-        public Inteligente(int id, string nombre, double consumo, byte estado, DateTime estadoFecha) : base(nombre, consumo)
+        public Inteligente(int id, int numero, string nombre, double consumo, byte estado, DateTime estadoFecha) : base(numero, nombre, consumo)
         {
+			Numero = numero;
             Nombre = nombre;
             Consumo = consumo;
             Estado = estado;
@@ -46,9 +47,7 @@ namespace tp_integrador.Models
             daoEstado.CargarEstado(Estado, fechaEstado, nuevaFecha);
             Estado = nuevoEstado;
             fechaEstado = nuevaFecha;
-        }
-
-       
+        }      
 
 
 

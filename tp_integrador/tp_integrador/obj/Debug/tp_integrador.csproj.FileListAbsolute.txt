@@ -147,3 +147,6 @@ C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\es\System.Web.WebPages.
 C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\es\System.Web.WebPages.Razor.resources.dll
 C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\es\System.Web.Optimization.resources.dll
 C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\obj\Debug\tp_integrador.csproj.CopyComplete
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\CsvHelper.dll
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\CsvHelper.xml
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\obj\Debug\tp_integrador.csprojAssemblyReference.cache

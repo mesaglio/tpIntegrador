@@ -3,12 +3,15 @@ using System.Web.Mvc;
 using tp_integrador.Models;
 using tp_integrador.Controllers;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace tp_integrador.Controllers
 {
     public class ClienteController : Controller
     {
         private Cliente Tocliente(Usuarios user) => (Cliente)user;
+
         private ActionResult PermisoDenegado()
         {
             return PartialView("_NotFound");
@@ -28,10 +31,7 @@ namespace tp_integrador.Controllers
             return View(user);
         }
 
-
-
-        [HttpPost]
-        [AllowAnonymous]
+		        
         public ActionResult GestionDeDispositivos()
         {
             if ((bool)Session["Admin"]) return PermisoDenegado();
@@ -62,6 +62,7 @@ namespace tp_integrador.Controllers
 
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult SelecTemplate_dis(int disp)
@@ -77,9 +78,9 @@ namespace tp_integrador.Controllers
                 DAO_t_dispositivostemplate a = new DAO_t_dispositivostemplate();
                 templateDisp dispositivo = a.Searchtemplatebyid(disp);
                 Cliente unclietne = (Cliente)Session["Usuario"];
-                if (dispositivo.inteligente == "si") { unclietne.NuevoDispositivoInteligente(dispositivo.getNombreEntero(), (byte)dispositivo.consumo); }
+                if (dispositivo.inteligente == "si") { unclietne.NuevoDispositivoInteligente(dispositivo.getNombreEntero(), dispositivo.consumo); }
                 else
-                    { unclietne.NuevoDispositivoEstandar(dispositivo.getNombreEntero(), (byte)dispositivo.consumo,0); }
+                    { unclietne.NuevoDispositivoEstandar(dispositivo.getNombreEntero(), dispositivo.consumo,0); }
                 return View("LoadDispositivoJson");
             }
         }
@@ -106,9 +107,31 @@ namespace tp_integrador.Controllers
             return View("Dashboard", model: unclietne);
         }
 
+		[HttpPost]		
+		public ActionResult CalculoSimplex()
+		{
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+
+			Cliente uncliente = (Cliente)Session["Usuario"];
+
+			SIMPLEX sim = new SIMPLEX();
+			var respuesta = sim.Simplex(sim.CrearConsulta(uncliente.dispositivos));
+
+			var sb = new StringBuilder();
+			sb.AppendLine("<b>Consumo Optimo Para Sus Dispositivos: " + "</b><br/>");
+			sb.AppendLine(""+"<br/>");
+			sb.AppendLine("<b>Maximo: </b>" + respuesta[0] + "<br/>");
+			var cantDisp = uncliente.dispositivos.Count;
+
+			for (int i = 1; i < respuesta.Length; i++)
+			{
+				sb.AppendLine("<b>" + uncliente.dispositivos[cantDisp-i].Nombre + ": </b>" + respuesta[i] + "<br/>");
+			}
+			
+			return Content(sb.ToString());
+		}
 
 
 
-
-    }
+	}
 }

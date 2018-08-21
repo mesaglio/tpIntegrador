@@ -1,7 +1,13 @@
-﻿
+﻿@model tp_integrador.Models.Cliente
 @{
-    ViewBag.Title = "GestionDeDispositivos";
+	ViewBag.Title = "GestionDeDispositivos";
 }
 
 <h2>GestionDeDispositivos</h2>
 
+
+	@using (Html.BeginForm("CalculoSimplex", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+	<button type="submit">Calcular Mejor Consumo</button>
+	}
+	

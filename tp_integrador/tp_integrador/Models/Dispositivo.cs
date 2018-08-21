@@ -7,15 +7,16 @@ namespace tp_integrador.Models
 {
     public class Dispositivo
     {
-        public string Nombre { get; set; }
+		public int Numero { get; set; }
+		public string Nombre { get; set; }
         public double Consumo;
         public bool EsInteligente = false;
 
-        public Dispositivo(string nombre, double consumo)
+        public Dispositivo(int numero, string nombre, double consumo)
         {
+			Numero = numero;
             Nombre = nombre;
-            Consumo = consumo;
-            
+            Consumo = consumo;            
         }
 
        
