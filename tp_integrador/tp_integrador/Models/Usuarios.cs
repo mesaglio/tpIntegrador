@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Gmap.net;//localizacion
 
 namespace tp_integrador.Models
 {
@@ -17,6 +18,12 @@ namespace tp_integrador.Models
         public bool esadmin { get; set; }
 
         public bool Esadmin() {return esadmin;}
+
+        public Location ubicacion { get; set; }
+        public void agregarUbicacion(double latitude, double longitude) {
+            ubicacion.Latitude = latitude;
+            ubicacion.Longitude = longitude;
+        }
 
         public Usuarios()
         {
