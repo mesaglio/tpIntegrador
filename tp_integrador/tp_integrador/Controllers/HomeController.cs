@@ -73,5 +73,9 @@ namespace tp_integrador.Controllers
             cargar.LoadJson<Cliente>(file.InputStream);
             return View();
         }
+
+        public ActionResult Maps() {
+            return View();
+        }
     }
 }
