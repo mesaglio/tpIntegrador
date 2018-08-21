@@ -9,10 +9,12 @@ namespace tp_integrador.Models
 {
     public class Transformador
     {
-
+        public bool EstaActivo { get; set; }
+        public int CantidadEnergia { get; set; }
+        public List<Cliente> clientes { get; set; }
         public CircleMarker Radar { get; set; }  //atributo
 
-        public Transformador(String id, int radio, int latitude, int longitude)
+        public Transformador(String id, int radio, double latitude, double longitude)
         {
             Radar = new CircleMarker(id);
             Radar.Radius = radio;
@@ -34,9 +36,6 @@ namespace tp_integrador.Models
             return Math.Sqrt(Math.Pow(l1.Latitude - l2.Latitude, 2) + Math.Pow(l1.Latitude - l2.Latitude, 2));
         }
 
-        public int CantidadEnergia { get; set; }
-
-        public List<Cliente> clientes { get; set; }
         public void AgregarCliente(Cliente cliente)
         {
             if (clienteMePertenece(cliente))
@@ -45,6 +44,6 @@ namespace tp_integrador.Models
             }
         }
 
-        public bool EstaActivo { get; set; }
+       
     }
 }
