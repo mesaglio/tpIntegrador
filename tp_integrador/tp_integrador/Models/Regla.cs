@@ -9,15 +9,14 @@ namespace tp_integrador.Models
     {
         int regla { get; set; }
         List<Actuador> actuadores { get; set; }
-        // recive la notificacion de un cambio en magnitud del sensor
-         public void Cambio(int mag)
+		
+		// recive la notificacion de un cambio en magnitud del sensor
+		public void Cambio(int mag)
         {
-           foreach (Actuador ac in actuadores)
-            { if (regla == mag)
-                {
-                    ac.Actuar();
-                }
-            }
+			foreach (Actuador ac in actuadores)
+			{
+				if (regla == mag) ac.Actuar();
+			}
         }
     }
 }

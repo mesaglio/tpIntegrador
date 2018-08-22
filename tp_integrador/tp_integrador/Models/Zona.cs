@@ -9,9 +9,9 @@ namespace tp_integrador.Models
 {
     public class Zona
     {
-        int id;
-        Location location;
-        string nombre;
+		public int id;
+		public Location location;
+		public string nombre;
         public List<Transformador> transformadores;
 
         public Zona(int id, string nomb, double latitude, double longitude)
@@ -21,7 +21,7 @@ namespace tp_integrador.Models
             location = new Location(latitude, longitude);
         }
 
-        public void addTransformador(Transformador transformador)
+        public void AddTransformador(Transformador transformador)
         {
             transformadores.Add(transformador);
         }

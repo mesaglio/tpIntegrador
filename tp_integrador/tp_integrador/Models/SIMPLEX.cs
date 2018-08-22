@@ -13,9 +13,9 @@ namespace tp_integrador.Models
 {
     public class SIMPLEX
     {
-		private readonly string API = "https://dds-simplexapi.herokuapp.com/consultar";
-		
+		private readonly string API = "https://dds-simplexapi.herokuapp.com/consultar";		
 		private List<Tuple<string, double, double>> datosRestricciones; //dispositivo,minimo,maximo
+
 		public SIMPLEX()
 		{
 			datosRestricciones = new List<Tuple<string, double, double>>();
@@ -29,7 +29,7 @@ namespace tp_integrador.Models
 			datosRestricciones.Add(Tuple.Create("Ventilador", 120d, 360d));
 		}
 				
-        public string[] Simplex(string postData)
+        public string[] GetSimplexData(string postData)
         {
 			HttpResponseMessage response = null;
 			using (var client = new HttpClient())

@@ -115,7 +115,7 @@ namespace tp_integrador.Controllers
 			Cliente uncliente = (Cliente)Session["Usuario"];
 
 			SIMPLEX sim = new SIMPLEX();
-			var respuesta = sim.Simplex(sim.CrearConsulta(uncliente.dispositivos));
+			var respuesta = sim.GetSimplexData(sim.CrearConsulta(uncliente.dispositivos));
 
 			var sb = new StringBuilder();
 			sb.AppendLine("<b>Consumo Optimo Para Sus Dispositivos: " + "</b><br/>");

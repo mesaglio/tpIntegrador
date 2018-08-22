@@ -17,10 +17,10 @@ namespace tp_integrador.Models
         private bool islogin { get; set; }
         public bool esadmin { get; set; }
 
-        public bool Esadmin() {return esadmin;}
-
+        public bool Esadmin() { return esadmin; }
         public Location ubicacion { get; set; }
-        public void agregarUbicacion(double latitude, double longitude) {
+
+        public void AgregarUbicacion(double latitude, double longitude) {
             ubicacion.Latitude = latitude;
             ubicacion.Longitude = longitude;
         }
