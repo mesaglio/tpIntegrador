@@ -168,6 +168,7 @@
     <Compile Include="Models\SIMPLEX.cs" />
     <Compile Include="Models\Transformador.cs" />
     <Compile Include="Models\Usuarios.cs" />
+    <Compile Include="Models\Zona.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

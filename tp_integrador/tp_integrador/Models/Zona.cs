@@ -9,23 +9,40 @@ namespace tp_integrador.Models
 {
     public class Zona
     {
-		public int id;
-		public Location location;
-		public string nombre;
-        public List<Transformador> transformadores;
-
-        public Zona(int id, string nomb, double latitude, double longitude)
+        public List<Transformador> transformadores { get; set; }
+        public CircleMarker Radar { get; set; }  //atributo
+        public Zona(String id, int radio, int latitude, int longitude)
         {
-            this.id = id;
-            nombre = nomb;
-            location = new Location(latitude, longitude);
+            Radar = new CircleMarker(id);
+            Radar.Radius = radio;
+            Radar.Point = new Location(latitude, longitude);
         }
 
-        public void AddTransformador(Transformador transformador)
+        public double distancia(Location l1, Location l2)
         {
-            transformadores.Add(transformador);
+            return Math.Sqrt(Math.Pow(l1.Latitude - l2.Latitude, 2) + Math.Pow(l1.Latitude - l2.Latitude, 2));
         }
 
-        
+        bool ClienteViveAqui(Cliente cliente)
+        {
+            return distancia(cliente.ubicacion, Radar.Point) < Radar.Radius;
+        }
+
+        public void AsignarTransformadorAlCliente(Cliente cliente)
+        {
+            Location l = cliente.ubicacion;
+            if (ClienteViveAqui(cliente))
+            {
+                Transformador masCercano = transformadores.First();
+
+                foreach (Transformador t in transformadores)
+                {
+                    if (distancia(t.location, l) <= distancia(masCercano.location, l))
+                        masCercano = t;
+                }
+                masCercano.clientes.Add(cliente);
+            }
+        }
+
     }
 }
