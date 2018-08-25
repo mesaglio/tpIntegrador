@@ -11,7 +11,7 @@ namespace tp_integrador.Models
     {
         public List<Transformador> transformadores { get; set; }
         public CircleMarker Radar { get; set; }  //atributo
-        public Zona(String id, int radio, int latitude, int longitude)
+        public Zona(String id, int radio, double latitude, double longitude)
         {
             Radar = new CircleMarker(id);
             Radar.Radius = radio;

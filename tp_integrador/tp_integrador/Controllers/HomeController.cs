@@ -76,7 +76,7 @@ namespace tp_integrador.Controllers
 
         public ActionResult Maps() {
 
-            Zona z = new Zona(1, "test", 36.81881, 10.16596);
+            Zona z = new Zona("test",40, 36.81881, 10.16596);
              return View( z.transformadores);
         }
     }
