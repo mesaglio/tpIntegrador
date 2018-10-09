@@ -9,14 +9,26 @@ namespace tp_integrador.Models
 {
     public class Zona
     {
-        public List<Transformador> transformadores { get; set; }
+        //objetos por defecto para elejir
+        
+
+        public String nombre { get; set; }
+
+        public List<Transformador> transformadores = new List<Transformador>();
         public CircleMarker Radar { get; set; }  //atributo
         public Zona(String id, int radio, double latitude, double longitude)
         {
             Radar = new CircleMarker(id);
             Radar.Radius = radio;
             Radar.Point = new Location(latitude, longitude);
+            nombre = id;
         }
+      
+        public void AgregarTransformador(Transformador unTransformador)
+        {
+            transformadores.Add(item: unTransformador);
+        }
+
 
         public double distancia(Location l1, Location l2)
         {
@@ -43,6 +55,20 @@ namespace tp_integrador.Models
                 masCercano.clientes.Add(cliente);
             }
         }
+
+        public void RellenarTransformadores() {
+            //AQUI ESTARIA BUENO LA LOGICA DE cargar los transformadores del json y guardarlos en la db 
+            var trans1 = new Transformador("Trans01", 4896, 7811);
+            var trans2 = new Transformador("Trans02", 4800, 7000);
+            var trans3 = new Transformador("Trans03", 4700, 7912);
+            var trans4 = new Transformador("Trans03", 4700, 7912);
+
+            this.AgregarTransformador(trans1);
+            this.AgregarTransformador(trans2);
+            this.AgregarTransformador(trans3);
+            this.AgregarTransformador(trans4);
+        }
+
 
     }
 }

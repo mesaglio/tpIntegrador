@@ -21,6 +21,18 @@ namespace tp_integrador.Controllers
 
 
         // GET: Cliente
+        public ActionResult CargarTransformadores()
+        {
+            
+            //LA zona tiene que venir junto con un json, esta zona la pongo por defecto
+            Zona model = new Zona("La Matanza",100,5478,7896);
+            model.RellenarTransformadores(); 
+            return View(model);
+
+
+        }
+   
+
         public ActionResult Dashboard()
         {
             if ((bool)Session["Admin"]) return PermisoDenegado();

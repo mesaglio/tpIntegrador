@@ -11,14 +11,17 @@ namespace tp_integrador.Models
     {
         public DAOUsuario DaoUser;
         public DAODispositivo DaoDis;
+        public Zona DaoZona;
+
 
         public CargarJson()
         {
             DaoUser = MvcApplication.Daobjeto;
         }
-              
-        public void LoadJson<T>(Stream path)
-        {
+
+
+            public void LoadJson<T>(Stream path)
+            {
             Type type = typeof(T);
             string json = (new StreamReader(path)).ReadToEnd();
             dynamic djson;            
