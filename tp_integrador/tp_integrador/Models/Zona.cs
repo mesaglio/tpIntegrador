@@ -26,8 +26,9 @@ namespace tp_integrador.Models
       
         public void AgregarTransformador(Transformador unTransformador)
         {
-            //to do if(distancia(unTransformador.location ,self.location) < Radar.radius)
-            transformadores.Add(unTransformador);
+            if (distancia(unTransformador.location, Radar.Point) < Radar.Radius)
+                transformadores.Add(unTransformador);
+            //else podemos mandar un exeption diciendo que el transformador no esta localizado en esta zona
         }
 
 
