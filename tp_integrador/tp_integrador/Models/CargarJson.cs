@@ -11,12 +11,13 @@ namespace tp_integrador.Models
     {
         public DAOUsuario DaoUser;
         public DAODispositivo DaoDis;
-        public Zona DaoZona;
+        public DAOzona DaoZona;
 
 
         public CargarJson()
         {
             DaoUser = MvcApplication.Daobjeto;
+            DaoZona = MvcApplication.GlobalZonas;
         }
 
 
@@ -32,7 +33,7 @@ namespace tp_integrador.Models
 
                 foreach (var t in djson)
                 {
-                    DaoZona.AgregarTransformador(t);
+                    DaoZona.AgregarTransformadorAZona(t);
                 }
             }
 

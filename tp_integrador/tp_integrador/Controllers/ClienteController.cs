@@ -57,11 +57,11 @@ namespace tp_integrador.Controllers
         public ActionResult CargarTransformadores()
         {
             if ((bool)Session["Admin"]) return PermisoDenegado();
-            //LA zona tiene que venir junto con un json, esta zona la pongo por defecto
-            Zona z = new Zona("La Matanza", 100, 5478, 7896);
+            
+           
            
           
-            return View("CargarTransformadores", model: z);
+            return View("CargarTransformadores");
 
         }
 

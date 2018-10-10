@@ -12,6 +12,7 @@ namespace tp_integrador
     public class MvcApplication : System.Web.HttpApplication
     {
         public static DAOUsuario Daobjeto;
+        public static DAOzona GlobalZonas;
 
         protected void Application_Start()
         {
@@ -20,6 +21,7 @@ namespace tp_integrador
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Daobjeto = new DAOUsuario();
+            GlobalZonas = new DAOzona();
 		}
     }
 
