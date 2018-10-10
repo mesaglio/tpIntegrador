@@ -273,6 +273,8 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Cliente\CargarTransformadores.cshtml" />
+    <Content Include="Views\Cliente\CargarTransformadoresPorDefecto.cshtml" />
+    <Content Include="Views\Cliente\LoadTransformadoresJson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

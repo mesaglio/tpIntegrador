@@ -2,25 +2,12 @@
 @model tp_integrador.Models.Zona
 
 
-<h2>Zona @Model.nombre</h2>
+<h2>View</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Localizacion</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var trans in Model.transformadores)
-        {
-            <tr>
-                <td>@trans.id</td>
-                <td>@trans.location</td>
-            </tr>
-        }
-    </tbody>
+@using (Html.BeginForm("LoadTransformadoresJson", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <button type="submit">Subir archivo</button>
+}
 
 
-</table>

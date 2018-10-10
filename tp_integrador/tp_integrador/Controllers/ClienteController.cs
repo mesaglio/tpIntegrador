@@ -21,16 +21,6 @@ namespace tp_integrador.Controllers
 
 
         // GET: Cliente
-        public ActionResult CargarTransformadores()
-        {
-            
-            //LA zona tiene que venir junto con un json, esta zona la pongo por defecto
-            Zona model = new Zona("La Matanza",100,5478,7896);
-            model.RellenarTransformadores(); 
-            return View(model);
-
-
-        }
    
 
         public ActionResult Dashboard()
@@ -51,6 +41,41 @@ namespace tp_integrador.Controllers
             Cliente user = (Cliente)Session["Usuario"];
 
             return View(user);
+        }
+
+        /*  public ActionResult CargarTransformadoresPorDefecto()
+          {
+              if ((bool)Session["Admin"]) return PermisoDenegado();
+              //LA zona tiene que venir junto con un json, esta zona la pongo por defecto
+              Zona model = new Zona("La Matanza", 100, 5478, 7896);
+              model.RellenarTransformadores();
+              return View(model);
+
+
+          }*/
+
+        public ActionResult CargarTransformadores()
+        {
+            if ((bool)Session["Admin"]) return PermisoDenegado();
+            //LA zona tiene que venir junto con un json, esta zona la pongo por defecto
+            Zona z = new Zona("La Matanza", 100, 5478, 7896);
+           
+          
+            return View("CargarTransformadores", model: z);
+
+        }
+
+        [HttpPost]
+        public ActionResult LoadTransformadoresJson(HttpPostedFileBase file)
+        {
+            if ((bool)Session["Admin"]) return PermisoDenegado();
+
+            if (file == null) return CargarTransformadores();
+
+            CargarJson cargar = new CargarJson();
+            cargar.LoadJson<Transformador>(file.InputStream);
+
+            return View();
         }
 
         public ActionResult CargarDispositivo()

@@ -26,7 +26,7 @@ namespace tp_integrador.Models
       
         public void AgregarTransformador(Transformador unTransformador)
         {
-            transformadores.Add(item: unTransformador);
+            transformadores.Add(unTransformador);
         }
 
 

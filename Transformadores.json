@@ -1,0 +1,20 @@
+[
+  {
+    "id": "trans01",
+    "latitude": 4562
+    "longitude": 4452
+    "CantidadEnergia": 0,
+    "EstaActivo": 1,
+	"clientes": {[]},
+    
+  },
+  {
+    "id": "trans01",
+    "latitude": 4562
+    "longitude": 4452
+    "CantidadEnergia": 0,
+    "EstaActivo": 1,
+	"clientes": {[]},
+    
+  }
+]

@@ -17,7 +17,7 @@ namespace tp_integrador.Models
         }
 
         public int CantidadEnergia { get; set; }
-        public List<Cliente> clientes { get; set; }
+        public List<Cliente> clientes = new List<Cliente>();
         public bool EstaActivo { get; set; }
 
         /*public int CalcularTotalEnergia() {

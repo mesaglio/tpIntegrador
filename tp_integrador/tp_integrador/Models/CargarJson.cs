@@ -24,7 +24,17 @@ namespace tp_integrador.Models
             {
             Type type = typeof(T);
             string json = (new StreamReader(path)).ReadToEnd();
-            dynamic djson;            
+            dynamic djson;
+
+            if (type == typeof(Transformador))
+            {
+                djson = JsonConvert.DeserializeObject<List<Transformador>>(json);
+
+                foreach (var t in djson)
+                {
+                    DaoZona.AgregarTransformador(t);
+                }
+            }
 
             if (type == typeof(Cliente))
             {
