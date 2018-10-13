@@ -156,6 +156,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Actuador.cs" />
     <Compile Include="Models\Administrador.cs" />
     <Compile Include="Models\CargarJson.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Models\EstadoGuardado.cs" />
     <Compile Include="Models\Estandar.cs" />
     <Compile Include="Models\Inteligente.cs" />
+    <Compile Include="Models\ORMClass.cs" />
     <Compile Include="Models\Regla.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\SIMPLEX.cs" />
@@ -240,7 +242,9 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tp_integrador.Models
 {
@@ -14,10 +16,20 @@ namespace tp_integrador.Models
         public string Documento_tipo { get; set; }
         public string Documento_numero { get; set; }
         public int Puntos { get; set; }
-        public List<Dispositivo> dispositivos;
+        //[ForeignKey("dispositivos")]
+       // public int iddispositivo { get; set; }
+        public List<Dispositivo> dispositivos { get; set; }
 
-        public List<Dispositivo> DispositivosInteligentes => dispositivos.FindAll(i => i.EsInteligente);
-        public List<Dispositivo> DispositivosEstandar => dispositivos.FindAll(i => !i.EsInteligente);
+        public List<Dispositivo> GetDispositivosInteligentes()
+        {
+            return dispositivos.FindAll(i => i.EsInteligente);
+        }
+
+        public List<Dispositivo> GetDispositivosEstandar()
+        {
+            return dispositivos.FindAll(i => !i.EsInteligente);
+        }
+
         //TODO: verificar si funciona estandar
 
 
