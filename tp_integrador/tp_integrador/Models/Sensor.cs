@@ -6,7 +6,9 @@ using System.Web;
 namespace tp_integrador.Models
 {
     public class Sensor
-    {
+    {   
+        [Key]
+        public int idSensor { get; set; }
         public string TipoSensor { get; set; }
         public int Magnitud { get => Magnitud; set { Magnitud = value; Notify(); } }
         private List<Regla> observador;

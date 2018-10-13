@@ -8,6 +8,7 @@ namespace tp_integrador.Models
 {
     public class Administrador : Usuarios
     {
+        [Key]
         public DateTime AltaSistema { get; set; }
         public DAOUsuario Dao;
    

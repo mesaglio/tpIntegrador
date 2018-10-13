@@ -7,6 +7,8 @@ namespace tp_integrador.Models
 {
     public class Actuador
     {
+        [Key]
+        public int idActor { get; set; }
         public string actuadorTipo { get; set; }
         List<Inteligente> dispositivos { get; set; }
 

@@ -7,6 +7,7 @@ namespace tp_integrador.Models
 {
     public class Cliente : Usuarios
     {
+        [Key]
         public string Telefono { get; set; }
         public DateTime AltaServicio { get; set; }
         public Categoria Categoria { get; set; }
