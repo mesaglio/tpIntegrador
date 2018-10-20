@@ -10,6 +10,7 @@ namespace tp_integrador.Models
         private byte Estado; // Apagado = 0; Encendido = 1; ModoAhorro = 2
         private DateTime fechaEstado;
         private DAOHistorialEstado daoEstado;
+        public virtual ICollection<Actuador> Actuadors { get; set; }
 
 
         public Inteligente(int id, int numero, string nombre, double consumo, byte estado, DateTime estadoFecha) : base(numero, nombre, consumo)
