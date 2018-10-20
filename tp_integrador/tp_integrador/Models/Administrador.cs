@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
+
 
 
 namespace tp_integrador.Models
 {
     public class Administrador : Usuarios
     {
+        
+        
         public DateTime AltaSistema { get; set; }
         public DAOUsuario Dao;
    
