@@ -10,7 +10,6 @@ namespace tp_integrador.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(tp_integrador.Models.DBSQLcontext context)

@@ -14,8 +14,6 @@ namespace tp_integrador.Models
         public double Consumo;
         public bool EsInteligente = false;
 
-        public virtual ICollection<Cliente> DispositivoCliente { get; set; }
-
         public Dispositivo(int numero, string nombre, double consumo)
         {
 			Numero = numero;
