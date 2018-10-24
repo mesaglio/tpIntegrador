@@ -128,7 +128,7 @@ namespace tp_integrador.Controllers
         public ActionResult EncenderDispositivo(string postdispositivo)
         {
             Cliente unclietne = (Cliente)Session["Usuario"];
-            foreach (Inteligente undispo in unclietne.GetDispositivosInteligentes())
+            foreach (Inteligente undispo in unclietne.DispositivosInteligentes)
             { if (undispo.Nombre == postdispositivo) undispo.Encender(); }
 
             return View("Dashboard", model: unclietne);
@@ -138,7 +138,7 @@ namespace tp_integrador.Controllers
         public ActionResult ApagarDispositivo(string postdispositivo)
         {
             Cliente unclietne = (Cliente)Session["Usuario"];
-            foreach (Inteligente undispo in unclietne.GetDispositivosInteligentes())
+            foreach (Inteligente undispo in unclietne.DispositivosInteligentes)
             { if (undispo.Nombre == postdispositivo) undispo.Apagar(); }
 
             return View("Dashboard", model: unclietne);

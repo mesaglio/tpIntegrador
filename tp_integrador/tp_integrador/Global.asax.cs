@@ -22,7 +22,6 @@ namespace tp_integrador
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Daobjeto = new DAOUsuario();
             GlobalZonas = new DAOzona();
-           
 		}
     }
 

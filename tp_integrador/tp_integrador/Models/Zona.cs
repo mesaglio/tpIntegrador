@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Gmap.net;//localizacion
@@ -12,7 +11,7 @@ namespace tp_integrador.Models
     {
         //objetos por defecto para elejir
         
-            [Key]
+
         public String nombre { get; set; }
 
         public List<Transformador> transformadores = new List<Transformador>();
