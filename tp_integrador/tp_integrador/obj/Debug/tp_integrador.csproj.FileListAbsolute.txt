@@ -267,3 +267,13 @@ C:\Users\GIANPIER\Desktop\TP diseño\tpIntegrador\tp_integrador\tp_integrador\bi
 C:\Users\GIANPIER\Desktop\TP diseño\tpIntegrador\tp_integrador\tp_integrador\bin\EntityFramework.SqlServer.dll
 C:\Users\GIANPIER\Desktop\TP diseño\tpIntegrador\tp_integrador\tp_integrador\bin\EntityFramework.xml
 C:\Users\GIANPIER\Desktop\TP diseño\tpIntegrador\tp_integrador\tp_integrador\bin\EntityFramework.SqlServer.xml
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\AjaxMin.dll
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\EntityFramework.dll
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\EntityFramework.SqlServer.dll
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\Gmap.net.dll
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\EntityFramework.xml
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\EntityFramework.SqlServer.xml
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\Gmap.net.pdb
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\Microsoft.AI.PerfCounterCollector.xml
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\GitRepos\tpintegrador\tp_integrador\tp_integrador\bin\Microsoft.ApplicationInsights.xml

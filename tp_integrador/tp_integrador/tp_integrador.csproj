@@ -169,10 +169,13 @@
     <Compile Include="Models\Dispositivo.cs" />
     <Compile Include="Models\EstadoGuardado.cs" />
     <Compile Include="Models\Estandar.cs" />
+    <Compile Include="Models\HashThis.cs" />
     <Compile Include="Models\Inteligente.cs" />
+    <Compile Include="Models\ORM.cs" />
     <Compile Include="Models\Regla.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\SIMPLEX.cs" />
+    <Compile Include="Models\TemplateDispositivo.cs" />
     <Compile Include="Models\Transformador.cs" />
     <Compile Include="Models\Usuarios.cs" />
     <Compile Include="Models\Zona.cs" />

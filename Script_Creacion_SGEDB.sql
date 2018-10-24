@@ -218,3 +218,10 @@ CREATE TABLE SGE.ActuadorPorRegla (
   FOREIGN KEY (apr_idRegla) REFERENCES SGE.Regla (regla_idRegla),
   FOREIGN KEY (apr_idActuador) REFERENCES SGE.Actuador (actua_idActuador))
 GO
+
+-- -----------------------------------------------------
+-- Insert
+-- -----------------------------------------------------
+
+INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8')
+INSERT INTO SGE.Administrador VALUES (1, CONVERT(datetime, '2018-9-15 18:20:23:000', 121))

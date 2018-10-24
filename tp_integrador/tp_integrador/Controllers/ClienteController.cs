@@ -113,7 +113,7 @@ namespace tp_integrador.Controllers
             else
             {
                 DAO_t_dispositivostemplate a = new DAO_t_dispositivostemplate();
-                templateDisp dispositivo = a.Searchtemplatebyid(disp);
+                TemplateDispositivo dispositivo = a.Searchtemplatebyid(disp);
                 Cliente unclietne = (Cliente)Session["Usuario"];
                 if (dispositivo.inteligente == "si") { unclietne.NuevoDispositivoInteligente(dispositivo.getNombreEntero(), dispositivo.consumo); }
                 else
