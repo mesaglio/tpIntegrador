@@ -18,7 +18,7 @@ namespace tp_integrador.Models
         public DAOUsuario()
         {
             Listusuarios();
-            Categoria categoria = new Categoria("R1", 150, 18.76m, 0.644m);
+            Categoria categoria = new Categoria("R1", 0, 150, 18.76m, 0.644m);
             Cliente u = new Cliente(31,"nicolas","perez","calle cualquiera 123", "nico", "1234", "44112233",DateTime.Now.AddYears(-20).AddMonths(-3), categoria, "DNI", "12345678", null);
             listusuarios.Add(u);
             Administrador a = new Administrador(1, "pepe", "lado", "av algo 1234", "pepe", "1234", DateTime.Now.AddYears(-2).AddMonths(-3));

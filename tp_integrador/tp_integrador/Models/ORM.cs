@@ -12,7 +12,10 @@ namespace tp_integrador.Models
 		private static ORM _instancia;
 		private string connectionString;
 		
-		private ORM() { }
+		private ORM()
+		{
+			connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SGE"].ConnectionString;
+		}
 
 		public static ORM Instancia
 		{
@@ -50,6 +53,7 @@ namespace tp_integrador.Models
 			username = userData["usua_username"].ToString();
 			password = userData["usua_password"].ToString();
 			fechaAlta = DateTime.Parse(data.Rows[0]["admin_fechaAlta"].ToString());
+
 			return new Administrador(idAdmin, nombre, apellido, domicilio, username, password, fechaAlta);
 		}
 
@@ -105,45 +109,61 @@ namespace tp_integrador.Models
 
 		public Categoria GetCategoria(string idCategoria)
 		{
-			//Hacer
-			return null;
+			var query = "SELECT * FROM {0} WHERE {1} = '{2}'";
+			var data = Query(String.Format(query, "SGE.Categoria", "categ_idCategoria", idCategoria)).Tables[0];
+			if (data.Rows.Count == 0) return null;
+						
+			byte cmin, cmax;
+			decimal carfijo, carvar;
+
+			cmin = Byte.Parse(data.Rows[0]["categ_consumo_min"].ToString());
+			cmax = Byte.Parse(data.Rows[0]["categ_consumo_max"].ToString());
+			carfijo = Decimal.Parse(data.Rows[0]["categ_cargoFijo"].ToString());
+			carvar = Decimal.Parse(data.Rows[0]["categ_cargoVariable"].ToString());
+
+			return new Categoria(idCategoria, cmin, cmax, carfijo, carvar);
 		}
 
 		public Transformador GetTransformador(string idTransformador)
 		{
-			//Hacer
+			//Hacer			
 			return null;
 		}
 				
-		private bool HasSQLInyection(string linea)
-		{
-			//Hacer
-			return false;
-		}
-
 		public int GetIDUsuarioIfExists(string username, string password)
-		{
-			if (HasSQLInyection(username) || HasSQLInyection(password)) return -2;
-			password = HashThis.Instancia.GetHash(password);
+		{			
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+				var query = "SELECT usua_idUsuario FROM SGE.Usuario WHERE usua_username = @user AND usua_password = @pass";
+				password = HashThis.Instancia.GetHash(password);
 
-			var query = "SELECT usua_idUsuario FROM SGE.Usuario WHERE usua_username = '{0}' AND usua_password = '{1}'";
-			var data = Query(String.Format(query, username, password)).Tables[0];
-			if (data.Rows.Count == 0) return -1;
+				using (SqlCommand command = new SqlCommand(query, connection))
+				{					
+					command.Parameters.Add(new SqlParameter("user", username));
+					command.Parameters.Add(new SqlParameter("pass", password));
 
-			return Int32.Parse(data.Rows[0][0].ToString());
+					SqlDataReader reader = command.ExecuteReader();
+					if (reader.HasRows) {
+						reader.Read();
+						return reader.GetInt32(0);
+					}
+					
+				}
+			}
 
+			return -1;
 		}
 
 		public DataSet Query(string q)
-		{
-			connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["SGE"].ConnectionString;
+		{			
 			var conn = new SqlConnection();
 			conn.ConnectionString = connectionString;
-			var dataAdapter = new SqlDataAdapter(q, conn);
+			var dataAdapter = new SqlDataAdapter(q, conn);			
 			var commandBuilder = new SqlCommandBuilder(dataAdapter);
 			var ds = new DataSet();
 			dataAdapter.Fill(ds);
-			return ds;
+			return ds;					
 		}
 
 
