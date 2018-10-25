@@ -102,13 +102,13 @@ CREATE TABLE SGE.Cliente (
   clie_fechaAlta DATETIME NOT NULL,
   clie_doc_numero VARCHAR(255) NOT NULL,
   clie_doc_tipo VARCHAR(100) NOT NULL,
-  clie_Categoria INT NOT NULL,
+  clie_categoria INT NOT NULL,
   clie_puntos INT NOT NULL,
   clie_transformador INT NOT NULL,
   PRIMARY KEY (clie_idUsuario),
   FOREIGN KEY (clie_idUsuario) REFERENCES SGE.Usuario (usua_idUsuario),
   FOREIGN KEY (clie_transformador) REFERENCES SGE.Transformador (trans_idTransformador),
-  FOREIGN KEY (clie_Categoria) REFERENCES SGE.Categoria (categ_idCategoria))
+  FOREIGN KEY (clie_categoria) REFERENCES SGE.Categoria (categ_idCategoria))
 GO
 
 -- -----------------------------------------------------
@@ -223,5 +223,7 @@ GO
 -- Insert
 -- -----------------------------------------------------
 
-INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8')
+INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8') 
+-- username: pepe 
+-- password: pepe123
 INSERT INTO SGE.Administrador VALUES (1, CONVERT(datetime, '2018-9-15 18:20:23:000', 121))

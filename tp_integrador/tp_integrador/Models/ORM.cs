@@ -55,12 +55,38 @@ namespace tp_integrador.Models
 
 		private Cliente GetCliente(int idCliente, DataRow userData)
 		{
-			return null;
+			var query = "SELECT * FROM {0} WHERE {1} = '{2}'";
+			var data = Query(String.Format(query, "SGE.Cliente", "clie_idUsuario", idCliente)).Tables[0];
+			if (data.Rows.Count == 0) return null;
+
+			var dispositivos = GetDispositivos(idCliente);
+
+			string nombre, apellido, domicilio, username, password, categoria, transformador;
+			string telefono, docNum, docTipo;
+			int puntos;
+			DateTime fechaAlta;
+
+			nombre = userData["usua_nombre"].ToString();
+			apellido = userData["usua_apellido"].ToString();
+			domicilio = userData["usua_domicilio"].ToString();
+			username = userData["usua_username"].ToString();
+			password = userData["usua_password"].ToString();
+			fechaAlta = DateTime.Parse(data.Rows[0]["clie_fechaAlta"].ToString());
+
+			telefono = data.Rows[0]["clie_telefono"].ToString();
+			docNum = data.Rows[0]["clie_doc_numero"].ToString();
+			docTipo = data.Rows[0]["clie_doc_tipo"].ToString();
+			categoria = data.Rows[0]["clie_categoria"].ToString();		
+			transformador = data.Rows[0]["clie_transformador"].ToString();
+			puntos = Int32.Parse(data.Rows[0]["clie_puntos"].ToString());
+
+			return new Cliente(idCliente, nombre, apellido, domicilio, username, password, telefono, fechaAlta, GetCategoria(categoria), docTipo, docNum, GetTransformador(transformador), dispositivos);
 		}
 
-		public dynamic GetDispositivos(int idCliente)
+		public List<Dispositivo> GetDispositivos(int idCliente)
 		{
-			return null;
+			//Hacer
+			return new List<Dispositivo>();
 		}
 
 		public void GuardarDispositivo(Dispositivo disp)
@@ -75,6 +101,18 @@ namespace tp_integrador.Models
 		private void GuardarCliente(Cliente cliente)
 		{
 			//Hacer
+		}
+
+		public Categoria GetCategoria(string idCategoria)
+		{
+			//Hacer
+			return null;
+		}
+
+		public Transformador GetTransformador(string idTransformador)
+		{
+			//Hacer
+			return null;
 		}
 				
 		private bool HasSQLInyection(string linea)
