@@ -86,7 +86,7 @@ GO
 -- -----------------------------------------------------
 
 CREATE TABLE SGE.Categoria (
-  categ_idCategoria INT NOT NULL,
+  categ_idCategoria VARCHAR(3) NOT NULL,
   categ_consumo_min SMALLINT NOT NULL,
   categ_consumo_max SMALLINT NOT NULL,
   categ_cargoFijo DECIMAL(6,3) NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE SGE.Cliente (
   clie_fechaAlta DATETIME NOT NULL,
   clie_doc_numero VARCHAR(255) NOT NULL,
   clie_doc_tipo VARCHAR(100) NOT NULL,
-  clie_categoria INT NOT NULL,
+  clie_categoria VARCHAR(3) NOT NULL,
   clie_puntos INT NOT NULL,
   clie_transformador INT NOT NULL,
   PRIMARY KEY (clie_idUsuario),

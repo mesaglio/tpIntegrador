@@ -8,16 +8,31 @@ namespace tp_integrador.Models
 {
     public class DAOzona
     {
-        public List<Zona> zonas { get; set; }
+		private static DAOzona instancia;
+		public List<Zona> zonas { get; set; }
 
 		public DAOzona()
         {
 			//TOOD: WIP 
             zonas = new List<Zona>();
-            zonas.Add(new Zona(1,100, 4586, 4452, new List<Transformador>()));
+            //zonas.Add(new Zona(1,100, 4586, 4452, new List<Transformador>()));
         }
 
-        public void Agregarzona(Zona z)
+		public static DAOzona Instancia
+		{
+			get
+			{
+				if (instancia == null) instancia = new DAOzona();
+				return instancia;
+			}
+		}
+
+		public void InitialLoad()
+		{
+			zonas = ORM.Instancia.GetAllZonas();
+		}
+		
+		public void Agregarzona(Zona z)
         {
             zonas.Add(z);
         }
@@ -33,6 +48,12 @@ namespace tp_integrador.Models
             }
 
         }
+
+		public int AsignarTransformador(Cliente unCliente)
+		{
+			//TOOD: WIP
+			return 0;
+		}
 
 
 

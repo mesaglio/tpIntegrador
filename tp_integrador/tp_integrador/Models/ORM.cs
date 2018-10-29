@@ -33,7 +33,7 @@ namespace tp_integrador.Models
 			if (type == typeof(Inteligente) || type == typeof(Estandar)) GuardarDispositivo(unaClase);
 			//if (type == typeof(Transformador)) GuardarTransformador(unaClase);
 			//if (type == typeof(Zona)) GuardarZona(unaClase);
-			//if (type == typeof(Categoria)) GuardarCategoria(unaClase);
+			if (type == typeof(Categoria)) GuardarCategoria(unaClase);
 			//if (type == typeof(Sensor)) GuardarSensor(unaClase);
 			//if (type == typeof(Actuador)) GuardarActuador(unaClase);
 			//if (type == typeof(Regla)) GuardarRegla(unaClase);
@@ -115,21 +115,61 @@ namespace tp_integrador.Models
 			return new Cliente(idCliente, nombre, apellido, domicilio, username, password, telefono, fechaAlta, GetCategoria(categoria), docTipo, docNum, dispositivos);
 		}
 
+		private List<int> GetClientesIDOfTransformador(int idTransformador)
+		{
+			var lista = new List<int>();
+
+			var query = "SELECT clie_idUsuario FROM SGE.Cliente WHERE clie_transformador = '{0}'";
+			var data = Query(String.Format(query, idTransformador)).Tables[0];
+
+			foreach (DataRow row in data.Rows)
+			{
+				lista.Add(Int32.Parse(row["clie_idUsuario"].ToString()));
+			}
+
+			return lista;
+		}
+
 		// ------------------------------------ INSERTS ------------------------------------
 
 		private void GuardarUsuario(dynamic unUsuario)
 		{
-			//Hacer
+			var type = unUsuario.GetType();
+			if (type == typeof(Administrador)) GuardarAdministrador(unUsuario);
+			if (type == typeof(Cliente)) GuardarCliente(unUsuario);
 		}
 
 		private void GuardarAdministrador(Administrador admin)
 		{
-			//Hacer
+			if (admin.idUsuario != 0) return;
+
+			var query = "INSERT INTO SGE.Usuario ('{0}', '{1}', '{2}', '{3}', '{4}')";
+			Query(String.Format(query, admin.nombre, admin.apellido, admin.domicilio, admin.usuario, HashThis.Instancia.GetHash(admin.password)));
+
+			var idAsignado = GetIDUsuarioIfExists(admin.usuario, admin.password);
+			if (idAsignado == -1) return;
+
+			query = "INSERT INTO SGE.Administrador ('{}', '{}')";
+			Query(String.Format(query, idAsignado, admin.AltaSistema));
 		}
+
 		private void GuardarCliente(Cliente cliente)
 		{
-			//Hacer
+			if (cliente.idUsuario != 0) return;
+
+			var query = "INSERT INTO SGE.Usuario ('{0}', '{1}', '{2}', '{3}', '{4}')";
+			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.usuario, HashThis.Instancia.GetHash(cliente.password)));
+
+			cliente.idUsuario = GetIDUsuarioIfExists(cliente.usuario, cliente.password);
+			if (cliente.idUsuario == -1) return;
+
+			var idTransformador = DAOzona.Instancia.AsignarTransformador(cliente);			
+			
+			query = "INSERT INTO SGE.Cliente ('{0}', '{1}', '{2}', '{3}', '{3}', '{5}', '{6}', '{7}')";
+			Query(String.Format(query, cliente.idUsuario, cliente.Telefono, cliente.AltaServicio, cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, idTransformador));
 		}
+
+		// ------------------------------------ UPDATES ------------------------------------
 
 		#endregion
 
@@ -155,20 +195,20 @@ namespace tp_integrador.Models
 			return GetDispositivosFromData(data);
 		}
 
-		public List<Dispositivo> GetDispositivosFromData(DataTable data)
+		private List<Dispositivo> GetDispositivosFromData(DataTable data)
 		{
 			var lista = new List<Dispositivo>();
 
 			foreach (DataRow row in data.Rows)
 			{
-				if (row["disp_inteligente"].ToString() == "True") lista.Add(GetInteligente(row));
-				else lista.Add(GetEstandar(row));
+				if (row["disp_inteligente"].ToString() == "True") lista.Add(GetInteligenteFromData(row));
+				else lista.Add(GetEstandarFromData(row));
 			}
 
 			return lista;
 		}
 
-		public Inteligente GetInteligente(DataRow row)
+		private Inteligente GetInteligenteFromData(DataRow row)
 		{
 			int idD, idC, numero;
 			byte estado;
@@ -188,7 +228,7 @@ namespace tp_integrador.Models
 			return new Inteligente(idD, idC, numero, nombre + " " + concreto, consumo, estado, fechaEstado);
 		}
 
-		public Estandar GetEstandar(DataRow row)
+		private Estandar GetEstandarFromData(DataRow row)
 		{
 			int idD, idC, numero;
 			byte usoDiario;
@@ -217,6 +257,8 @@ namespace tp_integrador.Models
 
 		#region Categoria
 
+		// ------------------------------------ SELECTS ------------------------------------
+
 		public Categoria GetCategoria(string idCategoria)
 		{
 			var query = "SELECT * FROM {0} WHERE {1} = '{2}'";
@@ -234,6 +276,30 @@ namespace tp_integrador.Models
 			return new Categoria(idCategoria, cmin, cmax, carfijo, carvar);
 		}
 
+		// ------------------------------------ INSERTS ------------------------------------
+
+		private void GuardarCategoria(Categoria categoria)
+		{
+			var query = "SELECT * FROM SGE.Categoria WHERE categ_idCategoria = '{0}'";
+			var data = Query(String.Format(query, categoria.IdCategoria)).Tables[0];
+			if (data.Rows.Count != 0) return;
+
+			query = "INSERT INTO SGE.Categoria ('{0}', '{1}', '{2}', '{3}', '{4}')";
+			Query(String.Format(query, categoria.IdCategoria, categoria.ConsumoMin, categoria.ConsumoMax, categoria.CargoFijo, categoria.CargoVariable));
+		}
+
+		// ------------------------------------ UPDATES ------------------------------------
+
+		private void ActualizarCategoria(Categoria categoria)
+		{
+			var query = "SELECT * FROM SGE.Categoria WHERE categ_idCategoria = '{0}'";
+			var data = Query(String.Format(query, categoria.IdCategoria)).Tables[0];
+			if (data.Rows.Count == 0) return;
+			
+			query = "UPDATE SGE.Categoria SET categ_consumo_min = '{0}', categ_consumo_max = '{1}', categ_cargoFijo = '{2}', categ_cargoVariable = '{3}' WHERE categ_idCategoria = '{4}'";
+			Query(String.Format(query, categoria.ConsumoMin, categoria.ConsumoMax, categoria.CargoFijo, categoria.CargoVariable, categoria.IdCategoria));
+		}
+
 		#endregion
 
 		#region Transformador
@@ -243,6 +309,41 @@ namespace tp_integrador.Models
 			//Hacer
 			return null;
 		}
+
+		private Transformador GetTransformadorFromData(DataRow row)
+		{
+			int id, zona;
+			double latitud, longitud;
+			bool activo;
+
+			id = Int32.Parse(row["trans_idTransformador"].ToString());
+			if (row["trans_activo"].ToString() == "True") activo = true;
+			else activo = false;
+			latitud = Double.Parse(row["trans_latitud"].ToString());
+			longitud = Double.Parse(row["trans_longitud"].ToString());
+			zona = id = Int32.Parse(row["trans_zona"].ToString());
+
+			var clientes = GetClientesIDOfTransformador(id);
+
+			return new Transformador(id, latitud, longitud, activo, clientes);
+		}
+
+		public List<Transformador> GetTransformadores(int idZona)
+		{
+			var lista = new List<Transformador>();
+
+			var query = "SELECT * FROM SGE.Transformador WHERE trans_zona = '{0}'";
+			var data = Query(String.Format(query, idZona)).Tables[0];
+			if (data.Rows.Count == 0) return null;
+
+			foreach (DataRow row in data.Rows)
+			{
+				lista.Add(GetTransformadorFromData(row));
+			}
+
+			return lista;
+		}
+
 		#endregion
 
 		#region Zona
@@ -255,17 +356,42 @@ namespace tp_integrador.Models
 
 		public List<Zona> GetAllZonas()
 		{
-			//Hacer
-			return null;
+			var query = "SELECT * FROM SGE.Zona";
+			var data = Query(query).Tables[0];
+			if (data.Rows.Count == 0) return null;
+
+			return GetZonasFromData(data);
 		}
 
+		private List<Zona> GetZonasFromData(DataTable data)
+		{
+			var lista = new List<Zona>();
+
+			int id, radio;
+			double latitud, longitud;
+			
+			foreach (DataRow row in data.Rows)
+			{
+				id = Int32.Parse(row["zona_idZona"].ToString());
+				latitud = Double.Parse(row["zona_latitud"].ToString());
+				longitud = Double.Parse(row["zona_longitud"].ToString());
+				radio = Int32.Parse(row["zona_radio"].ToString());
+
+				var transformadores = GetTransformadores(id);
+
+				lista.Add(new Zona(id, radio, latitud, longitud, transformadores));
+			}
+
+			return lista;
+		}
+		
 		#endregion
 
 		#region Sensor
 		#endregion
+
 		#region Regla
-		#endregion
-		
+		#endregion		
 
 		public int GetIDUsuarioIfExists(string username, string password)
 		{			
@@ -284,8 +410,7 @@ namespace tp_integrador.Models
 					if (reader.HasRows) {
 						reader.Read();
 						return reader.GetInt32(0);
-					}
-					
+					}					
 				}
 			}
 

@@ -14,11 +14,12 @@ namespace tp_integrador.Models
 
 		public List<int> ClientesID { get; set; }
 
-        public Transformador(int _id, int latitude, int longitude, bool estado, int energia)
+        public Transformador(int _id, double latitude, double longitude, bool estado, List<int> idClientes)
         {
             id = _id;
             location = new Location(latitude, longitude);
-			EstaActivo = estado;			
+			EstaActivo = estado;
+			ClientesID = idClientes;
         }
 
 		public int CantidadEnergia()

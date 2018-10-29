@@ -20,7 +20,6 @@ namespace tp_integrador.Models
         public List<Dispositivo> DispositivosEstandar => dispositivos.FindAll(i => !i.EsInteligente);
 		//TODO: verificar si funciona estandar
 
-
 		public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n, List<Dispositivo> disp = null) : base(id, name, lastname, home, user, clave)
         {
             Telefono = phone;
