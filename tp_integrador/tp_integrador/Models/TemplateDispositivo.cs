@@ -7,13 +7,13 @@ namespace tp_integrador.Models
 {
 	public class TemplateDispositivo
 	{
-		public int ID;
-		public string Dispositivo;
-		public string concreto;
-		public string inteligente;
-		public string bajoconsumo;
-		public double consumo;
-		public string getNombreEntero() { return Dispositivo + " " + concreto; }
+		public int ID { get; set; }
+		public string Dispositivo { get; set; }
+		public string concreto { get; set; }
+		public string inteligente { get; set; }
+		public string bajoconsumo { get; set; }
+		public double consumo { get; set; }
+				
 		public TemplateDispositivo(int ID, string dispositivo, string concreto, string inteligente, string bajoconsumo, double consumo)
 		{
 			Dispositivo = dispositivo;
@@ -23,5 +23,7 @@ namespace tp_integrador.Models
 			this.bajoconsumo = bajoconsumo;
 			this.consumo = consumo;
 		}
+
+		public string getNombreEntero() => Dispositivo + " " + concreto;
 	}
 }

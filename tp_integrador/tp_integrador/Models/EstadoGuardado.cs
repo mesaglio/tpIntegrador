@@ -8,15 +8,17 @@ namespace tp_integrador.Models
     public class EstadoGuardado
     {
         public int Usuario { get; set; }
-        public string Dispositivo { get; set; }
+        public int Dispositivo { get; set; }
+		public int DispNumero { get; set; }
         public byte Estado { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
 
-        public EstadoGuardado(int user, string dispositivo, byte estado, DateTime desde, DateTime hasta)
+		public EstadoGuardado(int user, int dispositivo, int numero, byte estado, DateTime desde, DateTime hasta)
         {
             Usuario = user;
             Dispositivo = dispositivo;
+			DispNumero = numero;
             Estado = estado;
             FechaInicio = desde;
             FechaFin = hasta;

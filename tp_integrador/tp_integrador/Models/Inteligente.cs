@@ -12,14 +12,16 @@ namespace tp_integrador.Models
         private DAOHistorialEstado daoEstado;
 
 
-        public Inteligente(int id, int numero, string nombre, double consumo, byte estado, DateTime estadoFecha) : base(numero, nombre, consumo)
+        public Inteligente(int idDisp, int idClie, int numero, string nombre, double consumo, byte estado, DateTime estadoFecha) : base(idDisp, idClie, numero, nombre, consumo)
         {
+			IdDispositivo = idDisp;
+			IdCliente = idClie;
 			Numero = numero;
             Nombre = nombre;
             Consumo = consumo;
             Estado = estado;
             fechaEstado = estadoFecha;
-            daoEstado = new DAOHistorialEstado(id, Nombre);
+            daoEstado = new DAOHistorialEstado(idClie, idDisp, numero);
             EsInteligente = true;
         }
 
@@ -48,9 +50,7 @@ namespace tp_integrador.Models
             Estado = nuevoEstado;
             fechaEstado = nuevaFecha;
         }      
-
-
-
+		
         public bool Encendido()
         {
             return (Estado != 0);

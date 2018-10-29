@@ -61,8 +61,9 @@ GO
 
 CREATE TABLE SGE.Zona (
   zona_idZona INT IDENTITY,
-  zona_latitud DECIMAL(9,7),
-  zona_longitud DECIMAL(10,7),
+  zona_latitud DECIMAL(9,7) NOT NULL,
+  zona_longitud DECIMAL(10,7) NOT NULL,
+  zona_radio INT NOT NULL,
   PRIMARY KEY (zona_idZona))
 GO
 
@@ -73,8 +74,9 @@ GO
 CREATE TABLE SGE.Transformador (
   trans_idTransformador INT IDENTITY,
   trans_activo BIT NOT NULL,
-  trans_radar VARCHAR(45),
-  trans_zona INT,
+  trans_latitud DECIMAL(9,7) NOT NULL,
+  trans_longitud DECIMAL(10,7) NOT NULL,  
+  trans_zona INT NOT NULL,
   PRIMARY KEY (trans_idTransformador),
   FOREIGN KEY (trans_zona) REFERENCES SGE.Zona (zona_idZona))
 GO
@@ -167,8 +169,8 @@ GO
 CREATE TABLE SGE.DispositivoPorCliente (
   dpc_idUsuario INT NOT NULL,
   dpc_idDispositivo INT NOT NULL,
-  dpc_numero INT IDENTITY,
-  dpc_Estado TINYINT NOT NULL,
+  dpc_numero INT NOT NULL,
+  dpc_estado TINYINT NOT NULL,
   dpc_fechaEstado DATETIME NOT NULL,
   dpc_usoDiario SMALLINT NOT NULL,
   PRIMARY KEY (dpc_idUsuario, dpc_idDispositivo, dpc_numero),
@@ -186,7 +188,7 @@ CREATE TABLE SGE.EstadoDispositivo (
   edisp_numero INT NOT NULL,
   edisp_fechaInicio DATETIME NOT NULL,
   edisp_fechaFin DATETIME NOT NULL,
-  edisp_Estado TINYINT NOT NULL,
+  edisp_estado TINYINT NOT NULL,
   PRIMARY KEY (edisp_idUsuario, edisp_idDispositivo , edisp_numero, edisp_fechaInicio, edisp_fechaFin),
   FOREIGN KEY (edisp_idUsuario , edisp_idDispositivo , edisp_numero) 
   REFERENCES SGE.DispositivoPorCliente (dpc_idUsuario , dpc_idDispositivo , dpc_numero))

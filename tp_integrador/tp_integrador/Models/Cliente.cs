@@ -12,8 +12,7 @@ namespace tp_integrador.Models
         public Categoria Categoria { get; set; }
         public string Documento_tipo { get; set; }
         public string Documento_numero { get; set; }
-        public int Puntos { get; set; }
-		public Transformador Transformador { get; set; }
+        public int Puntos { get; set; }		
 
         public List<Dispositivo> dispositivos;
 
@@ -22,18 +21,16 @@ namespace tp_integrador.Models
 		//TODO: verificar si funciona estandar
 
 
-		public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n, Transformador trans, List<Dispositivo> disp = null) : base(id, name, lastname, home, user, clave)
+		public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n, List<Dispositivo> disp = null) : base(id, name, lastname, home, user, clave)
         {
             Telefono = phone;
             Categoria = categ;
             Documento_tipo = doc_t;
             Documento_numero = doc_n;
-            AltaServicio = alta;
-			Transformador = Transformador;
+            AltaServicio = alta;			
             dispositivos = new List<Dispositivo>();
 			if (disp != null) dispositivos = disp;
         }
-
 
         public int CantDispositivos()
         {
@@ -90,23 +87,26 @@ namespace tp_integrador.Models
         {
             aparato.SetUsoDiario(horas);
         }
-
+		
         public void NuevoDispositivoInteligente(string nombre, double consumo)
         {
-            dispositivos.Add(new Inteligente(idUsuario, dispositivos.Count()+1, nombre, consumo, 0, DateTime.Now));
+			//TODO: WIP
+            //dispositivos.Add(new Inteligente(idUsuario, dispositivos.Count()+1, nombre, consumo, 0, DateTime.Now));
             Puntos += 15;
         }
-
+		
         public void NuevoDispositivoEstandar(string nombre, double consumo, byte usoPromedio)
         {
-            dispositivos.Add(new Estandar(dispositivos.Count+1, nombre, consumo, usoPromedio));
+			//TODO: WIP
+            //dispositivos.Add(new Estandar(dispositivos.Count+1, nombre, consumo, usoPromedio));
         }
 
         public void ConvertirAInteligente(Estandar aparato)
         {
-            Inteligente adaptado = new Inteligente(idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, 0, DateTime.Now);
-            dispositivos.Remove(aparato);
-            dispositivos.Add(adaptado);
+			//TOOD: WIP
+            //Inteligente adaptado = new Inteligente(idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, 0, DateTime.Now);
+            //dispositivos.Remove(aparato);
+            //dispositivos.Add(adaptado);
             Puntos += 10;
         }
 

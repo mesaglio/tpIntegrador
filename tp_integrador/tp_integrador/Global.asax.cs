@@ -21,7 +21,8 @@ namespace tp_integrador
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Daobjeto = new DAOUsuario();
-            GlobalZonas = new DAOzona();
+			GlobalZonas = new DAOzona();
+			DAODispositivo.Instancia.InitialLoad();
 		}
     }
 

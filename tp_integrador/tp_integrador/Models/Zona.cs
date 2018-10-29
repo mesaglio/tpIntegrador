@@ -2,42 +2,48 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Gmap.net;//localizacion
+using Gmap.net;
 using Gmap.net.Overlays;
 
 namespace tp_integrador.Models
 {
     public class Zona
-    {
-        //objetos por defecto para elejir
-        
+    {      
+        public int idZona { get; set; }
+		public int Radio { get; set; }
+		public double Latitude { get; set; }
+		public double Longitude { get; set; }
+        public CircleMarker Radar { get; set; }
 
-        public String nombre { get; set; }
+		public List<Transformador> Transformadores { get; set; }
 
-        public List<Transformador> transformadores = new List<Transformador>();
-        public CircleMarker Radar { get; set; }  //atributo
-        public Zona(String id, int radio, double latitude, double longitude)
+		public Zona(int id, int radio, double latitude, double longitude, List<Transformador> trans)
         {
-            Radar = new CircleMarker(id);
+			idZona = id;
+			Radio = radio;
+			Latitude = latitude;
+			Longitude = longitude;
+
+            Radar = new CircleMarker(id.ToString());
             Radar.Radius = radio;
             Radar.Point = new Location(latitude, longitude);
-            nombre = id;
+			Transformadores = trans;
         }
       
         public void AgregarTransformador(Transformador unTransformador)
         {
             if (distancia(unTransformador.location, Radar.Point) < Radar.Radius)
-                transformadores.Add(unTransformador);
+                Transformadores.Add(unTransformador);
             //else podemos mandar un exeption diciendo que el transformador no esta localizado en esta zona
         }
 
 
         public double distancia(Location l1, Location l2)
-        {
+        {			
             return Math.Sqrt(Math.Pow(l1.Latitude - l2.Latitude, 2) + Math.Pow(l1.Latitude - l2.Latitude, 2));
         }
 
-        bool ClienteViveAqui(Cliente cliente)
+        public bool ClienteViveAqui(Cliente cliente)
         {
             return distancia(cliente.ubicacion, Radar.Point) < Radar.Radius;
         }
@@ -47,30 +53,16 @@ namespace tp_integrador.Models
             Location l = cliente.ubicacion;
             if (ClienteViveAqui(cliente))
             {
-                Transformador masCercano = transformadores.First();
+                Transformador masCercano = Transformadores.First();
 
-                foreach (Transformador t in transformadores)
+                foreach (Transformador t in Transformadores)
                 {
                     if (distancia(t.location, l) <= distancia(masCercano.location, l))
                         masCercano = t;
                 }
-                masCercano.clientes.Add(cliente);
+                masCercano.ClientesID.Add(cliente.idUsuario);
             }
         }
-
-        public void RellenarTransformadores() {
-            //AQUI ESTARIA BUENO LA LOGICA DE cargar los transformadores del json y guardarlos en la db 
-            var trans1 = new Transformador("Trans01", 4896, 7811);
-            var trans2 = new Transformador("Trans02", 4800, 7000);
-            var trans3 = new Transformador("Trans03", 4700, 7912);
-            var trans4 = new Transformador("Trans03", 4700, 7912);
-
-            this.AgregarTransformador(trans1);
-            this.AgregarTransformador(trans2);
-            this.AgregarTransformador(trans3);
-            this.AgregarTransformador(trans4);
-        }
-
 
     }
 }

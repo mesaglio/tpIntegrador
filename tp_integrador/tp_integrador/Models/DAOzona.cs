@@ -9,19 +9,18 @@ namespace tp_integrador.Models
     public class DAOzona
     {
         public List<Zona> zonas { get; set; }
-       public DAOzona()
+
+		public DAOzona()
         {
+			//TOOD: WIP 
             zonas = new List<Zona>();
-            zonas.Add(new Zona("1",100, 4586, 4452));
+            zonas.Add(new Zona(1,100, 4586, 4452, new List<Transformador>()));
         }
 
         public void Agregarzona(Zona z)
         {
             zonas.Add(z);
         }
-        
-
-
 
         public void AgregarTransformadorAZona(Transformador t)
         {

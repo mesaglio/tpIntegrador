@@ -9,8 +9,10 @@ namespace tp_integrador.Models
     {
         private byte usoDiario;
 
-        public Estandar(int numero, string nombre, double consumo, byte horasPromedio) : base(numero ,nombre, consumo)
+        public Estandar(int idDisp, int idClie, int numero, string nombre, double consumo, byte horasPromedio) : base(idDisp, idClie, numero ,nombre, consumo)
         {
+			IdDispositivo = idDisp;
+			IdCliente = idClie;
 			Numero = numero;
             Nombre = nombre;
             Consumo = consumo;
