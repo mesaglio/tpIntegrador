@@ -23,6 +23,7 @@ namespace tp_integrador
             Daobjeto = new DAOUsuario();
 			DAOzona.Instancia.InitialLoad();
 			DAODispositivo.Instancia.InitialLoad();
+			DAOSensores.Instancia.InitialLoad();
 		}
     }
 

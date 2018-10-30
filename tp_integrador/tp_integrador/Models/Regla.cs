@@ -7,15 +7,24 @@ namespace tp_integrador.Models
 {
     public class Regla
     {
-        int regla { get; set; }
-        List<Actuador> actuadores { get; set; }
-		
-		// recive la notificacion de un cambio en magnitud del sensor
+        public int idRegla { get; set; }
+		public int idSensor { get; set; }
+		public int Valor { get; set; }
+        List<Actuador> Actuadores { get; set; }
+
+		public Regla(int regla, int sensor, int valor, List<Actuador> actuadores)
+		{
+			idRegla = regla;
+			idSensor = sensor;
+			Valor = valor;
+			Actuadores = actuadores;
+		}
+
 		public void Cambio(int mag)
-        {
-			foreach (Actuador ac in actuadores)
+        {	
+			foreach (Actuador ac in Actuadores)
 			{
-				if (regla == mag) ac.Actuar();
+				if (Valor == mag) ac.Actuar();
 			}
         }
     }

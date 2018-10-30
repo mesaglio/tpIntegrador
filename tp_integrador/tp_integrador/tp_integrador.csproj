@@ -160,6 +160,7 @@
     <Compile Include="Models\Administrador.cs" />
     <Compile Include="Models\CargarJson.cs" />
     <Compile Include="Models\Categoria.cs" />
+    <Compile Include="Models\DAOSensores.cs" />
     <Compile Include="Models\DAOzona.cs" />
     <Compile Include="Models\DAO_t_dispositivostemplate.cs" />
     <Compile Include="Models\Cliente.cs" />

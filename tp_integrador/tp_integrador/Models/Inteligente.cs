@@ -7,8 +7,8 @@ namespace tp_integrador.Models
 {
     public class Inteligente : Dispositivo
     {
-        private byte Estado; // Apagado = 0; Encendido = 1; ModoAhorro = 2
-        private DateTime fechaEstado;
+        public byte Estado { get; private set; } // Apagado = 0; Encendido = 1; ModoAhorro = 2
+        public DateTime fechaEstado { get; private set; }
         private DAOHistorialEstado daoEstado;
 
 

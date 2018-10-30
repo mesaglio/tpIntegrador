@@ -7,7 +7,7 @@ namespace tp_integrador.Models
 {
     public class Estandar : Dispositivo
     {
-        private byte usoDiario;
+        public byte usoDiario { get; private set; }
 
         public Estandar(int idDisp, int idClie, int numero, string nombre, double consumo, byte horasPromedio) : base(idDisp, idClie, numero ,nombre, consumo)
         {
