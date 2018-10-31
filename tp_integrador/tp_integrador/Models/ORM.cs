@@ -31,13 +31,12 @@ namespace tp_integrador.Models
 			var type = unaClase.GetType();
 			if (type == typeof(Administrador) || type == typeof(Cliente)) GuardarUsuario(unaClase);
 			if (type == typeof(Inteligente) || type == typeof(Estandar)) GuardarDispositivo(unaClase);
-			//if (type == typeof(Transformador)) GuardarTransformador(unaClase);
-			//if (type == typeof(Zona)) GuardarZona(unaClase);
+			if (type == typeof(Zona)) GuardarZona(unaClase);
 			if (type == typeof(Categoria)) GuardarCategoria(unaClase);
 			//if (type == typeof(Sensor)) GuardarSensor(unaClase);
 			//if (type == typeof(Actuador)) GuardarActuador(unaClase);
 			//if (type == typeof(Regla)) GuardarRegla(unaClase);
-			//if (type == typeof(EstadoGuardado)) GuardarEstado(unaClase);
+			if (type == typeof(EstadoGuardado)) GuardarEstado(unaClase);
 			//if (type == typeof(TemplateDispositivo)) GuardarTemplate(unaClase);
 		}
 
@@ -53,7 +52,7 @@ namespace tp_integrador.Models
 
 		#region Usuario
 
-		// ------------------------------------ SELECTS ------------------------------------
+		// ------------------------------------ SELECT ------------------------------------
 
 		public dynamic GetUsuario(int idUsuario)
 		{
@@ -166,12 +165,13 @@ namespace tp_integrador.Models
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
 
 		#region Dispositivo
 
-		// ------------------------------------ SELECTS ------------------------------------
+		// ------------------------------------ SELECT ------------------------------------
 
 		public List<Dispositivo> GetDispositivos(int idCliente)
 		{
@@ -292,12 +292,13 @@ namespace tp_integrador.Models
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
 
 		#region Categoria
 
-		// ------------------------------------ SELECTS ------------------------------------
+		// ------------------------------------ SELECT ------------------------------------
 
 		public Categoria GetCategoria(string idCategoria)
 		{
@@ -340,11 +341,13 @@ namespace tp_integrador.Models
 			Query(String.Format(query, categoria.ConsumoMin, categoria.ConsumoMax, categoria.CargoFijo, categoria.CargoVariable, categoria.IdCategoria));
 		}
 
+		// ------------------------------------ DELETE ------------------------------------
+
 		#endregion
 
 		#region Transformador
 
-		// ------------------------------------ SELECTS ------------------------------------
+		// ------------------------------------ SELECT ------------------------------------
 
 		public Transformador GetTransformador(int idTransformador)
 		{
@@ -387,16 +390,21 @@ namespace tp_integrador.Models
 
 		private void GuardarTransformadores(int idZona, List<Transformador> transformadores)
 		{
-
+			var query = "INSERT INTO SGE.Transformador VALUES ('{0}', '{1}', '{2}', '{3}')";
+			foreach (Transformador t in transformadores)
+			{
+				Query(String.Format(query, t.EstaActivo ? 1 : 0, t.location.Latitude, t.location.Longitude, idZona));
+			}
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
 
 		#region Zona
 
-		// ------------------------------------ SELECTS ------------------------------------
+		// ------------------------------------ SELECT ------------------------------------
 
 		public Zona GetZona(int idZona)
 		{
@@ -453,12 +461,15 @@ namespace tp_integrador.Models
 				GuardarTransformadores(idZona, zona.Transformadores);
 			}
 		}
-		
+
 		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
 
 		#region Sensor
+
+		// ------------------------------------ SELECT ------------------------------------
 
 		public List<Sensor> GetAllSensores()
 		{
@@ -494,9 +505,15 @@ namespace tp_integrador.Models
 			return new Sensor(id, detalle, cliente, magnitud, GetReglas(id));
 		}
 
+		// ------------------------------------ INSERTS ------------------------------------
+		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
+
 		#endregion
 
 		#region Regla
+
+		// ------------------------------------ SELECT ------------------------------------
 
 		private List<Regla> GetReglas(int idSensor)
 		{
@@ -525,9 +542,15 @@ namespace tp_integrador.Models
 			return new Regla(id, sensor, valor, GetActuadores(id));
 		}
 
+		// ------------------------------------ INSERTS ------------------------------------
+		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
+
 		#endregion
 
 		#region Actuador
+
+		// ------------------------------------ SELECT ------------------------------------
 
 		private List<Actuador> GetActuadores(int idRegla)
 		{
@@ -552,9 +575,58 @@ namespace tp_integrador.Models
 
 			return new Actuador(id, detalle, GetDispositivosOfActuador(id));
 		}
-				
+
+		// ------------------------------------ INSERTS ------------------------------------
+		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
 		#endregion
 
+		#region EstadoGuardado
+
+		// ------------------------------------ SELECT ------------------------------------
+		public List<EstadoGuardado> GetEstadosEntre(int idC, int idD, int numero, DateTime desde, DateTime hasta)
+		{
+			var lista = new List<EstadoGuardado>();
+
+			var query = "SELECT * FROM SGE.EstadoDispositivo WHERE (edisp_idUsuario = '{0}' AND edisp_idDispositivo = '{1}' AND edisp_numero = '{2}') AND NOT (edisp_fechaFin <= CONVERT(datetime, '{3}', 121) OR edisp_fechaInicio >= CONVERT(datetime, '{4}', 121)) ";
+			var data = Query(String.Format(query, idC, idD, numero, desde.ToString("yyyy-MM-dd HH:mm:ss.mmm"), hasta.ToString("yyyy-MM-dd HH:mm:ss.mmm"))).Tables[0];
+			if (data.Rows.Count == 0) return lista;
+
+			foreach (DataRow row in data.Rows)
+			{
+				lista.Add(GetEstadoFromData(row));
+			}
+
+			return lista;
+		}
+
+		private EstadoGuardado GetEstadoFromData(DataRow row)
+		{
+			int idC, idD, numero;
+			DateTime fInicio, fFin;
+
+			byte estado = (Byte)row["edisp_estado"];
+			idC = (Int32)row["edisp_idUsuario"];
+			idD = (Int32)row["edisp_idDispositivo"];
+			numero = (Int32)row["edisp_numero"];
+			fInicio = (DateTime)row["edisp_fechaInicio"];
+			fFin = (DateTime)row["edisp_fechaFin"];
+
+			return new EstadoGuardado(idC, idD, numero, estado, fInicio, fFin);
+		}
+
+		// ------------------------------------ INSERTS ------------------------------------
+
+		private void GuardarEstado(EstadoGuardado eg)
+		{
+			var query = "INSERT INTO SGE.EstadoDispositivo VALUES ('{0}', '{1}', '{2}', CONVERT(datetime, '{3}', 121), CONVERT(datetime, '{4}', 121), '{5}')";
+			Query(String.Format(query, eg.Usuario, eg.Dispositivo, eg.DispNumero, eg.FechaInicio, eg.FechaFin, eg.Estado));
+		}
+		
+		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
+		#endregion
+		
 
 		public int GetIDUsuarioIfExists(string username, string password)
 		{			

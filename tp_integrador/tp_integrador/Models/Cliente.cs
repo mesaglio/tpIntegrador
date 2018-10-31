@@ -90,8 +90,8 @@ namespace tp_integrador.Models
         public void NuevoDispositivoInteligente(string nombre, double consumo)
         {
 			//TODO: WIP
-            //dispositivos.Add(new Inteligente(idUsuario, dispositivos.Count()+1, nombre, consumo, 0, DateTime.Now));
-            Puntos += 15;
+            //dispositivos.Add(new Inteligente(idUsuario, CalcularNumero(nombre), nombre, consumo, 0, DateTime.Now));
+            //Puntos += 15;
         }
 		
         public void NuevoDispositivoEstandar(string nombre, double consumo, byte usoPromedio)
@@ -113,5 +113,10 @@ namespace tp_integrador.Models
         {
             dispositivos.Add(dispositivo);
         }
+
+		private int CalcularNumero(string nombre)
+		{			
+			return (dispositivos.FindAll(x => x.Nombre == nombre)).Count + 1;
+		}
     }
 }

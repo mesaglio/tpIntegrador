@@ -149,7 +149,7 @@ CREATE TABLE SGE.Actuador (
 GO
 
 -- -----------------------------------------------------
--- Table SGE.Dispositivo
+-- Table SGE.DispositivoGenerico
 -- -----------------------------------------------------
 
 CREATE TABLE SGE.DispositivoGenerico (

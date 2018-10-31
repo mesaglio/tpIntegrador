@@ -9,33 +9,41 @@ namespace tp_integrador.Models
     {		
         private int usuario;
         private int dispositivo;
-		private int numero;
-        private List<EstadoGuardado> nuevosEstados;
+		private int numero;        
 
         public DAOHistorialEstado(int user, int disp, int num)
         {
             usuario = user;
             dispositivo = disp;
 			numero = num;
-            nuevosEstados = new List<EstadoGuardado>();
         }
-
-		//TODO: WIP
+		
 		public List<EstadoGuardado> GetEstados(DateTime desde, DateTime hasta)
         {
             List<EstadoGuardado> solicitados = new List<EstadoGuardado>();
-            //Obtener Estados de DB 
-            foreach(EstadoGuardado guardado in nuevosEstados)
-            {
-                EstadoGuardado estado = guardado.GetEstadoEntre(desde, hasta);
-                if (estado != null) { solicitados.Add(estado); }               
-            }
+			EstadoGuardado estado;
+
+			var fromDB = ORM.Instancia.GetEstadosEntre(usuario, dispositivo, numero, desde, hasta);
+
+			if (fromDB.Count > 0)
+			{
+				estado = fromDB[0].GetEstadoEntre(desde, hasta);
+				if (estado != null) solicitados.Add(estado);
+
+				if (fromDB.Count > 1)
+				{
+					solicitados.AddRange(fromDB.GetRange(1, fromDB.Count - 2));
+					estado = fromDB[fromDB.Count - 1].GetEstadoEntre(desde, hasta);
+					if (estado != null) solicitados.Add(estado);
+				}
+			}
+			
             return solicitados;
         }
 
         public void CargarEstado(byte estado, DateTime desde, DateTime hasta)
-        {
-			nuevosEstados.Add(new EstadoGuardado(usuario, dispositivo, numero, estado, desde, hasta));
+        {						
+			ORM.Instancia.Insert(new EstadoGuardado(usuario, dispositivo, numero, estado, desde, hasta));
         }
 
     }

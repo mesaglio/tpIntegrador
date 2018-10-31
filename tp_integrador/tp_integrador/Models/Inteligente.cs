@@ -11,7 +11,6 @@ namespace tp_integrador.Models
         public DateTime fechaEstado { get; private set; }
         private DAOHistorialEstado daoEstado;
 
-
         public Inteligente(int idDisp, int idClie, int numero, string nombre, double consumo, byte estado, DateTime estadoFecha) : base(idDisp, idClie, numero, nombre, consumo)
         {
 			IdDispositivo = idDisp;
@@ -49,7 +48,7 @@ namespace tp_integrador.Models
             daoEstado.CargarEstado(Estado, fechaEstado, nuevaFecha);
             Estado = nuevoEstado;
             fechaEstado = nuevaFecha;
-        }      
+        }
 		
         public bool Encendido()
         {
