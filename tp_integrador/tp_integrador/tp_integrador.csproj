@@ -162,7 +162,7 @@
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\DAOSensores.cs" />
     <Compile Include="Models\DAOzona.cs" />
-    <Compile Include="Models\DAO_t_dispositivostemplate.cs" />
+    <Compile Include="Models\DAOTemplates.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\DAODispositivo.cs" />
     <Compile Include="Models\DAOHistorialEstado.cs" />

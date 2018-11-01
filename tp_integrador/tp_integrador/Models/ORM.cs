@@ -33,11 +33,11 @@ namespace tp_integrador.Models
 			if (type == typeof(Inteligente) || type == typeof(Estandar)) GuardarDispositivo(unaClase);
 			if (type == typeof(Zona)) GuardarZona(unaClase);
 			if (type == typeof(Categoria)) GuardarCategoria(unaClase);
-			//if (type == typeof(Sensor)) GuardarSensor(unaClase);
+			if (type == typeof(Sensor)) GuardarSensor(unaClase);
 			//if (type == typeof(Actuador)) GuardarActuador(unaClase);
-			//if (type == typeof(Regla)) GuardarRegla(unaClase);
+			if (type == typeof(Regla)) GuardarRegla(unaClase);
 			if (type == typeof(EstadoGuardado)) GuardarEstado(unaClase);
-			//if (type == typeof(TemplateDispositivo)) GuardarTemplate(unaClase);
+			if (type == typeof(TemplateDispositivo)) GuardarTemplate(unaClase);
 		}
 
 		public void Update(dynamic unaClase)
@@ -506,6 +506,24 @@ namespace tp_integrador.Models
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------
+
+		private void GuardarSensor(Sensor sensor)
+		{
+			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idCliente = '{0}' AND sensor_detalle = '{1}'";
+			var data = Query(String.Format(query, sensor.idCliente, sensor.TipoSensor)).Tables[0];
+			if (data.Rows.Count != 0) return;
+
+			query = "INSERT INTO SGE.Sensor VALUES ('{0}', '{0}', '{0}')";
+			Query(String.Format(query, sensor.idCliente, sensor.TipoSensor, sensor.Magnitud));
+
+			if (sensor.Observadores.Count == 0) return;
+
+			foreach (Regla regla in sensor.Observadores)
+			{
+				GuardarRegla(regla);
+			}
+		}
+
 		// ------------------------------------ UPDATES ------------------------------------
 		// ------------------------------------ DELETE ------------------------------------
 
@@ -514,6 +532,15 @@ namespace tp_integrador.Models
 		#region Regla
 
 		// ------------------------------------ SELECT ------------------------------------
+
+		private int GetReglaID(int idSensor, string detalle)
+		{
+			var query = "SELECT * FROM SGE.Regla WHERE regla_idSensor = '{0}' AND regla_detalle = '{0}'";
+			var data = Query(String.Format(query, idSensor, detalle)).Tables[0];
+			if (data.Rows.Count == 1) return (Int32)data.Rows[0]["regla_idRegla"];
+
+			return -1;
+		}
 
 		private List<Regla> GetReglas(int idSensor)
 		{
@@ -535,14 +562,31 @@ namespace tp_integrador.Models
 		{
 			int id, sensor, valor;
 
+			string detalle = row["regla_detalle"].ToString();
 			id = (Int32)row["regla_idRegla"];
-			sensor = (Int32)row["regla_idSensor"];
+			sensor = (Int32)row["regla_idSensor"];			
 			valor = (Int32)row["regla_valor"];
 
-			return new Regla(id, sensor, valor, GetActuadores(id));
+			return new Regla(id, sensor, detalle, valor, GetActuadores(id));
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------
+
+		public void GuardarRegla(Regla regla)
+		{
+			if (GetReglaID(regla.idSensor, regla.Detalle) == -1) return;
+
+			var query = "INSERT INTO SGE.Regla VALUES ('{0}', '{0}', '{0}')";
+			Query(String.Format(query, regla.idSensor, regla.Detalle, regla.Valor));
+
+			regla.idRegla = GetReglaID(regla.idSensor, regla.Detalle);
+
+			foreach (Actuador a in regla.Actuadores)
+			{				
+				GuardarActuador(a, regla.idRegla);
+			}
+		}
+		
 		// ------------------------------------ UPDATES ------------------------------------
 		// ------------------------------------ DELETE ------------------------------------
 
@@ -570,13 +614,47 @@ namespace tp_integrador.Models
 
 		private Actuador GetActuadorFromData(DataRow row)
 		{
-			int id = (Int32)row["actua_idActuador"];
+			int id, cliente;
+
+			id = (Int32)row["actua_idActuador"];
+			cliente = (Int32)row["actua_idCliente"];
 			string detalle = row["actua_detalle"].ToString();
 
-			return new Actuador(id, detalle, GetDispositivosOfActuador(id));
+			return new Actuador(id, detalle, cliente, GetDispositivosOfActuador(id));
+		}
+
+		private int GetActuadorID(int idCliente, string detalle)
+		{
+			var query = "SELECT * FROM SGE.Actuador WHERE actua_idCliente = '{0}' AND actua_detalle = '{1}'";
+			var data = Query(String.Format(query, idCliente, detalle)).Tables[0];
+			if (data.Rows.Count == 1) return (Int32)data.Rows[0]["actua_idActuador"];
+
+			return -1;
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------
+
+		public void GuardarActuador(Actuador actua, int idRegla)
+		{
+			if (GetActuadorID(actua.IdCliente, actua.ActuadorTipo) != -1) return;
+
+			var query = "INSERT INTO SGE.Actuador VALUES ('{0}', '{1}')";
+			Query(String.Format(query, actua.IdCliente, actua.ActuadorTipo));
+
+			actua.IdActuador = GetActuadorID(actua.IdCliente, actua.ActuadorTipo);
+
+			query = "INSERT INTO SGE.ActuadorPorRegla VALUES ('{0}', '{1}')";
+			Query(String.Format(query, idRegla, actua.IdActuador));
+
+			if (actua.Dispositivos.Count == 0) return;
+
+			foreach (Inteligente di in actua.Dispositivos)
+			{
+				query = "INSERT INTO SGE.DispositivoPorActuador VALUES ('{0}', '{1}', '{2}', '{3}')";
+				Query(String.Format(query, actua.IdActuador, di.IdCliente, di.IdDispositivo, di.Numero));
+			}
+		}
+		
 		// ------------------------------------ UPDATES ------------------------------------
 		// ------------------------------------ DELETE ------------------------------------
 		#endregion
@@ -584,6 +662,7 @@ namespace tp_integrador.Models
 		#region EstadoGuardado
 
 		// ------------------------------------ SELECT ------------------------------------
+
 		public List<EstadoGuardado> GetEstadosEntre(int idC, int idD, int numero, DateTime desde, DateTime hasta)
 		{
 			var lista = new List<EstadoGuardado>();
@@ -622,11 +701,65 @@ namespace tp_integrador.Models
 			var query = "INSERT INTO SGE.EstadoDispositivo VALUES ('{0}', '{1}', '{2}', CONVERT(datetime, '{3}', 121), CONVERT(datetime, '{4}', 121), '{5}')";
 			Query(String.Format(query, eg.Usuario, eg.Dispositivo, eg.DispNumero, eg.FechaInicio, eg.FechaFin, eg.Estado));
 		}
-		
+
 		// ------------------------------------ UPDATES ------------------------------------
 		// ------------------------------------ DELETE ------------------------------------
 		#endregion
-		
+
+		#region TemplateDispositivo
+
+		// ------------------------------------ SELECT ------------------------------------
+
+		public List<TemplateDispositivo> GetAllTemplates()
+		{
+			var lista = new List<TemplateDispositivo>();
+
+			var query = "SELECT * FROM SGE.DispositivoGenerico";
+			var data = Query(query).Tables[0];
+			if (data.Rows.Count == 0) return lista;
+
+			foreach (DataRow row in data.Rows)
+			{
+				lista.Add(GetTemplateFromData(row));
+			}
+
+			return lista;
+		}
+
+		private TemplateDispositivo GetTemplateFromData(DataRow row)
+		{
+			int id = (Int32)row["disp_idDispositivo"];
+
+			string nombre, concreto;
+			bool inteligente, bajoconsumo;
+			double consumo;
+
+			nombre = row["disp_dispositivo"].ToString();
+			concreto = row["disp_concreto"].ToString();
+			inteligente = (Boolean)row["disp_inteligente"];
+			bajoconsumo = (Boolean)row["disp_bajoConsumo"];
+			consumo = Double.Parse(row["disp_consumo"].ToString());
+
+			return new TemplateDispositivo(id, nombre, concreto, inteligente, bajoconsumo, consumo);			
+		}
+
+		// ------------------------------------ INSERTS ------------------------------------
+
+		private void GuardarTemplate(TemplateDispositivo tdisp)
+		{
+			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_dispositivo = '{0}' AND disp_concreto = '{1}' AND disp_inteligente = '{2}'";
+			var data = Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0)).Tables[0];
+			if (data.Rows.Count != 0) return;
+
+			query = "INSERT INTO SGE.DispositivoGenerico VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
+			Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0, tdisp.Bajoconsumo ? 1 : 0, tdisp.Consumo));
+		}
+
+		// ------------------------------------ UPDATES ------------------------------------
+		// ------------------------------------ DELETE ------------------------------------
+
+		#endregion
+
 
 		public int GetIDUsuarioIfExists(string username, string password)
 		{			

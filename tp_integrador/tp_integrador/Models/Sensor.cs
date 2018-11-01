@@ -12,23 +12,23 @@ namespace tp_integrador.Models
 		public string TipoSensor { get; set; }
 		public int idCliente { get; set; }
 		public int Magnitud { get => Magnitud; set { Magnitud = value; Notify(); } }
-		private List<Regla> observador = new List<Regla>();
+		public List<Regla> Observadores { get; set; }
 
 		public Sensor(int id, string detalle, int cliente, int magnitud, List<Regla> observadores)
 		{
 			idSensor = id;
 			TipoSensor = detalle;
 			idCliente = cliente;
-			observador = observadores;
+			Observadores = observadores;
 			Magnitud = magnitud;
 		}
 
-        public void AgregarRegla(Regla reg) => observador.Add(reg);
-        public void QuitarRegla(Regla reg) => observador.Remove(reg);
+        public void AgregarRegla(Regla reg) => Observadores.Add(reg);
+        public void QuitarRegla(Regla reg) => Observadores.Remove(reg);
 
         private void Notify()
         {
-            foreach (Regla elem in observador) { elem.Cambio(mag: Magnitud);}
+            foreach (Regla elem in Observadores) { elem.Cambio(mag: Magnitud);}
         }
     }
 

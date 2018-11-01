@@ -133,6 +133,7 @@ GO
 CREATE TABLE SGE.Regla (
   regla_idRegla INT IDENTITY,
   regla_idSensor INT,
+  regla_detalle VARCHAR(45),
   regla_valor INT,
   PRIMARY KEY (regla_idRegla),
   FOREIGN KEY (regla_idSensor) REFERENCES SGE.Sensor (sensor_idSensor))
@@ -144,7 +145,8 @@ GO
 
 CREATE TABLE SGE.Actuador (
   actua_idActuador INT IDENTITY,
-  actua_detalle VARCHAR(45),
+  actua_idCliente INT NOT NULL,
+  actua_detalle VARCHAR(45) NOT NULL,
   PRIMARY KEY (actua_idActuador))
 GO
 

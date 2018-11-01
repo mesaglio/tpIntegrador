@@ -7,14 +7,16 @@ namespace tp_integrador.Models
 {
 	public class Actuador
 	{
-		public int idActuador { get; set; }		
-		public string actuadorTipo { get; set; }		
-        List<Inteligente> Dispositivos { get; set; }
+		public int IdActuador { get; set; }		
+		public string ActuadorTipo { get; set; }		
+		public int IdCliente { get; set; }
+        public List<Inteligente> Dispositivos { get; set; }
 
-		public Actuador(int actuador, string detalle, List<Inteligente> disp)
+		public Actuador(int actuador, string detalle, int cliente, List<Inteligente> disp)
 		{
-			idActuador = actuador;
-			actuadorTipo = detalle;
+			IdActuador = actuador;
+			ActuadorTipo = detalle;
+			IdCliente = cliente;
 			Dispositivos = disp;
 		}
 
