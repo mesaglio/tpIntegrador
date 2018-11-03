@@ -64,5 +64,10 @@ namespace tp_integrador.Models
             }
         }
 
+		public int TransformadorQueTiene(int idCliente)
+		{
+			var t = Transformadores.Find(x => x.TenesCliente(idCliente));
+			return (t != null) ? t.id : -1;			
+		}
     }
 }

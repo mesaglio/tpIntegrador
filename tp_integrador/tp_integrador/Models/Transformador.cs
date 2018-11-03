@@ -9,14 +9,16 @@ namespace tp_integrador.Models
     public class Transformador
     {
         public int id { get; set; }
+		public int idZona { get; set; }
         public Location location { get; set; }
 		public bool EstaActivo { get; set; }
 
 		public List<int> ClientesID { get; set; }
 
-        public Transformador(int _id, double latitude, double longitude, bool estado, List<int> idClientes)
+        public Transformador(int _id, int zona, double latitude, double longitude, bool estado, List<int> idClientes)
         {
             id = _id;
+			idZona = zona;
             location = new Location(latitude, longitude);
 			EstaActivo = estado;
 			ClientesID = idClientes;
@@ -28,5 +30,9 @@ namespace tp_integrador.Models
 			return 0;
 		}
 
+		public bool TenesCliente(int idCliente)
+		{
+			return ClientesID.Contains(idCliente);
+		}
     }
 }

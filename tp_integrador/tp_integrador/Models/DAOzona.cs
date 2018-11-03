@@ -55,6 +55,19 @@ namespace tp_integrador.Models
 			return 0;
 		}
 
+		public int BuscarTransformadorDeCliente(int idCliente)
+		{
+			int id; 
+			foreach (Zona z in zonas)
+			{
+				id = z.TransformadorQueTiene(idCliente);
+
+				if (id != -1) return id;
+			}
+
+			return -1;
+		}
+
 
 
     }
