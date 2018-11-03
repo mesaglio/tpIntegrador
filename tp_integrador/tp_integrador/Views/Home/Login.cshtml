@@ -1,4 +1,4 @@
-﻿@model tp_integrador.Models.Usuarios
+﻿
 @{
     /**/
 
@@ -9,13 +9,13 @@
 }
 
 
-@if (Model.IsAuthenticated())
+@if ((int)Session["IDUsuario"] >0 )
 {
     <p><h4>idusuario = @Session["IDUsuario"] </h4></p>
     if ((Boolean)Session["Admin"])
 
     {
-        <div class="jumbotron">
+    /*    <div class="jumbotron">
             <p><h3>Aplicaciones</h3></p>
 
 
@@ -23,10 +23,10 @@
 
             @Html.ActionLink("Importar desde json", "JsonImport", "Home", "/Home/JsonImport", new { @class = "btn btn-primary btn-lg" })
         </div>
-
+        */
     }
     else
-    {
+    {/*
         <div class="jumbotron">
             <p><h3>Aplicaciones</h3></p>
             @Html.ActionLink("Cargar Dispositivos", "CargarDispositivo", "Cliente", "/Cliente/CargarDispositivo", new { @class = "btn btn-primary btn-lg" })
@@ -37,7 +37,7 @@
 
             @Html.ActionLink("Cargar Transformadores", "CargarTransformadores", "Cliente", "/Cliente/CargarTransformadores", new { @class = "btn btn-primary btn-lg" })
         </div>
-
+        */
     }
 }
 

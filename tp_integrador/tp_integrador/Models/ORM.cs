@@ -384,22 +384,47 @@ namespace tp_integrador.Models
 
 			return lista;
 		}
-		
-		#endregion
 
-		#region Sensor
-		#endregion
+        #endregion
 
-		#region Regla
-		#endregion		
+        #region Sensor
+        #endregion
 
-		public int GetIDUsuarioIfExists(string username, string password)
+        #region Regla
+        #endregion
+
+        public bool IsAdministrador(int idusuari)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                var query = "SELECT count(*) FROM SGE.Administrador WHERE admin_idUsuario = @iduser ";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(new SqlParameter("iduser", idusuari));
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        bool valor = (reader.GetInt32(0) > 0);
+                        return valor;
+                    }
+                    else
+                    { return false; }
+                }
+            }
+            
+        }
+          
+        public int GetIDUsuarioIfExists(string username, string password)
 		{			
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
 				connection.Open();
-				var query = "SELECT usua_idUsuario FROM SGE.Usuario WHERE usua_username = @user AND usua_password = @pass";
-				password = HashThis.Instancia.GetHash(password);
+                password = HashThis.Instancia.GetHash(password);
+                var query = "SELECT usua_idUsuario FROM SGE.Usuario WHERE usua_username = @user AND usua_password = @pass";
+				
 
 				using (SqlCommand command = new SqlCommand(query, connection))
 				{					
@@ -409,7 +434,7 @@ namespace tp_integrador.Models
 					SqlDataReader reader = command.ExecuteReader();
 					if (reader.HasRows) {
 						reader.Read();
-						return reader.GetInt32(0);
+						return (int)reader.GetValue(0);
 					}					
 				}
 			}

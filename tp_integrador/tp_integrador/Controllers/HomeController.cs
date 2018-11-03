@@ -18,21 +18,27 @@ namespace tp_integrador.Controllers
         [AllowAnonymous]
         public ActionResult Login(Usuarios model)
         {
-            DAOUsuario data = new DAOUsuario();
-            Usuarios u =  data.InicioSecion(model);
-            if (u.usuario == null)
+           // DAOUsuario data = new DAOUsuario();
+            string p = model.password;
+            int sesionid = ORM.Instancia.GetIDUsuarioIfExists(model.usuario, p);
+            Session["IDUsuario"] = sesionid;
+            //Usuarios u =  data.InicioSecion(model);
+            if ((int)Session["IDUsuario"]<= 0 )
             {
-                Session["IDUsuario"] = -1;
-                return View(u);
+                return View();
             }
             else
             {
-                Session["Usuario"] = u;
-                Session["IDUsuario"] = u.idUsuario;
-                Session["Admin"] = u.Esadmin();
-                u.SetLoginOn();
+                //Session["Usuario"] = u;
+                Session["Admin"] = ORM.Instancia.IsAdministrador((int)Session["IDUsuario"]);
+                //u.SetLoginOn();
+                if ((bool)Session["Admin"])
 
-                return View(u);
+
+                    { return View("Administrador"); }
+                else
+                    { return View("../Cliente/Cliente"); }
+                
             }
         }
 
