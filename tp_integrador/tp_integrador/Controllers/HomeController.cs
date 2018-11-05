@@ -21,7 +21,7 @@ namespace tp_integrador.Controllers
             // DAOUsuario data = new DAOUsuario();
             string p = model.password;
             
-            int sesionid = ORM.Instancia.GetIDUsuarioIfExists(model.usuario, p.GetHashCode().ToString());
+            int sesionid = ORM.Instancia.GetIDUsuarioIfExists(model.usuario, HashThis.Instancia.GetHash(p));
             Session["IDUsuario"] = sesionid;
             //Usuarios u =  data.InicioSecion(model);
             if ((int)Session["IDUsuario"] <= 0)
