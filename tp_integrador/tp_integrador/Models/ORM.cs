@@ -526,42 +526,6 @@ namespace tp_integrador.Models
 
 			return lista;
 		}
-<<<<<<< HEAD
-
-        #endregion
-
-        #region Sensor
-        #endregion
-
-        #region Regla
-        #endregion
-
-        public bool IsAdministrador(int idusuari)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var query = "SELECT count(*) FROM SGE.Administrador WHERE admin_idUsuario = @iduser ";
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.Add(new SqlParameter("iduser", idusuari));
-
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows)
-                    {
-                        reader.Read();
-                        bool valor = (reader.GetInt32(0) > 0);
-                        return valor;
-                    }
-                    else
-                    { return false; }
-                }
-            }
-            
-        }
-          
-        public int GetIDUsuarioIfExists(string username, string password)
-=======
 
 		// ------------------------------------ INSERTS ------------------------------------
 
@@ -998,7 +962,7 @@ namespace tp_integrador.Models
 					SqlDataReader reader = command.ExecuteReader();
 					if (reader.HasRows) {
 						reader.Read();
-						return (int)reader.GetValue(0);
+						return reader.GetInt32(0);
 					}					
 				}
 			}

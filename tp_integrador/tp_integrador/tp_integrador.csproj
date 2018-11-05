@@ -280,8 +280,6 @@
     <Content Include="Views\Cliente\CargarTransformadores.cshtml" />
     <Content Include="Views\Cliente\CargarTransformadoresPorDefecto.cshtml" />
     <Content Include="Views\Cliente\LoadTransformadoresJson.cshtml" />
-    <Content Include="Views\Home\Administrador.cshtml" />
-    <Content Include="Views\Cliente\Cliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />
