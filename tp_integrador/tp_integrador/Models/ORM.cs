@@ -104,7 +104,8 @@ namespace tp_integrador.Models
 
 			string nombre, apellido, domicilio, username, password, categoria;
 			string telefono, docNum, docTipo;
-			int puntos, latitud, longitud;
+			int puntos;
+			double latitud, longitud;
 			DateTime fechaAlta;
 
 			nombre = userData["usua_nombre"].ToString();
@@ -114,8 +115,8 @@ namespace tp_integrador.Models
 			password = userData["usua_password"].ToString();
 			fechaAlta = (DateTime)data.Rows[0]["clie_fechaAlta"];
 
-			latitud = (Int32)data.Rows[0]["clie_latitud"];
-			longitud = (Int32)data.Rows[0]["clie_longitud"];
+			latitud = Double.Parse(data.Rows[0]["clie_latitud"].ToString());
+			longitud = Double.Parse(data.Rows[0]["clie_longitud"].ToString());
 			telefono = data.Rows[0]["clie_telefono"].ToString();
 			docNum = data.Rows[0]["clie_doc_numero"].ToString();
 			docTipo = data.Rows[0]["clie_doc_tipo"].ToString();
