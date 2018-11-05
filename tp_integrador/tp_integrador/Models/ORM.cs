@@ -874,7 +874,7 @@ namespace tp_integrador.Models
 		private void GuardarEstado(EstadoGuardado eg)
 		{
 			var query = "INSERT INTO SGE.EstadoDispositivo VALUES ('{0}', '{1}', '{2}', CONVERT(datetime, '{3}', 121), CONVERT(datetime, '{4}', 121), '{5}')";
-			Query(String.Format(query, eg.Usuario, eg.Dispositivo, eg.DispNumero, eg.FechaInicio, eg.FechaFin, eg.Estado));
+			Query(String.Format(query, eg.Usuario, eg.Dispositivo, eg.DispNumero, eg.FechaInicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), eg.FechaFin.ToString("yyyy-MM-dd HH:mm:ss.mmm"), eg.Estado));
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
