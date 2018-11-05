@@ -372,11 +372,11 @@ namespace tp_integrador.Models
 			var data = Query(String.Format(query, idCategoria)).Tables[0];
 			if (data.Rows.Count == 0) return null;
 
-			byte cmin, cmax;
+			int cmin, cmax;
 			decimal carfijo, carvar;
 
-			cmin = (Byte)data.Rows[0]["categ_consumo_min"];
-			cmax = (Byte)data.Rows[0]["categ_consumo_max"];
+			cmin = (Int16)data.Rows[0]["categ_consumo_min"];
+			cmax = (Int16)data.Rows[0]["categ_consumo_max"];
 			carfijo = (Decimal)data.Rows[0]["categ_cargoFijo"];
 			carvar = (Decimal)data.Rows[0]["categ_cargoVariable"];
 
