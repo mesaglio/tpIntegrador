@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web;
 using Gmap.net;
 
@@ -51,8 +55,18 @@ namespace tp_integrador.Models
 
 		public int AsignarTransformador(Cliente unCliente)
 		{
-			//TOOD: WIP
-			return 0;
+			foreach (Zona zona in zonas)
+			{
+				if (zona.ClienteViveAqui(unCliente))
+				{
+					zona.AsignarTransformadorAlCliente(unCliente);
+					break;
+				}
+			}
+
+			var idTrans = BuscarTransformadorDeCliente(unCliente.idUsuario);
+
+			return idTrans != -1 ? idTrans : -1;
 		}
 
 		public int BuscarTransformadorDeCliente(int idCliente)
@@ -67,8 +81,5 @@ namespace tp_integrador.Models
 
 			return -1;
 		}
-
-
-
     }
 }

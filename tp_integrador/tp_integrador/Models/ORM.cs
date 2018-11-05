@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gmap.net;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -103,7 +104,7 @@ namespace tp_integrador.Models
 
 			string nombre, apellido, domicilio, username, password, categoria;
 			string telefono, docNum, docTipo;
-			int puntos;
+			int puntos, latitud, longitud;
 			DateTime fechaAlta;
 
 			nombre = userData["usua_nombre"].ToString();
@@ -113,13 +114,17 @@ namespace tp_integrador.Models
 			password = userData["usua_password"].ToString();
 			fechaAlta = (DateTime)data.Rows[0]["clie_fechaAlta"];
 
+			latitud = (Int32)data.Rows[0]["clie_latitud"];
+			longitud = (Int32)data.Rows[0]["clie_longitud"];
 			telefono = data.Rows[0]["clie_telefono"].ToString();
 			docNum = data.Rows[0]["clie_doc_numero"].ToString();
 			docTipo = data.Rows[0]["clie_doc_tipo"].ToString();
 			categoria = data.Rows[0]["clie_categoria"].ToString();
 			puntos = (Int32)data.Rows[0]["clie_puntos"];
 
-			return new Cliente(idCliente, nombre, apellido, domicilio, username, password, telefono, fechaAlta, GetCategoria(categoria), docTipo, docNum, dispositivos);
+			Location coordenadas = new Location(latitud, longitud);
+
+			return new Cliente(idCliente, nombre, apellido, domicilio, coordenadas, username, password, telefono, fechaAlta, GetCategoria(categoria), docTipo, docNum, dispositivos);
 		}
 
 		private List<int> GetClientesIDOfTransformador(int idTransformador)
@@ -167,9 +172,10 @@ namespace tp_integrador.Models
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.usuario, cliente.password));
 
 			cliente.idUsuario = GetIDUsuarioIfExists(cliente.usuario, cliente.password);
+			var trans = DAOzona.Instancia.AsignarTransformador(cliente);
 
-			query = "INSERT INTO SGE.Cliente VALUES ('{0}', '{1}', CONVERT(DATETIME,'{2}',121), '{3}', '{3}', '{5}', '{6}', '{7}')";
-			Query(String.Format(query, cliente.idUsuario, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.AsignarTransformador(cliente)));
+			query = "INSERT INTO SGE.Cliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121), '{5}', '{6}', '{7}', '{8}', '{9}')";
+			Query(String.Format(query, cliente.idUsuario, (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, trans));
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
@@ -188,8 +194,8 @@ namespace tp_integrador.Models
 			var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.password, cliente.idUsuario));
 
-			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = '{1}', clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}' WHERE clie_idUsuario = '{7}'";
-			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio, cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), cliente.idUsuario));
+			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = '{1}', clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}' WHERE clie_idUsuario = '{9}'";
+			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio, cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario));
 
 		}
 
@@ -465,10 +471,10 @@ namespace tp_integrador.Models
 		private void GuardarTransformador(Transformador t)
 		{
 			var query = "SELECT * FROM SGE.Transformador WHERE trans_zona = '{0}' AND trans_latitud = '{1}' AND trans_longitud = '{2}'";
-			if (Query(String.Format(query, t.idZona, t.location.Latitude, t.location.Longitude)).Tables[0].Rows.Count == 0) return;
+			if (Query(String.Format(query, t.idZona, (Int32)t.location.Latitude, (Int32)t.location.Longitude)).Tables[0].Rows.Count == 0) return;
 
 			query = "INSERT INTO SGE.Transformador VALUES ('{0}', '{1}', '{2}', '{3}')";
-			Query(String.Format(query, t.EstaActivo ? 1 : 0, t.location.Latitude, t.location.Longitude, t.idZona));
+			Query(String.Format(query, t.EstaActivo ? 1 : 0, (Int32)t.location.Latitude, (Int32)t.location.Longitude, t.idZona));
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
@@ -479,7 +485,7 @@ namespace tp_integrador.Models
 			if (Query(String.Format(query, t.id)).Tables[0].Rows.Count == 0) return;
 
 			query = "UPDATE SGE.Transformador SET trans_activo = '{0}', trans_latitud = '{1}', trans_longitud = '{2}' WHERE trans_idTransformador = '{3}' ";
-			Query(String.Format(query, t.EstaActivo ? 1 : 0, t.location.Latitude, t.location.Longitude, t.id));
+			Query(String.Format(query, t.EstaActivo ? 1 : 0, (Int32)t.location.Latitude, (Int32)t.location.Longitude, t.id));
 		}
 
 		// ------------------------------------ DELETE ------------------------------------
@@ -532,15 +538,15 @@ namespace tp_integrador.Models
 		private void GuardarZona(Zona zona)
 		{
 			var query = "SELECT zona_idZona FROM SGE.Zona WHERE zona_latitud = '{0}' AND zona_longitud = '{1}' AND zona_radio = '{2}'";
-			if (Query(String.Format(query, zona.Latitude, zona.Longitude, zona.Radio)).Tables[0].Rows.Count != 0) return;
+			if (Query(String.Format(query, (Int32)zona.Latitude, (Int32)zona.Longitude, zona.Radio)).Tables[0].Rows.Count != 0) return;
 
 			query = "INSERT INTO SGE.Zona VALUES ('{0}', '{1}', '{2})'";
-			Query(String.Format(query, zona.Latitude, zona.Longitude, zona.Radio));
+			Query(String.Format(query, (Int32)zona.Latitude, (Int32)zona.Longitude, zona.Radio));
 
 			if (zona.Transformadores.Count > 0)
 			{
 				query = "SELECT zona_idZona FROM SGE.Zona WHERE zona_latitud = '{0}' AND zona_longitud = '{1}' AND zona_radio = '{2}'";
-				var idZona = (Int32)Query(String.Format(query, zona.Latitude, zona.Longitude, zona.Radio)).Tables[0].Rows[0][0];
+				var idZona = (Int32)Query(String.Format(query, (Int32)zona.Latitude, (Int32)zona.Longitude, zona.Radio)).Tables[0].Rows[0][0];
 
 				GuardarTransformadores(zona.Transformadores);
 			}
@@ -554,7 +560,7 @@ namespace tp_integrador.Models
 			if (Query(String.Format(query, zona.idZona)).Tables[0].Rows.Count == 0) return;
 
 			query = "UPDATE SGE.Zona SET zona_latitud = '{0}', zona_longitud = '{1}', zona_radio = '{2}' WHERE zona_idZona = '{2}'";
-			Query(String.Format(query, zona.Latitude, zona.Longitude, zona.Radio, zona.idZona));
+			Query(String.Format(query, (Int32)zona.Latitude, (Int32)zona.Longitude, zona.Radio, zona.idZona));
 		}
 
 		// ------------------------------------ DELETE ------------------------------------

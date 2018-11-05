@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gmap.net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,7 +13,8 @@ namespace tp_integrador.Models
         public Categoria Categoria { get; set; }
         public string Documento_tipo { get; set; }
         public string Documento_numero { get; set; }
-        public int Puntos { get; set; }		
+        public int Puntos { get; set; }
+		public Location Coordenadas { get; set; }
 
         public List<Dispositivo> dispositivos;
 
@@ -20,8 +22,9 @@ namespace tp_integrador.Models
         public List<Dispositivo> DispositivosEstandar => dispositivos.FindAll(i => !i.EsInteligente);
 		//TODO: verificar si funciona estandar
 
-		public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n, List<Dispositivo> disp = null) : base(id, name, lastname, home, user, clave)
+		public Cliente(int id, string name, string lastname, string home, Location coords, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n, List<Dispositivo> disp = null) : base(id, name, lastname, home, user, clave)
         {
+			Coordenadas = coords;
             Telefono = phone;
             Categoria = categ;
             Documento_tipo = doc_t;

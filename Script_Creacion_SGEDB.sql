@@ -100,13 +100,15 @@ GO
 
 CREATE TABLE SGE.Cliente (
   clie_idUsuario INT NOT NULL,
+  clie_latitud DECIMAL(9,7) NOT NULL,
+  clie_longitud DECIMAL(10,7) NOT NULL,
   clie_telefono VARCHAR(15) NOT NULL,
   clie_fechaAlta DATETIME NOT NULL,
   clie_doc_numero VARCHAR(255) NOT NULL,
   clie_doc_tipo VARCHAR(100) NOT NULL,
   clie_categoria VARCHAR(3) NOT NULL,
   clie_puntos INT NOT NULL,
-  clie_transformador INT NOT NULL,
+  clie_transformador INT,
   PRIMARY KEY (clie_idUsuario),
   FOREIGN KEY (clie_idUsuario) REFERENCES SGE.Usuario (usua_idUsuario),
   FOREIGN KEY (clie_transformador) REFERENCES SGE.Transformador (trans_idTransformador),

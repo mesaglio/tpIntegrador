@@ -17,13 +17,7 @@ namespace tp_integrador.Models
         private bool islogin { get; set; }
         public bool esadmin { get; set; }
 
-        public bool Esadmin() { return esadmin; }
-        public Location ubicacion { get; set; }
-
-        public void AgregarUbicacion(double latitude, double longitude) {
-            ubicacion.Latitude = latitude;
-            ubicacion.Longitude = longitude;
-        }
+        public bool Esadmin() { return esadmin; }   
 
         public Usuarios()
         {
@@ -46,18 +40,11 @@ namespace tp_integrador.Models
             password = clave;
             islogin = false;
             esadmin = false;
+		}
 
-
-
-        }
         public bool IsAuthenticated()
         {
-            if (islogin)
-                return true;
-            else
-            {
-                return false;
-            }
+			return islogin;
         }
 
         public Usuarios nulluser()
@@ -72,10 +59,7 @@ namespace tp_integrador.Models
 
         public bool Singin(Usuarios u)
         {
-            if (u.password == password && u.usuario == usuario)
-                return true;
-            else
-                return false;
+			return (u.password == password && u.usuario == usuario);
         }
 
 

@@ -45,12 +45,12 @@ namespace tp_integrador.Models
 
         public bool ClienteViveAqui(Cliente cliente)
         {
-            return distancia(cliente.ubicacion, Radar.Point) < Radar.Radius;
+            return distancia(cliente.Coordenadas, Radar.Point) < Radar.Radius;
         }
 
         public void AsignarTransformadorAlCliente(Cliente cliente)
         {
-            Location l = cliente.ubicacion;
+            Location l = cliente.Coordenadas;
             if (ClienteViveAqui(cliente))
             {
                 Transformador masCercano = Transformadores.First();

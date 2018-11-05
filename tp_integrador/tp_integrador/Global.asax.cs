@@ -24,6 +24,8 @@ namespace tp_integrador
 			DAOzona.Instancia.InitialLoad();
 			DAODispositivo.Instancia.InitialLoad();
 			DAOSensores.Instancia.InitialLoad();
+
+			ORM.Instancia.Insert(new Cliente(3, "pedro", "perez", "Rivadavia 5000, Buenos Aires, Argentina", new Gmap.net.Location(-34.618215, -58.436062), "pedro", HashThis.Instancia.GetHash("1234"), "123345", DateTime.Now, ORM.Instancia.GetCategoria("R1"), "DNI", "12345"));
 		}
     }
 
