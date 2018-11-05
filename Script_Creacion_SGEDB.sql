@@ -266,7 +266,7 @@ INSERT INTO SGE.DispositivoGenerico VALUES('PC', 'de escritorio', 1, 1, 0.04)
 INSERT INTO SGE.DispositivoGenerico VALUES('Microondas', 'convencional', 0, 1, 0.64)
 INSERT INTO SGE.DispositivoGenerico VALUES('Plancha', 'a vapor', 0, 1, 0.75)
 
-INSERT INTO SGE.Zona VALUES (34.604048, -58.381673,50)
+INSERT INTO SGE.Zona VALUES (34.604048, -58.381673,10000)
 INSERT INTO SGE.Transformador VALUES (1,34.604048, -58.381673,1)
 
 INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8') 
