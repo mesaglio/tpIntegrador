@@ -229,8 +229,56 @@ GO
 -- -----------------------------------------------------
 -- Insert
 -- -----------------------------------------------------
-
-INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8') 
+INSERT INTO SGE.Usuario VALUES (-34.604048, -58.381673,'pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8') 
 -- username: pepe 
 -- password: pepe123
 INSERT INTO SGE.Administrador VALUES (1, CONVERT(datetime, '2018-9-15 18:20:23:000', 121))
+
+INSERT INTO SGE.Usuario VALUES (-34.604048, -58.381673,'popo', 'popon', 'calle falsa 123', 'popo', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8')
+-- username: popo
+-- password: pepe123
+
+INSERT INTO SGE.Categoria VALUES ("R1",150,0,18.76,0.644)
+INSERT INTO SGE.Categoria VALUES ("R2",325,150,35.32,0.644)
+INSERT INTO SGE.Categoria VALUES ("R3",400,325,60.71,0.681)
+INSERT INTO SGE.Categoria VALUES ("R4",450,325,71.74,0.738)
+INSERT INTO SGE.Categoria VALUES ("R5",500,450,110.38,0.794)
+INSERT INTO SGE.Categoria VALUES ("R6",600,500,220,75,0.832)
+INSERT INTO SGE.Categoria VALUES ("R7",700,600,443.59,0.851)
+INSERT INTO SGE.Categoria VALUES ("R8",1400,700,545.96,0.851)
+INSERT INTO SGE.Categoria VALUES ("R9",1400,0,887.19,0.851)
+
+INSERT INTO SGE.Zona VALUES (1,-34.604048, -58.381673,50)
+
+INSERT INTO SGE.Tranformador VALUES (1,1,-34.604048, -58.381673,1)
+
+
+INSERT INTO SGE.Clientes VALUES (2,"9999999999",GETDATE(),"88888888","DNI","R1",2,1)
+
+
+
+INSERT INTO SGE.DispositivoGenerico VALUES (1,"Aire-Acondicionado", "3500 frigorias",1, 0, 1.163)
+INSERT INTO SGE.DispositivoGenerico VALUES(2,"Aire-Acondicionado", "2200 frigorias", 1, 1, 1.013)
+INSERT INTO SGE.DispositivoGenerico VALUES(3,"Televisor", "color de tubo fluorecente de 21", 0, 0, 0.075)
+INSERT INTO SGE.DispositivoGenerico VALUES(4,"Televisor", "color de tubo fluorecente de 29 a 34", 0, 0, 0.175)
+INSERT INTO SGE.DispositivoGenerico VALUES(5,"Televisor", "LCD de 40", 0, 0, 0.18)
+INSERT INTO SGE.DispositivoGenerico VALUES(6,"Televisor", "LED 24", 1, 1, 0.004)
+INSERT INTO SGE.DispositivoGenerico VALUES(7,"Televisor", "LED 32", 1, 1, 0.055)
+INSERT INTO SGE.DispositivoGenerico VALUES(8,"Televisor", "LED 40", 1, 1, 0.08)
+INSERT INTO SGE.DispositivoGenerico VALUES(9,"Heladera", "con freexer", 1, 1, 0.09)
+INSERT INTO SGE.DispositivoGenerico VALUES(10,"Heladera", "sin freexer", 1, 1, 0.075)
+INSERT INTO SGE.DispositivoGenerico VALUES(11,"Lavarropas", "automatico 5 kg con calentamiento de agua", 0, 0, 0.875)
+INSERT INTO SGE.DispositivoGenerico VALUES(12,"Lavarropas", "automatico 5kg", 1, 1, 0.175)
+INSERT INTO SGE.DispositivoGenerico VALUES(13,"Lavarropas", "semi-automatico 5kg", 0, 1, 0.1275)
+INSERT INTO SGE.DispositivoGenerico VALUES(14,"Ventilador", "de pie", 0, 1, 0.09)
+INSERT INTO SGE.DispositivoGenerico VALUES(15,"Ventilador", "de techo", 0, 1, 0.06)
+INSERT INTO SGE.DispositivoGenerico VALUES(16,"Lampara", "halogenas de 40 w", 1, 0, 0.04)
+INSERT INTO SGE.DispositivoGenerico VALUES(17,"Lampara", "halogenas de 60 w", 1, 0, 0.06)
+INSERT INTO SGE.DispositivoGenerico VALUES(18,"Lampara", "halogenas de 100 w", 1, 0, 0.015)
+INSERT INTO SGE.DispositivoGenerico VALUES(19,"Lampara", "de 11 w", 1, 1, 0.011)
+INSERT INTO SGE.DispositivoGenerico VALUES(20,"Lampara", "de 11 w", 1, 1, 0.011)
+INSERT INTO SGE.DispositivoGenerico VALUES(21,"Lampara", "de 15 w", 1, 1, 0.015)
+INSERT INTO SGE.DispositivoGenerico VALUES(22,"Lampara", "de 20 w", 1, 1, 0.02)
+INSERT INTO SGE.DispositivoGenerico VALUES(23,"PC", "de escritorio", 1, 1, 0.04)
+INSERT INTO SGE.DispositivoGenerico VALUES(24,"Microondas", "convencional", 0, 1, 0.64)
+INSERT INTO SGE.DispositivoGenerico VALUES(25,"Plancha", "a vapor", 0, 1, 0.75)
