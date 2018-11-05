@@ -51,7 +51,11 @@ namespace tp_integrador.Controllers
 
             }
         }
-
+        public ActionResult Logout()
+        {
+            Session.Contents.RemoveAll();
+            return View("Index");
+        }
         public ActionResult Index()
         {
             return View();
