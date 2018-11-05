@@ -1,10 +1,7 @@
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
+tp_integrador/tp_integrador/obj/Debug/
+tp_integrador/tp_integrador.Tests/obj/Debug/
+tp_integrador/tp_integrador.Tests/bin/
+.vs/
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
