@@ -229,14 +229,6 @@ GO
 -- -----------------------------------------------------
 -- Insert
 -- -----------------------------------------------------
-INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8') 
--- username: pepe 
--- password: pepe123
-INSERT INTO SGE.Administrador VALUES (1, CONVERT(datetime, '2018-9-15 18:20:23:000', 121))
-
-INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8')
--- username: popo
--- password: pepe123
 
 INSERT INTO SGE.Categoria VALUES ('R1',150,0,18.76,0.644)
 INSERT INTO SGE.Categoria VALUES ('R2',325,150,35.32,0.644)
@@ -248,16 +240,7 @@ INSERT INTO SGE.Categoria VALUES ('R7',700,600,443.59,0.851)
 INSERT INTO SGE.Categoria VALUES ('R8',1400,700,545.96,0.851)
 INSERT INTO SGE.Categoria VALUES ('R9',1400,0,887.19,0.851)
 
-INSERT INTO SGE.Zona VALUES (34.604048, 58.381673,50)
-
-INSERT INTO SGE.Tranformador VALUES (1,1,34.604048, -58.381673,1)
-
-
-INSERT INTO SGE.Clientes VALUES (2,34.604048, 58.381673,'9999999999',GETDATE(),'88888888','DNI','R1',2,1)
-
-
-
-INSERT INTO SGE.DispositivoGenerico VALUES ('Aire-Acondicionado', '3500 frigorias',1, 0, 1.163)
+INSERT INTO SGE.DispositivoGenerico VALUES('Aire-Acondicionado', '3500 frigorias',1, 0, 1.163)
 INSERT INTO SGE.DispositivoGenerico VALUES('Aire-Acondicionado', '2200 frigorias', 1, 1, 1.013)
 INSERT INTO SGE.DispositivoGenerico VALUES('Televisor', 'color de tubo fluorecente de 21', 0, 0, 0.075)
 INSERT INTO SGE.DispositivoGenerico VALUES('Televisor', 'color de tubo fluorecente de 29 a 34', 0, 0, 0.175)
@@ -282,3 +265,16 @@ INSERT INTO SGE.DispositivoGenerico VALUES('Lampara', 'de 20 w', 1, 1, 0.02)
 INSERT INTO SGE.DispositivoGenerico VALUES('PC', 'de escritorio', 1, 1, 0.04)
 INSERT INTO SGE.DispositivoGenerico VALUES('Microondas', 'convencional', 0, 1, 0.64)
 INSERT INTO SGE.DispositivoGenerico VALUES('Plancha', 'a vapor', 0, 1, 0.75)
+
+INSERT INTO SGE.Zona VALUES (34.604048, -58.381673,50)
+INSERT INTO SGE.Transformador VALUES (1,34.604048, -58.381673,1)
+
+INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8') 
+-- username: pepe 
+-- password: pepe123
+INSERT INTO SGE.Administrador VALUES (1, CONVERT(datetime, '2018-9-15 18:20:23:000', 121))
+
+INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8')
+-- username: popo
+-- password: pepe123
+INSERT INTO SGE.Cliente VALUES (2,34.604048, 58.381673,'9999999999',GETDATE(),'88888888','DNI','R1',2,1)
