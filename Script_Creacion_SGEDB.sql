@@ -248,8 +248,8 @@ INSERT INTO SGE.DispositivoGenerico VALUES('Televisor', 'LCD de 40', 0, 0, 0.18)
 INSERT INTO SGE.DispositivoGenerico VALUES('Televisor', 'LED 24', 1, 1, 0.004)
 INSERT INTO SGE.DispositivoGenerico VALUES('Televisor', 'LED 32', 1, 1, 0.055)
 INSERT INTO SGE.DispositivoGenerico VALUES('Televisor', 'LED 40', 1, 1, 0.08)
-INSERT INTO SGE.DispositivoGenerico VALUES('Heladera', 'con freexer', 1, 1, 0.09)
-INSERT INTO SGE.DispositivoGenerico VALUES('Heladera', 'sin freexer', 1, 1, 0.075)
+INSERT INTO SGE.DispositivoGenerico VALUES('Heladera', 'con freezer', 1, 1, 0.09)
+INSERT INTO SGE.DispositivoGenerico VALUES('Heladera', 'sin freezer', 1, 1, 0.075)
 INSERT INTO SGE.DispositivoGenerico VALUES('Lavarropas', 'automatico 5 kg con calentamiento de agua', 0, 0, 0.875)
 INSERT INTO SGE.DispositivoGenerico VALUES('Lavarropas', 'automatico 5kg', 1, 1, 0.175)
 INSERT INTO SGE.DispositivoGenerico VALUES('Lavarropas', 'semi-automatico 5kg', 0, 1, 0.1275)
@@ -278,3 +278,13 @@ INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974
 -- username: popo
 -- password: pepe123
 INSERT INTO SGE.Cliente VALUES (2,34.604048, 58.381673,'9999999999',GETDATE(),'88888888','DNI','R1',2,1)
+
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3)
+
+INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-12 20:12:53:242',121), CONVERT(datetime,'2018-03-13 06:02:13:345',121), 0)
+INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 06:02:13:346',121), CONVERT(datetime,'2018-03-13 14:08:23:545',121), 1)
+INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 14:08:23:546',121), CONVERT(datetime,'2018-03-15 06:07:55:125',121), 0)
+INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 06:07:55:126',121), CONVERT(datetime,'2018-03-15 23:04:35:234',121), 1)
+INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 23:04:35:235',121), CONVERT(datetime,'2018-03-17 05:06:42:332',121), 0)
