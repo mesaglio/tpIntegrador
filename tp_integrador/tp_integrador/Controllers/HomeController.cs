@@ -30,15 +30,24 @@ namespace tp_integrador.Controllers
             }
             else
             {
-                //Session["Usuario"] = u;
-                Session["Admin"] = ORM.Instancia.IsAdministrador((int)Session["IDUsuario"]);
+                dynamic user = ORM.Instancia.GetUsuario((int)Session["IDUsuario"]);
+
+
+                Session["Usuario"] = user;
+                            
                 //u.SetLoginOn();
-                if ((bool)Session["Admin"])
+                if (User.GetType() == typeof(Administrador))
 
 
-                { return View("Administrador"); }
+                {
+                    Session["Admin"] = true;
+                    return View("Administrador");
+                }
                 else
-                { return View("../Cliente/Cliente"); }
+                {
+                    Session["Admin"] = false;
+                    return View("../Cliente/Cliente");
+                }
 
             }
         }
