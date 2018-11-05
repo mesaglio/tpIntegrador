@@ -5,20 +5,30 @@ using System.Web;
 
 namespace tp_integrador.Models
 {
-    public class Sensor
-    {
+	public class Sensor
+	{
 		//TODO: WIP
-        public string TipoSensor { get; set; }
-        public int Magnitud { get => Magnitud; set { Magnitud = value; Notify(); } }
-		private List<Regla> observador = new List<Regla>();
+		public int idSensor { get; set; }
+		public string TipoSensor { get; set; }
+		public int idCliente { get; set; }
+		public int Magnitud { get => Magnitud; set { Magnitud = value; Notify(); } }
+		public List<Regla> Observadores { get; set; }
 
-        public void AgregarRegla(Regla reg) => observador.Add(reg);
-        public void QuitarRegla(Regla reg) => observador.Remove(reg);
+		public Sensor(int id, string detalle, int cliente, int magnitud, List<Regla> observadores)
+		{
+			idSensor = id;
+			TipoSensor = detalle;
+			idCliente = cliente;
+			Observadores = observadores;
+			Magnitud = magnitud;
+		}
 
-        // llamar en el set magnitud
+        public void AgregarRegla(Regla reg) => Observadores.Add(reg);
+        public void QuitarRegla(Regla reg) => Observadores.Remove(reg);
+
         private void Notify()
         {
-            foreach (Regla elem in observador) { elem.Cambio(mag: Magnitud);}
+            foreach (Regla elem in Observadores) { elem.Cambio(mag: Magnitud);}
         }
     }
 

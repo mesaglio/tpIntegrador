@@ -43,6 +43,16 @@ namespace tp_integrador.Models
 
 			return lista;
 		}
+
+		public Inteligente FindInteligente(int idUsuario, int idDispositivo, int numero)
+		{
+			foreach (Inteligente di in listdispositivos.OfType<Inteligente>())
+			{
+				if (di.IdCliente == idUsuario && di.IdDispositivo == idDispositivo && di.Numero == numero) return di;
+			}
+
+			return null;
+		}
         
     }
 }
