@@ -1067,7 +1067,10 @@ namespace tp_integrador.Models
             var data = Query(query).Tables[0];
             if (data.Rows.Count == 0) return null;
             List<KeyValuePair<string, double>> datalist = new List<KeyValuePair<string, double>>();
-
+            foreach (DataRow dr in data.Rows)
+            {
+                datalist.Add(new KeyValuePair<string, double>(Rename(dr[0].ToString()), (double)dr[2]));
+            }
             return datalist;
         }
 
