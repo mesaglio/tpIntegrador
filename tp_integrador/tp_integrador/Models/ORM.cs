@@ -168,12 +168,13 @@ namespace tp_integrador.Models
 		private void GuardarCliente(Cliente cliente)
 		{
 			if (GetIDUsuarioIfExists(cliente.usuario, cliente.password) != -1) return;
+			var trans = DAOzona.Instancia.AsignarTransformador(cliente);
+			if (trans == -1) return;
 
 			var query = "INSERT INTO SGE.Usuario VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.usuario, cliente.password));
 
-			cliente.idUsuario = GetIDUsuarioIfExists(cliente.usuario, cliente.password);
-			var trans = DAOzona.Instancia.AsignarTransformador(cliente);
+			cliente.idUsuario = GetIDUsuarioIfExists(cliente.usuario, cliente.password);			
 
 			query = "INSERT INTO SGE.Cliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121), '{5}', '{6}', '{7}', '{8}', '{9}')";
 			Query(String.Format(query, cliente.idUsuario, (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, trans));
@@ -257,6 +258,7 @@ namespace tp_integrador.Models
 			DateTime fechaEstado;
 			double consumo;
 			string nombre, concreto;
+			bool convertido;
 
 			idD = (Int32)row["dpc_idDispositivo"];
 			idC = (Int32)row["dpc_idUsuario"];
@@ -266,8 +268,9 @@ namespace tp_integrador.Models
 			consumo = Double.Parse(row["disp_consumo"].ToString());
 			estado = (Byte)row["dpc_estado"];
 			fechaEstado = (DateTime)row["dpc_fechaEstado"];
+			convertido = (Boolean)row["dpc_convertido"];
 
-			return new Inteligente(idD, idC, numero, nombre + " " + concreto, consumo, estado, fechaEstado);
+			return new Inteligente(idD, idC, numero, nombre + " " + concreto, consumo, estado, fechaEstado, convertido);
 		}
 
 		private Estandar GetEstandarFromData(DataRow row)
@@ -324,8 +327,8 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
 			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121),'{5}')";
-			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), DBNull.Value));
+			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121),'{5}', '{6}')";
+			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), DBNull.Value, disp.Convertido ? 1 : 0));
 		}
 
 		private void GuardarEstandar(Estandar disp)
@@ -351,8 +354,8 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
 			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
 
-			query = "UPDATE SGE.DispositivoPorCliente SET dpc_estado = '{0}', dpc_fechaEstado = '{1}' WHERE dpc_idDispositivo = '{2}' AND dpc_idUsuario = '{3}' AND dpc_numero = '{4}'";
-			Query(String.Format(query, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), disp.IdDispositivo, disp.IdCliente, disp.Numero));
+			query = "UPDATE SGE.DispositivoPorCliente SET dpc_estado = '{0}', dpc_fechaEstado = '{1}', dpc_convertido = '{5}' WHERE dpc_idDispositivo = '{2}' AND dpc_idUsuario = '{3}' AND dpc_numero = '{4}'";
+			Query(String.Format(query, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), disp.IdDispositivo, disp.IdCliente, disp.Numero, disp.Convertido ? 1 : 0));
 
 		}
 

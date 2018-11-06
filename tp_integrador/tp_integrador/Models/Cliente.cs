@@ -92,7 +92,7 @@ namespace tp_integrador.Models
 		
         public void NuevoDispositivoInteligente(int idDisp,string nombre, double consumo)
         {			
-            dispositivos.Add(new Inteligente(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, 0, DateTime.Now));
+            dispositivos.Add(new Inteligente(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, 0, DateTime.Now, false));
             Puntos += 15;
         }
 		
@@ -103,7 +103,7 @@ namespace tp_integrador.Models
 
         public void ConvertirAInteligente(Estandar aparato)
         {
-			Inteligente adaptado = new Inteligente(aparato.IdDispositivo, idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, 0, DateTime.Now);
+			Inteligente adaptado = new Inteligente(aparato.IdDispositivo, idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, 0, DateTime.Now, true);
             dispositivos.Remove(aparato);
             dispositivos.Add(adaptado);
             Puntos += 10;

@@ -178,6 +178,7 @@ CREATE TABLE SGE.DispositivoPorCliente (
   dpc_estado TINYINT,
   dpc_fechaEstado DATETIME,
   dpc_usoDiario TINYINT,
+  dpc_convertido BIT NOT NULL,
   PRIMARY KEY (dpc_idUsuario, dpc_idDispositivo, dpc_numero),
   FOREIGN KEY (dpc_idUsuario) REFERENCES SGE.Cliente (clie_idUsuario),
   FOREIGN KEY (dpc_idDispositivo) REFERENCES SGE.DispositivoGenerico (disp_idDispositivo))
