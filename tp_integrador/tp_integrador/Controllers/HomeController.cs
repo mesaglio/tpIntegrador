@@ -14,50 +14,44 @@ namespace tp_integrador.Controllers
         {
             return PartialView("_NotFound"); ;
         }
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult Login(Usuarios model)
-        {
-            // DAOUsuario data = new DAOUsuario();
-            string p = model.password;
-            
-            int sesionid = ORM.Instancia.GetIDUsuarioIfExists(model.usuario, HashThis.Instancia.GetHash(p));
-            Session["IDUsuario"] = sesionid;
-            //Usuarios u =  data.InicioSecion(model);
-            if ((int)Session["IDUsuario"] <= 0)
-            {
-                return View();
-            }
-            else
-            {
-                dynamic user = ORM.Instancia.GetUsuario((int)Session["IDUsuario"]);
 
+		[HttpPost]
+		[AllowAnonymous]
+		public ActionResult Login(Usuarios model)
+		{
+			// DAOUsuario data = new DAOUsuario();
+			string p = model.password;
 
-                Session["Usuario"] = user;
-                            
-                //u.SetLoginOn();
-                if (User.GetType() == typeof(Administrador))
-                {
-                    Session["Admin"] = true;
-                    return View("Administrador");
-                }
-                if (User.GetType() == typeof(Cliente))
-                {
-                    Session["Admin"] = false;
-                    return View("../Cliente/Cliente");
-                }
-                if (User.GetType() != typeof(Cliente)  && User.GetType() != typeof(Administrador))
-                {
-                    return View();
-                }
+			int sesionid = ORM.Instancia.GetIDUsuarioIfExists(model.usuario, HashThis.Instancia.GetHash(p));
+			Session["IDUsuario"] = sesionid;
+			//Usuarios u =  data.InicioSecion(model);
+			if ((int)Session["IDUsuario"] <= 0) return View();
+			else
+			{
+				dynamic user = ORM.Instancia.GetUsuario((int)Session["IDUsuario"]);
 
-            }
-        }
-        public ActionResult Logout()
+				Session["Usuario"] = user;
+
+				//u.SetLoginOn();
+				if (user.GetType() == typeof(Administrador))
+				{
+					Session["Admin"] = true;
+					return View("Administrador");
+				}
+				else
+				{
+					Session["Admin"] = false;
+					return View("../Cliente/Cliente");
+				}
+			}
+		}
+
+		public ActionResult Logout()
         {
             Session.Contents.RemoveAll();
             return View("Index");
         }
+
         public ActionResult Index()
         {
             return View();
