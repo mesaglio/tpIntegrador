@@ -97,6 +97,15 @@ namespace tp_integrador.Controllers
              return View( z.Transformadores);
         }
         
-        
+        public ActionResult Reporte()
+        {
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            
+
+
+            return View("../Reportes/Reportes");
+        }
+
+
     }
 }
