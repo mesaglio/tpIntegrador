@@ -223,7 +223,7 @@ namespace tp_integrador.Models
 
 		public List<Dispositivo> GetDispositivos(int idCliente)
 		{
-			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) WHERE dpc_idCliente == '{0}'";
+			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) WHERE dpc_idUsuario = '{0}'";
 			var data = Query(String.Format(query, idCliente)).Tables[0];
 			if (data.Rows.Count == 0) return null;
 
@@ -1028,6 +1028,7 @@ namespace tp_integrador.Models
 
         #region Repodrtes
         private string Rename(string i) { if (i == "0") return "Estandar"; else return "Inteligente"; }
+        /*
         public List<KeyValuePair<string, double>> GetLastPeriodoDispositivoIE2()
             // retorna una lista donde string es inteligente o estandar y el consumo toral
         {
@@ -1040,7 +1041,7 @@ namespace tp_integrador.Models
                 datalist.Add(new KeyValuePair<string, double>(Rename(dr[0].ToString()),dr.[2]));
             }
             return datalist;
-        }
+        }*/
         public List<KeyValuePair<string, double>> GetLastPeriodoDispositivoIE()
         // retorna una lista donde string es inteligente o estandar y el consumo toral
         {
