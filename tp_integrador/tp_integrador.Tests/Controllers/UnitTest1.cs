@@ -16,13 +16,14 @@ namespace tp_integrador.Tests
         static Categoria categoria = new Categoria("R1", 10, 150, 18.76m, 0.644m);
         static Cliente userCreado = new Cliente(3, "nicolas", "perez", "calle cualquiera 123",coordenadas, "nico", "1234", "44112233", DateTime.Now.AddYears(-20).AddMonths(-3), categoria, "DNI", "12345678");
         public static List<int> clientes = new List<int>(3);
-        static Transformador transf = new Transformador(1, 1, -34.6082, -58.3713, true,clientes);
+        static Transformador transf = new Transformador(1, 1, -34.60, -58.3713, true,clientes);
         public TestContext TestContext;
+        public DataRow data;
 
         [TestMethod]
         public void TestDeCliente()
         {
-            
+            DAOzona.Instancia.InitialLoad();
             //crear un cliente, modificarlo y fijarse que no se updeteo en la base
             ORM.Instancia.Insert(transf);
             ORM.Instancia.Insert(categoria);
@@ -37,7 +38,7 @@ namespace tp_integrador.Tests
             Cliente userModificado = ORM.Instancia.GetUsuario(3);
 
             //corroboro que no son iguales
-            Assert.AreEqual(userCreado, userModificado);
+            Assert.AreNotEqual(userCreado, userModificado);
         }
 
         [TestMethod]
@@ -46,20 +47,21 @@ namespace tp_integrador.Tests
             //Crear un dispositivo, mostrar por consola los intervalos que estuvo encendido
             //durante el ultimo mes, modificar su nombre updetearlo y verificar que se updeteo
             //creo user
+            DAOzona.Instancia.InitialLoad();
             ORM.Instancia.Insert(transf);
             ORM.Instancia.Insert(categoria);
             ORM.Instancia.Insert(userCreado);
             //creo dispositivo
             DateTime dia = new DateTime(2018, 10, 01, 10, 00, 30);
             Dispositivo tele = new Dispositivo(1, 31, 1, "Tele Standar", 40);
-            Inteligente televisor = new Inteligente(1, 31, 1, "Televisor", 40, 0, dia);
+            Inteligente televisor = new Inteligente(1, 31, 1, "Televisor", 40, 0, dia,false);
 
 
             ORM.Instancia.Insert(tele);
             ORM.Instancia.Insert(televisor);
 
             //modifico el televisor cambiandole el nombre
-            Inteligente televisorCambiado = new Inteligente(1, 31, 1, "Smart TV", 40, 0, dia);
+            Inteligente televisorCambiado = new Inteligente(1, 31, 1, "Smart TV", 40, 0, dia, false);
             ORM.Instancia.Update(televisorCambiado);
 
             List<Dispositivo> DispositivosDe31 = ORM.Instancia.GetDispositivos(31);
@@ -74,7 +76,7 @@ namespace tp_integrador.Tests
         {
             DateTime dia = new DateTime(2018, 10, 01, 10, 00, 30);
             List<Inteligente> dispositivo = new List<Inteligente>();
-            Inteligente televisor = new Inteligente(1, 31, 1, "Televisor", 40, 0, dia);
+            Inteligente televisor = new Inteligente(1, 31, 1, "Televisor", 40, 0, dia, false);
             dispositivo.Add(televisor);
             List<int> reglas = new List<int>();
             Actuador actuador = new Actuador(1, "actuador", reglas, 31, dispositivo);
@@ -85,6 +87,7 @@ namespace tp_integrador.Tests
         [TestMethod]
         public void TestTransformadores()
         {
+            DAOzona.Instancia.InitialLoad();
             ORM.Instancia.Insert(transf);
             ORM.Instancia.Insert(categoria);
             ORM.Instancia.Insert(userCreado);
