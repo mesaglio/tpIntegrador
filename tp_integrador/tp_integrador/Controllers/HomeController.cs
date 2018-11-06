@@ -37,16 +37,18 @@ namespace tp_integrador.Controllers
                             
                 //u.SetLoginOn();
                 if (User.GetType() == typeof(Administrador))
-
-
                 {
                     Session["Admin"] = true;
                     return View("Administrador");
                 }
-                else
+                if (User.GetType() == typeof(Cliente))
                 {
                     Session["Admin"] = false;
                     return View("../Cliente/Cliente");
+                }
+                if (User.GetType() != typeof(Cliente)  && User.GetType() != typeof(Administrador))
+                {
+                    return View();
                 }
 
             }
