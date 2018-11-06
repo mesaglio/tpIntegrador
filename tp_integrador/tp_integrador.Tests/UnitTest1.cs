@@ -52,23 +52,23 @@ namespace tp_integrador.Tests
             ORM.Instancia.Insert(categoria);
             ORM.Instancia.Insert(userCreado);
 
-            //creo dispositivo
-            DateTime dia = new DateTime(2018, 10, 01, 10, 00, 30);
-            Estandar tele = new Estandar(5,3,4,"Prueba Estandar",40,8);
-            Inteligente televisor = new Inteligente(80, 3, 1, "Televisor", 40, 0, dia, false);
-			
-            ORM.Instancia.Insert(tele);
-            ORM.Instancia.Insert(televisor);
+            //obtengo los dispositivos del cliente
+            List<Dispositivo> dispo = ORM.Instancia.GetDispositivos(3);
+            Dispositivo dispositivo = dispo.First();
+            //int id = dispositivo.IdDispositivo;
+            String nombreOriginal = dispo.First().Nombre;
+
 
             //modifico el televisor cambiandole el nombre
-            Inteligente televisorCambiado = new Inteligente(80, 3, 1, "Smart TV", 40, 0, dia, false);
-            ORM.Instancia.Update(televisorCambiado);
+            dispositivo.Nombre = "Aire Samsung";
+            ORM.Instancia.Update(dispositivo);
 
-            List<Dispositivo> DispositivosDe3 = ORM.Instancia.GetDispositivos(3);
-            Dispositivo televi = DispositivosDe3.First();
-            String nombre = televi.Nombre;
+            //recupero el dispositivo modificado
+            List<Dispositivo> dispositivoss = ORM.Instancia.GetDispositivos(3);
+            Dispositivo disCambiado = dispo.First();
+            String nombreCambiado = dispo.First().Nombre;
 
-            Assert.AreNotEqual("Televisor", nombre);
+            Assert.AreNotEqual(nombreCambiado, nombreOriginal);
         }
 
         [TestMethod]
