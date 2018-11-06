@@ -1026,8 +1026,53 @@ namespace tp_integrador.Models
 			return ds;			
 		}
 
+        #region Repodrtes
+        private string Rename(string i) { if (i == "0") return "Estandar"; else return "Inteligente"; }
+        public List<KeyValuePair<string, double>> GetLastPeriodoDispositivoIE2()
+            // retorna una lista donde string es inteligente o estandar y el consumo toral
+        {
+            var query = "SELECT disp_inteligente, SUM(dpc_usoDiario*disp_consumo) FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo)  group by disp_inteligente";
+            var data = Query(query).Tables[0];
+            if (data.Rows.Count == 0) return null;
+            List<KeyValuePair<string, double>> datalist = new List<KeyValuePair<string, double>>();
+            foreach (DataRow dr in data.Rows)
+            {
+                datalist.Add(new KeyValuePair<string, double>(Rename(dr[0].ToString()),dr.[2]));
+            }
+            return datalist;
+        }
+        public List<KeyValuePair<string, double>> GetLastPeriodoDispositivoIE()
+        // retorna una lista donde string es inteligente o estandar y el consumo toral
+        {
+            var dispos = GetAllDispositivos();
+            double consumoInteligente = 0;
+            double consumoEstandar = 0;
 
-	}
+            List<KeyValuePair<string, double>> datalist = new List<KeyValuePair<string, double>>();
+            foreach (var dip in dispos)
+            {
+                if (dip.GetType() == typeof(Inteligente)) consumoInteligente = consumoInteligente + dip.Consumo;
+                if (dip.GetType() == typeof(Estandar)) consumoEstandar = consumoEstandar + dip.Consumo;
+                
+            }
+            datalist.Add(new KeyValuePair<string, double>("Inteligente", consumoInteligente));
+            datalist.Add(new KeyValuePair<string, double>("Estandar", consumoEstandar));
+            return datalist;
+        }
+
+        public List<KeyValuePair<string, double>> GetConsumoPorTranformador()
+        {
+            var query = "SELECT trans_idTransformador,SUM(dpc_usoDiario*disp_consumo) FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) JOIN SGE.Cliente on (clie_idUsuario = dpc_idUsuario) JOIN SGE.Transformador on trans_idTransformador = clie_transformador group by trans_idTransformador";
+            var data = Query(query).Tables[0];
+            if (data.Rows.Count == 0) return null;
+            List<KeyValuePair<string, double>> datalist = new List<KeyValuePair<string, double>>();
+
+            return datalist;
+        }
+
+        #endregion
+
+    }
 
 
 }
