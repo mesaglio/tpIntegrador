@@ -1076,6 +1076,32 @@ namespace tp_integrador.Models
             return datalist;
         }
 
+
+        public List<KeyValuePair<string, double>> GetPeriodoDispositivoPorUser()
+        // retorna una lista donde string es idusuario y el int el consumo toral
+        {
+            var dispos = GetAllDispositivos();
+            double consumo = 0;
+
+            List<KeyValuePair<string, double>> datalist = new List<KeyValuePair<string, double>>();
+           
+                //dispos.GroupBy
+                
+                foreach (var dip in dispos)
+            {
+                { 
+                // ToDo: hacer que esta mierda agrupe por idcliente
+                
+                    consumo = consumo + dip.Consumo;
+                    datalist.Add(new KeyValuePair<string, double>(dip.IdCliente.ToString(), consumo));
+                }
+            }
+                
+
+        
+            return datalist;
+        }
+
         #endregion
 
     }
