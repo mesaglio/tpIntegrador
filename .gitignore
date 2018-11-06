@@ -1,6 +1,6 @@
-tp_integrador/tp_integrador/obj/Debug/
-tp_integrador/tp_integrador.Tests/obj/Debug/
-tp_integrador/tp_integrador.Tests/bin/
+tp_integrador/tp_integrador/obj/Debug/*
+tp_integrador/tp_integrador.Tests/obj/Debug/*
+tp_integrador/tp_integrador.Tests/bin/*
 .vs/
 **/packages/*
 # except build/, which is used as an MSBuild target.
@@ -44,7 +44,7 @@ bld/
 # NUNIT
 *.VisualState.xml
 TestResult.xml
-
+tp_integrador/tp_integrador/bin/*
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
