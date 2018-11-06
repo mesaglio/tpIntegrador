@@ -110,6 +110,7 @@ CREATE TABLE SGE.Cliente (
   clie_categoria VARCHAR(3) NOT NULL,
   clie_puntos INT NOT NULL,
   clie_transformador INT,
+  clie_autoSimplex BIT NOT NULL,
   PRIMARY KEY (clie_idUsuario),
   FOREIGN KEY (clie_idUsuario) REFERENCES SGE.Usuario (usua_idUsuario),
   FOREIGN KEY (clie_transformador) REFERENCES SGE.Transformador (trans_idTransformador),
@@ -290,7 +291,7 @@ INSERT INTO SGE.Administrador VALUES (1, CONVERT(datetime, '2018-9-15 18:20:23:0
 INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8')
 -- username: popo
 -- password: pepe123
-INSERT INTO SGE.Cliente VALUES (2,34.604048, 58.381673,'9999999999',GETDATE(),'88888888','DNI','R1',2,1)
+INSERT INTO SGE.Cliente VALUES (2, 34.604048, 58.381673, '9999999999', GETDATE(), '88888888', 'DNI', 'R1', 2, 1, 0)
 
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)

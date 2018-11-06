@@ -6,8 +6,10 @@
 <h2>GestionDeDispositivos</h2>
 
 
-	@using (Html.BeginForm("CalculoSimplex", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-	{
+@using (Html.BeginForm("CalculoSimplex", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
 	<button type="submit">Calcular Mejor Consumo</button>
-	}
-	
+}
+
+@Html.CheckBoxFor(m => m.AutoSimplex)
+

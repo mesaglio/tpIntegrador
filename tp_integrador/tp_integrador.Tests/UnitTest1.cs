@@ -14,7 +14,7 @@ namespace tp_integrador.Tests
     {
         static Location coordenadas = new Location(-34.6083, -58.3712);
         static Categoria categoria = new Categoria("R1", 10, 150, 18.76m, 0.644m);
-        static Cliente userCreado = new Cliente(3, "nicolas", "perez", "calle cualquiera 123", coordenadas, "nico", "1234", "44112233", DateTime.Now.AddYears(-20).AddMonths(-3), categoria, "DNI", "12345678");
+        static Cliente userCreado = new Cliente(3, "nicolas", "perez", "calle cualquiera 123", coordenadas, "nico", "1234", "44112233", DateTime.Now.AddYears(-20).AddMonths(-3), categoria, "DNI", "12345678", false);
         public static List<int> clientes = new List<int>(3);
         static Transformador transf = new Transformador(1, 1, -34.60, -58.3713, true, clientes);
         public TestContext TestContext;
@@ -56,8 +56,7 @@ namespace tp_integrador.Tests
             DateTime dia = new DateTime(2018, 10, 01, 10, 00, 30);
             Estandar tele = new Estandar(5,3,4,"Prueba Estandar",40,8);
             Inteligente televisor = new Inteligente(80, 3, 1, "Televisor", 40, 0, dia, false);
-
-
+			
             ORM.Instancia.Insert(tele);
             ORM.Instancia.Insert(televisor);
 

@@ -107,6 +107,7 @@ namespace tp_integrador.Models
 			string telefono, docNum, docTipo;
 			int puntos;
 			double latitud, longitud;
+			bool autoSimplex;
 			DateTime fechaAlta;
 
 			nombre = userData["usua_nombre"].ToString();
@@ -123,10 +124,11 @@ namespace tp_integrador.Models
 			docTipo = data.Rows[0]["clie_doc_tipo"].ToString();
 			categoria = data.Rows[0]["clie_categoria"].ToString();
 			puntos = (Int32)data.Rows[0]["clie_puntos"];
+			autoSimplex = (Boolean)data.Rows[0]["clie_autoSimplex"];
 
 			Location coordenadas = new Location(latitud, longitud);
 
-			return new Cliente(idCliente, nombre, apellido, domicilio, coordenadas, username, password, telefono, fechaAlta, GetCategoria(categoria), docTipo, docNum, dispositivos);
+			return new Cliente(idCliente, nombre, apellido, domicilio, coordenadas, username, password, telefono, fechaAlta, GetCategoria(categoria), docTipo, docNum, autoSimplex, dispositivos);
 		}
 
 		private List<int> GetClientesIDOfTransformador(int idTransformador)
@@ -175,10 +177,10 @@ namespace tp_integrador.Models
 			var query = "INSERT INTO SGE.Usuario VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.usuario, cliente.password));
 
-			cliente.idUsuario = GetIDUsuarioIfExists(cliente.usuario, cliente.password);			
+			cliente.idUsuario = GetIDUsuarioIfExists(cliente.usuario, cliente.password);
 
-			query = "INSERT INTO SGE.Cliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121), '{5}', '{6}', '{7}', '{8}', '{9}')";
-			Query(String.Format(query, cliente.idUsuario, (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, trans));
+			query = "INSERT INTO SGE.Cliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121), '{5}', '{6}', '{7}', '{8}', '{9}', '{10}')";
+			Query(String.Format(query, cliente.idUsuario, (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, trans, cliente.AutoSimplex));
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
@@ -197,9 +199,8 @@ namespace tp_integrador.Models
 			var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.password, cliente.idUsuario));
 
-			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = '{1}', clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}' WHERE clie_idUsuario = '{9}'";
-			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio, cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario));
-
+			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = '{1}', clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}', clie_autoSimplex = '{10}' WHERE clie_idUsuario = '{9}'";
+			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio, cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario, cliente.AutoSimplex));
 		}
 
 		private void ActualizarAdministrador(Administrador admin)
@@ -337,8 +338,8 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
 			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}')";
-			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, DBNull.Value, DBNull.Value, disp.usoDiario));
+			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}', '{6}')";
+			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, DBNull.Value, DBNull.Value, disp.usoDiario, 0));
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
@@ -1026,7 +1027,7 @@ namespace tp_integrador.Models
 			return ds;			
 		}
 
-        #region Repodrtes
+        #region Reportes
         private string Rename(string i) { if (i == "0") return "Estandar"; else return "Inteligente"; }
         /*
         public List<KeyValuePair<string, double>> GetLastPeriodoDispositivoIE2()
@@ -1041,7 +1042,8 @@ namespace tp_integrador.Models
                 datalist.Add(new KeyValuePair<string, double>(Rename(dr[0].ToString()),dr.[2]));
             }
             return datalist;
-        }*/
+        }
+		*/
         public List<KeyValuePair<string, double>> GetLastPeriodoDispositivoIE()
         // retorna una lista donde string es inteligente o estandar y el consumo toral
         {
