@@ -5,7 +5,7 @@ using System.Web;
 
 namespace tp_integrador.Models
 {
-    public class EstadoGuardado
+    public class EstadoDispositivo
     {
         public int Usuario { get; set; }
         public int Dispositivo { get; set; }
@@ -14,7 +14,7 @@ namespace tp_integrador.Models
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
 
-		public EstadoGuardado(int user, int dispositivo, int numero, byte estado, DateTime desde, DateTime hasta)
+		public EstadoDispositivo(int user, int dispositivo, int numero, byte estado, DateTime desde, DateTime hasta)
         {
             Usuario = user;
             Dispositivo = dispositivo;
@@ -30,19 +30,19 @@ namespace tp_integrador.Models
             return tiempo.TotalHours;
         }
 
-        public EstadoGuardado GetEstadoEntre(DateTime desde, DateTime hasta)
+        public EstadoDispositivo GetEstadoEntre(DateTime desde, DateTime hasta)
         {
             if (FechaFin < desde || hasta < FechaInicio) return null;
             else if (desde < FechaInicio && FechaFin < hasta) return this;
             else if (FechaInicio < desde && desde < FechaFin)
             {
-                EstadoGuardado tramo = this;
+                EstadoDispositivo tramo = this;
                 tramo.FechaInicio = desde;
                 return tramo;              
             }
             else
             {
-                EstadoGuardado tramo = this;
+                EstadoDispositivo tramo = this;
                 tramo.FechaFin = hasta;
                 return tramo;
             }

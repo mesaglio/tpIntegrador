@@ -37,8 +37,9 @@ namespace tp_integrador.Models
 			if (type == typeof(Sensor)) GuardarSensor(unaClase);
 			if (type == typeof(Actuador)) GuardarActuador(unaClase);
 			if (type == typeof(Regla)) GuardarRegla(unaClase);
-			if (type == typeof(EstadoGuardado)) GuardarEstado(unaClase);
+			if (type == typeof(EstadoDispositivo)) GuardarEstado(unaClase);
 			if (type == typeof(TemplateDispositivo)) GuardarTemplate(unaClase);
+			if (type == typeof(EstadoSensor)) GuardarEstadoSensor(unaClase);
 		}
 
 		public void Update(dynamic unaClase)
@@ -241,10 +242,10 @@ namespace tp_integrador.Models
 		private List<Dispositivo> GetDispositivosFromData(DataTable data)
 		{
 			var lista = new List<Dispositivo>();
-
+			
 			foreach (DataRow row in data.Rows)
 			{
-				if ((Boolean)row["disp_inteligente"]) lista.Add(GetInteligenteFromData(row));
+				if ((Boolean)row["disp_inteligente"] || (Boolean)row["dpc_convertido"]) lista.Add(GetInteligenteFromData(row));
 				else lista.Add(GetEstandarFromData(row));
 			}
 
@@ -844,13 +845,13 @@ namespace tp_integrador.Models
 		// ------------------------------------ DELETE ------------------------------------
 		#endregion
 
-		#region EstadoGuardado
+		#region EstadoDispositivo
 
 		// ------------------------------------ SELECT ------------------------------------
 
-		public List<EstadoGuardado> GetEstadosEntre(int idC, int idD, int numero, DateTime desde, DateTime hasta)
+		public List<EstadoDispositivo> GetEstadosEntre(int idC, int idD, int numero, DateTime desde, DateTime hasta)
 		{
-			var lista = new List<EstadoGuardado>();
+			var lista = new List<EstadoDispositivo>();
 
 			var query = "SELECT * FROM SGE.EstadoDispositivo WHERE (edisp_idUsuario = '{0}' AND edisp_idDispositivo = '{1}' AND edisp_numero = '{2}') AND NOT (edisp_fechaFin <= CONVERT(datetime, '{3}', 121) OR edisp_fechaInicio >= CONVERT(datetime, '{4}', 121)) ";
 			var data = Query(String.Format(query, idC, idD, numero, desde.ToString("yyyy-MM-dd HH:mm:ss.mmm"), hasta.ToString("yyyy-MM-dd HH:mm:ss.mmm"))).Tables[0];
@@ -864,7 +865,7 @@ namespace tp_integrador.Models
 			return lista;
 		}
 
-		private EstadoGuardado GetEstadoFromData(DataRow row)
+		private EstadoDispositivo GetEstadoFromData(DataRow row)
 		{
 			int idC, idD, numero;
 			DateTime fInicio, fFin;
@@ -876,20 +877,55 @@ namespace tp_integrador.Models
 			fInicio = (DateTime)row["edisp_fechaInicio"];
 			fFin = (DateTime)row["edisp_fechaFin"];
 
-			return new EstadoGuardado(idC, idD, numero, estado, fInicio, fFin);
+			return new EstadoDispositivo(idC, idD, numero, estado, fInicio, fFin);
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------
 
-		private void GuardarEstado(EstadoGuardado eg)
+		private void GuardarEstado(EstadoDispositivo eg)
 		{
 			var query = "INSERT INTO SGE.EstadoDispositivo VALUES ('{0}', '{1}', '{2}', CONVERT(datetime, '{3}', 121), CONVERT(datetime, '{4}', 121), '{5}')";
 			Query(String.Format(query, eg.Usuario, eg.Dispositivo, eg.DispNumero, eg.FechaInicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), eg.FechaFin.ToString("yyyy-MM-dd HH:mm:ss.mmm"), eg.Estado));
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
-		// No se actualizan los estado guardos
+		// No se actualizan los Estados de los Dispositivos
 		// ------------------------------------ DELETE ------------------------------------
+
+		#endregion
+
+		#region EstadoSensor
+
+		// ------------------------------------ SELECT ------------------------------------
+
+		public List<EstadoSensor> GetAllEstadoSensorFromSensor(int idSensor)
+		{
+			var lista = new List<EstadoSensor>();
+
+			var query = "SELECT * FROM SGE.EstadoSensor WHERE esensor_idSensor = '{0}'";
+			var data = Query(String.Format(query, idSensor)).Tables[0];
+			if (data.Rows.Count == 0) return lista;
+
+			foreach (DataRow row in data.Rows)
+			{
+				lista.Add(new EstadoSensor(idSensor, (Int32)row["esensor_magnitud"]));
+			}
+
+			return lista;
+		}
+		
+		// ------------------------------------ INSERTS ------------------------------------
+
+		private void GuardarEstadoSensor(EstadoSensor estado)
+		{
+			var query = "INSERT INTO SGE.EstadoSensor VALUES ('{0}', '{1}')";
+			Query(String.Format(query, estado.IdSensor, estado.Magnitud));
+		}
+		
+		// ------------------------------------ UPDATES ------------------------------------
+		// No se actualizan los Estados de los Sensores
+		// ------------------------------------ DELETE ------------------------------------
+
 		#endregion
 
 		#region TemplateDispositivo
@@ -962,8 +998,7 @@ namespace tp_integrador.Models
 			{
 				connection.Open();
 				var query = "SELECT usua_idUsuario FROM SGE.Usuario WHERE usua_username = @user AND usua_password = @pass";
-				//password = HashThis.Instancia.GetHash(password);
-
+				
 				using (SqlCommand command = new SqlCommand(query, connection))
 				{					
 					command.Parameters.Add(new SqlParameter("user", username));

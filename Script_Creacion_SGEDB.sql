@@ -13,6 +13,7 @@ DROP TABLE SGE.DispositivoPorCliente
 DROP TABLE SGE.DispositivoGenerico
 DROP TABLE SGE.Actuador
 DROP TABLE SGE.Regla
+DROP TABLE SGE.EstadoSensor
 DROP TABLE SGE.Sensor
 DROP TABLE SGE.Cliente
 DROP TABLE SGE.Usuario
@@ -228,6 +229,17 @@ CREATE TABLE SGE.ActuadorPorRegla (
 GO
 
 -- -----------------------------------------------------
+-- Table SGE.ActuadorPorRegla
+-- -----------------------------------------------------
+
+CREATE TABLE SGE.EstadoSensor (
+  esensor_idSensor INT NOT NULL,
+  esensor_magnitud INT NOT NULL,
+  PRIMARY KEY (esensor_idSensor, esensor_magnitud),
+  FOREIGN KEY (esensor_idSensor) REFERENCES SGE.Sensor (sensor_idSensor))
+GO
+
+-- -----------------------------------------------------
 -- Insert
 -- -----------------------------------------------------
 
@@ -280,9 +292,9 @@ INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974
 -- password: pepe123
 INSERT INTO SGE.Cliente VALUES (2,34.604048, 58.381673,'9999999999',GETDATE(),'88888888','DNI','R1',2,1)
 
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL,0)
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL,0)
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3,0)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3, 0)
 
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-12 20:12:53:242',121), CONVERT(datetime,'2018-03-13 06:02:13:345',121), 0)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 06:02:13:346',121), CONVERT(datetime,'2018-03-13 14:08:23:545',121), 1)

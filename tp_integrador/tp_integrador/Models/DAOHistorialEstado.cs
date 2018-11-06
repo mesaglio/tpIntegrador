@@ -18,10 +18,10 @@ namespace tp_integrador.Models
 			numero = num;
         }
 		
-		public List<EstadoGuardado> GetEstados(DateTime desde, DateTime hasta)
+		public List<EstadoDispositivo> GetEstados(DateTime desde, DateTime hasta)
         {
-            List<EstadoGuardado> solicitados = new List<EstadoGuardado>();
-			EstadoGuardado estado;
+            List<EstadoDispositivo> solicitados = new List<EstadoDispositivo>();
+			EstadoDispositivo estado;
 
 			var fromDB = ORM.Instancia.GetEstadosEntre(usuario, dispositivo, numero, desde, hasta);
 
@@ -43,7 +43,7 @@ namespace tp_integrador.Models
 
         public void CargarEstado(byte estado, DateTime desde, DateTime hasta)
         {						
-			ORM.Instancia.Insert(new EstadoGuardado(usuario, dispositivo, numero, estado, desde, hasta));
+			ORM.Instancia.Insert(new EstadoDispositivo(usuario, dispositivo, numero, estado, desde, hasta));
         }
 
     }

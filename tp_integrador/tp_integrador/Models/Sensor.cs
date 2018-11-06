@@ -11,7 +11,7 @@ namespace tp_integrador.Models
 		public int idSensor { get; set; }
 		public string TipoSensor { get; set; }
 		public int idCliente { get; set; }
-		public int Magnitud { get => Magnitud; set { Magnitud = value; Notify(); } }
+		public int Magnitud { get => Magnitud; set { ORM.Instancia.Insert(new EstadoSensor(idSensor, Magnitud)); Magnitud = value; Notify(); } }
 		public List<Regla> Observadores { get; set; }
 
 		public Sensor(int id, string detalle, int cliente, int magnitud, List<Regla> observadores)

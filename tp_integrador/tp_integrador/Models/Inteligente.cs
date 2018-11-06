@@ -59,10 +59,10 @@ namespace tp_integrador.Models
 
         public double ConsumoDesdeHasta(DateTime desde, DateTime hasta)
         {
-            List<EstadoGuardado> estadosEnPeriodo = daoEstado.GetEstados(desde, hasta);
+            List<EstadoDispositivo> estadosEnPeriodo = daoEstado.GetEstados(desde, hasta);
 
             double valor = 0;
-            foreach (EstadoGuardado guardado in estadosEnPeriodo)
+            foreach (EstadoDispositivo guardado in estadosEnPeriodo)
             {
                 valor += ConsumoEnPor(guardado.Estado, guardado.GetHoras());
             }

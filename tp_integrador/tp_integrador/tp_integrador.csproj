@@ -168,7 +168,8 @@
     <Compile Include="Models\DAOHistorialEstado.cs" />
     <Compile Include="Models\DAOUsuario.cs" />
     <Compile Include="Models\Dispositivo.cs" />
-    <Compile Include="Models\EstadoGuardado.cs" />
+    <Compile Include="Models\EstadoDispositivo.cs" />
+    <Compile Include="Models\EstadoSensor.cs" />
     <Compile Include="Models\Estandar.cs" />
     <Compile Include="Models\HashThis.cs" />
     <Compile Include="Models\Inteligente.cs" />
