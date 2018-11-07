@@ -1,4 +1,4 @@
-﻿@model tp_integrador.Models.Usuarios
+﻿
 @{
     /**/
 
@@ -9,35 +9,35 @@
 }
 
 
-@if (Model.IsAuthenticated())
+@if ((int)Session["IDUsuario"] > 0)
 {
     <p><h4>idusuario = @Session["IDUsuario"] </h4></p>
     if ((Boolean)Session["Admin"])
 
     {
-        <div class="jumbotron">
-            <p><h3>Aplicaciones</h3></p>
+        /*    <div class="jumbotron">
+                <p><h3>Aplicaciones</h3></p>
 
 
-            @Html.ActionLink("Cantidad de meses", "Listar", "Home", "/Home/listar", new { @class = "btn btn-primary btn-lg" })
+                @Html.ActionLink("Cantidad de meses", "Listar", "Home", "/Home/listar", new { @class = "btn btn-primary btn-lg" })
 
-            @Html.ActionLink("Importar desde json", "JsonImport", "Home", "/Home/JsonImport", new { @class = "btn btn-primary btn-lg" })
-        </div>
-
+                @Html.ActionLink("Importar desde json", "JsonImport", "Home", "/Home/JsonImport", new { @class = "btn btn-primary btn-lg" })
+            </div>
+            */
     }
     else
-    {
-        <div class="jumbotron">
-            <p><h3>Aplicaciones</h3></p>
-            @Html.ActionLink("Cargar Dispositivos", "CargarDispositivo", "Cliente", "/Cliente/CargarDispositivo", new { @class = "btn btn-primary btn-lg" })
+    {/*
+<div class="jumbotron">
+<p><h3>Aplicaciones</h3></p>
+@Html.ActionLink("Cargar Dispositivos", "CargarDispositivo", "Cliente", "/Cliente/CargarDispositivo", new { @class = "btn btn-primary btn-lg" })
 
-            @Html.ActionLink("Acceder al Dashboard", "Dashboard", "Cliente", "/Cliente/Dashboard", new { @class = "btn btn-primary btn-lg" })
+@Html.ActionLink("Acceder al Dashboard", "Dashboard", "Cliente", "/Cliente/Dashboard", new { @class = "btn btn-primary btn-lg" })
 
-            @Html.ActionLink("Gestionar Dispositibos", "GestionDeDispositivos", "Cliente", "/Cliente/GestionDeDispositivos", new { @class = "btn btn-primary btn-lg" })
+@Html.ActionLink("Gestionar Dispositibos", "GestionDeDispositivos", "Cliente", "/Cliente/GestionDeDispositivos", new { @class = "btn btn-primary btn-lg" })
 
-            @Html.ActionLink("Cargar Transformadores", "CargarTransformadores", "Cliente", "/Cliente/CargarTransformadores", new { @class = "btn btn-primary btn-lg" })
-        </div>
-
+@Html.ActionLink("Cargar Transformadores", "CargarTransformadores", "Cliente", "/Cliente/CargarTransformadores", new { @class = "btn btn-primary btn-lg" })
+</div>
+*/
     }
 }
 

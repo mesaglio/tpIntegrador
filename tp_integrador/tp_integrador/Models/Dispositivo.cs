@@ -5,20 +5,26 @@ using System.Web;
 
 namespace tp_integrador.Models
 {
-    public class Dispositivo
+    public abstract class Dispositivo
     {
+		public int IdDispositivo { get; set; }
+		public int IdCliente { get; set; }
 		public int Numero { get; set; }
 		public string Nombre { get; set; }
-        public double Consumo;
+        public double Consumo { get; set; }
+
         public bool EsInteligente = false;
 
-        public Dispositivo(int numero, string nombre, double consumo)
+        public Dispositivo(int idDisp, int idClie, int numero, string nombre, double consumo)
         {
+			IdDispositivo = idDisp;
+			IdCliente = idClie;
 			Numero = numero;
             Nombre = nombre;
             Consumo = consumo;            
         }
 
+		public abstract double ConsumoEnElMes();
        
 
     }

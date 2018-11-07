@@ -23,20 +23,22 @@
                         Sistema de Gesti&oacute;n Energ&eacute;tica
                     </h1>
                 </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @if (Session["IDUsuario"] == null) { } else {@Html.ActionLink("Cerrar Secion", "Logout", "Home", new { @class = "btn btn-primary btn-lg" })}
+                        @Html.ActionLink("Inicio", "Index", "Home", new { @class = "btn btn-primary btn-lg" })
+                        @Html.ActionLink("Acerca de", "About", "Home", new { @class = "btn btn-primary btn-lg" })
+                        @Html.ActionLink("Contacto", "Contact", "Home", new { @class = "btn btn-primary btn-lg" })
+                        @Html.ActionLink("Mapa de Transformadores", "Maps", "Home", "/Home/Maps", new { @class = "btn btn-primary btn-lg" })
 
+                    </ul>
+
+
+                </div>
 
 
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home", new { @class = "btn btn-primary btn-lg" })</li>
-                    <li>@Html.ActionLink("Acerca de", "About", "Home", new { @class = "btn btn-primary btn-lg" })</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home", new { @class = "btn btn-primary btn-lg" })</li>
-                    <li> @Html.ActionLink("Mapa de Transformadores", "Maps", "Home", "/Home/Maps", new { @class = "btn btn-primary btn-lg" })</li>
-                </ul>
-               
 
-            </div>
         </div>
 
     </div>

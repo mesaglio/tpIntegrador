@@ -43,25 +43,24 @@ namespace tp_integrador.Models
 		}
 
 		public string CrearConsulta(List<Dispositivo> dispositivos)
-		{
-			var json = new JSONObject(dispositivos);		
+		{			
+			var json = new JSONObject(dispositivos);
 			json.Restrictions.Add(new Restriction(dispositivos));
 
-			var cantidad = dispositivos.Count();						
+			var cantidad = dispositivos.Count();
 			for(int i = 0; i < cantidad; i++)
-			{				
+			{
 				foreach (var res in datosRestricciones)
 				{
-					if (res.Item1 == dispositivos[i].Nombre.Substring(0, dispositivos[i].Nombre.IndexOf(' ')))
+					if (res.Item1 == dispositivos[i].Nombre.Split(' ')[0])
 					{
-						json.Restrictions.Add(new Restriction(">=", res.Item2, i, cantidad));						
+						json.Restrictions.Add(new Restriction(">=", res.Item2, i, cantidad));
 						json.Restrictions.Add(new Restriction("<=", res.Item3, i, cantidad));
 					}
-				}				
-			}					 
+				}
+			}
 			
 			return JsonConvert.SerializeObject(json).ToLower();
-
 		}
 
 		//Clases Para Crear JSON
@@ -93,7 +92,6 @@ namespace tp_integrador.Models
 					Values.Add(item.Consumo);
 				}
 			}
-
 		}
 
 		private class JSONObject

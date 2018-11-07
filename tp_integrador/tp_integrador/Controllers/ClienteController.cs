@@ -15,13 +15,9 @@ namespace tp_integrador.Controllers
         private ActionResult PermisoDenegado()
         {
             return PartialView("_NotFound");
-        }
-
-
-
+        }				
 
         // GET: Cliente
-   
 
         public ActionResult Dashboard()
         {
@@ -32,7 +28,6 @@ namespace tp_integrador.Controllers
 
             return View(user);
         }
-
 		        
         public ActionResult GestionDeDispositivos()
         {
@@ -50,7 +45,6 @@ namespace tp_integrador.Controllers
               Zona model = new Zona("La Matanza", 100, 5478, 7896);
               model.RellenarTransformadores();
               return View(model);
-
 
           }*/
 
@@ -82,7 +76,7 @@ namespace tp_integrador.Controllers
         {
             if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            DAO_t_dispositivostemplate a = new DAO_t_dispositivostemplate();
+            DAOTemplates a = new DAOTemplates();
 
             return View("CargarDispositivo",model: a);
         }
@@ -106,22 +100,19 @@ namespace tp_integrador.Controllers
         {
             if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            if (disp == 0)
-            {
-                return CargarDispositivo();
-            }
+            if (disp == 0) return CargarDispositivo();			
             else
             {
-                DAO_t_dispositivostemplate a = new DAO_t_dispositivostemplate();
-                templateDisp dispositivo = a.Searchtemplatebyid(disp);
+                DAOTemplates a = new DAOTemplates();
+                TemplateDispositivo dispositivo = a.Searchtemplatebyid(disp);
                 Cliente unclietne = (Cliente)Session["Usuario"];
-                if (dispositivo.inteligente == "si") { unclietne.NuevoDispositivoInteligente(dispositivo.getNombreEntero(), dispositivo.consumo); }
-                else
-                    { unclietne.NuevoDispositivoEstandar(dispositivo.getNombreEntero(), dispositivo.consumo,0); }
+
+                if (dispositivo.Inteligente) unclietne.NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo);
+                else unclietne.NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, 0);
+
                 return View("LoadDispositivoJson");
             }
         }
-
 
         [HttpPost]
         [AllowAnonymous]
@@ -133,6 +124,7 @@ namespace tp_integrador.Controllers
 
             return View("Dashboard", model: unclietne);
         }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult ApagarDispositivo(string postdispositivo)
@@ -152,7 +144,11 @@ namespace tp_integrador.Controllers
 			Cliente uncliente = (Cliente)Session["Usuario"];
 
 			SIMPLEX sim = new SIMPLEX();
-			var respuesta = sim.GetSimplexData(sim.CrearConsulta(uncliente.dispositivos));
+
+			var listaDisp = uncliente.dispositivos;
+			listaDisp.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");
+
+			var respuesta = sim.GetSimplexData(sim.CrearConsulta(listaDisp));
 
 			var sb = new StringBuilder();
 			sb.AppendLine("<b>Consumo Optimo Para Sus Dispositivos: " + "</b><br/>");
@@ -168,7 +164,16 @@ namespace tp_integrador.Controllers
 			return Content(sb.ToString());
 		}
 
+		[HttpPost]
+		[AllowAnonymous]
+		public ActionResult AhorroAutomatico()
+		{
+			Cliente uncliente = (Cliente)Session["Usuario"];
+			uncliente.AutoSimplex = !uncliente.AutoSimplex;
 
-
+			ORM.Instancia.Update(uncliente);
+			
+			return View("GestionDeDispositivos", model: uncliente);
+		}
 	}
 }

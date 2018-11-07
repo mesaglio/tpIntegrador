@@ -16,6 +16,7 @@ namespace tp_integrador.Models
 
         public CargarJson()
         {
+			//TODO: Cambiar por singletons
             DaoUser = MvcApplication.Daobjeto;
             DaoZona = MvcApplication.GlobalZonas;
         }

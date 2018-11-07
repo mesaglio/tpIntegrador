@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gmap.net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,23 +14,27 @@ namespace tp_integrador.Models
         public string Documento_tipo { get; set; }
         public string Documento_numero { get; set; }
         public int Puntos { get; set; }
+		public bool AutoSimplex { get; set; }
+		public Location Coordenadas { get; set; }
+
         public List<Dispositivo> dispositivos;
 
         public List<Dispositivo> DispositivosInteligentes => dispositivos.FindAll(i => i.EsInteligente);
         public List<Dispositivo> DispositivosEstandar => dispositivos.FindAll(i => !i.EsInteligente);
-        //TODO: verificar si funciona estandar
+		//TODO: verificar si funciona estandar
 
-
-        public Cliente(int id, string name, string lastname, string home, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n) : base(id, name, lastname, home, user, clave)
+		public Cliente(int id, string name, string lastname, string home, Location coords, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n, bool simplex, List<Dispositivo> disp = null) : base(id, name, lastname, home, user, clave)
         {
+			Coordenadas = coords;
             Telefono = phone;
             Categoria = categ;
             Documento_tipo = doc_t;
             Documento_numero = doc_n;
             AltaServicio = alta;
+			AutoSimplex = simplex;
             dispositivos = new List<Dispositivo>();
+			if (disp != null) dispositivos = disp;
         }
-
 
         public int CantDispositivos()
         {
@@ -86,21 +91,21 @@ namespace tp_integrador.Models
         {
             aparato.SetUsoDiario(horas);
         }
-
-        public void NuevoDispositivoInteligente(string nombre, double consumo)
-        {
-            dispositivos.Add(new Inteligente(idUsuario, dispositivos.Count()+1, nombre, consumo, 0, DateTime.Now));
+		
+        public void NuevoDispositivoInteligente(int idDisp,string nombre, double consumo)
+        {			
+            dispositivos.Add(new Inteligente(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, 0, DateTime.Now, false));
             Puntos += 15;
         }
-
-        public void NuevoDispositivoEstandar(string nombre, double consumo, byte usoPromedio)
-        {
-            dispositivos.Add(new Estandar(dispositivos.Count+1, nombre, consumo, usoPromedio));
+		
+        public void NuevoDispositivoEstandar(int idDisp, string nombre, double consumo, byte usoPromedio)
+        {			
+            dispositivos.Add(new Estandar(idDisp, idUsuario, dispositivos.Count+1, nombre, consumo, usoPromedio));
         }
 
         public void ConvertirAInteligente(Estandar aparato)
         {
-            Inteligente adaptado = new Inteligente(idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, 0, DateTime.Now);
+			Inteligente adaptado = new Inteligente(aparato.IdDispositivo, idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, 0, DateTime.Now, true);
             dispositivos.Remove(aparato);
             dispositivos.Add(adaptado);
             Puntos += 10;
@@ -110,5 +115,10 @@ namespace tp_integrador.Models
         {
             dispositivos.Add(dispositivo);
         }
+
+		private int CalcularNumero(string nombre)
+		{			
+			return (dispositivos.FindAll(x => x.Nombre == nombre)).Count + 1;
+		}
     }
 }

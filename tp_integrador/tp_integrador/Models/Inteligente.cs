@@ -7,20 +7,23 @@ namespace tp_integrador.Models
 {
     public class Inteligente : Dispositivo
     {
-        private byte Estado; // Apagado = 0; Encendido = 1; ModoAhorro = 2
-        private DateTime fechaEstado;
+        public byte Estado { get; private set; } // Apagado = 0; Encendido = 1; ModoAhorro = 2
+        public DateTime fechaEstado { get; private set; }
         private DAOHistorialEstado daoEstado;
+		public bool Convertido { get; set; }
 
-
-        public Inteligente(int id, int numero, string nombre, double consumo, byte estado, DateTime estadoFecha) : base(numero, nombre, consumo)
+        public Inteligente(int idDisp, int idClie, int numero, string nombre, double consumo, byte estado, DateTime estadoFecha, bool convertido) : base(idDisp, idClie, numero, nombre, consumo)
         {
+			IdDispositivo = idDisp;
+			IdCliente = idClie;
 			Numero = numero;
             Nombre = nombre;
             Consumo = consumo;
             Estado = estado;
             fechaEstado = estadoFecha;
-            daoEstado = new DAOHistorialEstado(id, Nombre);
+            daoEstado = new DAOHistorialEstado(idClie, idDisp, numero);
             EsInteligente = true;
+			Convertido = convertido;
         }
 
         private double ConsumoEnPor(int estado, double horas)
@@ -47,10 +50,8 @@ namespace tp_integrador.Models
             daoEstado.CargarEstado(Estado, fechaEstado, nuevaFecha);
             Estado = nuevoEstado;
             fechaEstado = nuevaFecha;
-        }      
-
-
-
+        }
+		
         public bool Encendido()
         {
             return (Estado != 0);
@@ -58,10 +59,10 @@ namespace tp_integrador.Models
 
         public double ConsumoDesdeHasta(DateTime desde, DateTime hasta)
         {
-            List<EstadoGuardado> estadosEnPeriodo = daoEstado.GetEstados(desde, hasta);
+			List<EstadoDispositivo> estadosEnPeriodo = daoEstado.GetEstados(desde, hasta);
 
             double valor = 0;
-            foreach (EstadoGuardado guardado in estadosEnPeriodo)
+            foreach (EstadoDispositivo guardado in estadosEnPeriodo)
             {
                 valor += ConsumoEnPor(guardado.Estado, guardado.GetHoras());
             }
@@ -69,7 +70,7 @@ namespace tp_integrador.Models
             return valor;
         }
                
-        public double ConsumoUltimasHoras(byte horas)
+        public double ConsumoUltimasHoras(int horas)
         {
             DateTime fechaAhora = DateTime.Now;
             DateTime fechaObjetivo = fechaAhora.Subtract(new TimeSpan(horas,0,0));
@@ -98,6 +99,13 @@ namespace tp_integrador.Models
 
             CambiarAEstado(2);
         }
-        
-    }
+
+		public override double ConsumoEnElMes()
+		{
+			var ahora = DateTime.Now;
+			var desde = new DateTime(ahora.Year, ahora.Month, 1);
+			int horas = (Int32)ahora.Subtract(desde).TotalHours;
+			return ConsumoUltimasHoras(horas);
+		}
+	}
 }
