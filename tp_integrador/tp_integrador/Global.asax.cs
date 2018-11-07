@@ -24,6 +24,7 @@ namespace tp_integrador
 			DAOzona.Instancia.InitialLoad();
 			DAODispositivo.Instancia.InitialLoad();
 			DAOSensores.Instancia.InitialLoad();
+			Daobjeto.IniciarAutoSimplex();
 		}
     }
 

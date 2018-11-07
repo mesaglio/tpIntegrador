@@ -146,6 +146,50 @@ namespace tp_integrador.Models
 			return lista;
 		}
 
+		public List<Cliente> GetClientesAutoSimplex()
+		{
+			var lista = new List<Cliente>();
+
+			var query = "SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) WHERE clie_autoSimplex = 1";
+			var data = Query(query).Tables[0];
+			if (data.Rows.Count == 0) return lista;
+
+			var dispositivos = new List<Dispositivo>();
+			string nombre, apellido, domicilio, username, password, categoria;
+			string telefono, docNum, docTipo;
+			int puntos, idCliente;
+			double latitud, longitud;
+			bool autoSimplex;
+			DateTime fechaAlta;
+
+			foreach (DataRow row in data.Rows)
+			{
+				idCliente = (Int32)row["clie_idUsuario"];
+				nombre = row["usua_nombre"].ToString();
+				apellido = row["usua_apellido"].ToString();
+				domicilio = row["usua_domicilio"].ToString();
+				username = row["usua_username"].ToString();
+				password = row["usua_password"].ToString();
+				fechaAlta = (DateTime)row["clie_fechaAlta"];
+
+				latitud = Double.Parse(row["clie_latitud"].ToString());
+				longitud = Double.Parse(row["clie_longitud"].ToString());
+				telefono = row["clie_telefono"].ToString();
+				docNum = row["clie_doc_numero"].ToString();
+				docTipo = row["clie_doc_tipo"].ToString();
+				categoria = row["clie_categoria"].ToString();
+				puntos = (Int32)row["clie_puntos"];
+				autoSimplex = (Boolean)row["clie_autoSimplex"];
+
+				dispositivos = DAODispositivo.Instancia.FindAllFromCliente(idCliente);
+				Location coordenadas = new Location(latitud, longitud);
+
+				lista.Add(new Cliente(idCliente, nombre, apellido, domicilio, coordenadas, username, password, telefono, fechaAlta, GetCategoria(categoria), docTipo, docNum, autoSimplex, dispositivos));
+			}
+
+			return lista;
+		}
+
 		// ------------------------------------ INSERTS ------------------------------------
 
 		private void GuardarUsuario(dynamic unUsuario)
@@ -243,7 +287,7 @@ namespace tp_integrador.Models
 		private List<Dispositivo> GetDispositivosFromData(DataTable data)
 		{
 			var lista = new List<Dispositivo>();
-			
+
 			foreach (DataRow row in data.Rows)
 			{
 				if ((Boolean)row["disp_inteligente"] || (Boolean)row["dpc_convertido"]) lista.Add(GetInteligenteFromData(row));
@@ -572,7 +616,7 @@ namespace tp_integrador.Models
 		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
-
+		
 		#region Sensor
 
 		// ------------------------------------ SELECT ------------------------------------
@@ -639,11 +683,11 @@ namespace tp_integrador.Models
 			query = "UPDATE SGE.Sensor SET sensor_detalle = '{0}', sensor_magnitud = '{1}' WHERE sensor_idSensor = '{2}'";
 			Query(String.Format(query, sensor.TipoSensor, sensor.Magnitud, sensor.idSensor));
 		}
-		
+
 		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
-		
+
 		#region Regla
 
 		// ------------------------------------ SELECT ------------------------------------
@@ -711,13 +755,13 @@ namespace tp_integrador.Models
 			var query = "UPDATE SGE.Regla SET regla_detalle = '{0}', regla_valor = '{1}' WHERE regla_idRegla = '{2}'";
 			Query(String.Format(query, regla.Detalle, regla.Valor, regla.idRegla));
 		}
-		
+
 		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
 
 		#region Actuador
-		
+
 		// ------------------------------------ SELECT ------------------------------------
 
 		private List<Actuador> GetActuadores(int idRegla)
@@ -778,7 +822,7 @@ namespace tp_integrador.Models
 			query = "SELECT * FROM SGE.ActuadorPorRegla WHERE apr_idActuador = '{0}'";
 			var data = Query(String.Format(query, actua.IdActuador)).Tables[0];
 			var dbReglas = new List<int>();
-			foreach(DataRow row in data.Rows)
+			foreach (DataRow row in data.Rows)
 			{
 				dbReglas.Add((Int32)row["apr_idRegla"]);
 			}
@@ -842,7 +886,7 @@ namespace tp_integrador.Models
 				}
 			}
 		}
-		
+
 		// ------------------------------------ DELETE ------------------------------------
 		#endregion
 
@@ -914,7 +958,7 @@ namespace tp_integrador.Models
 
 			return lista;
 		}
-		
+
 		// ------------------------------------ INSERTS ------------------------------------
 
 		private void GuardarEstadoSensor(EstadoSensor estado)
@@ -922,7 +966,7 @@ namespace tp_integrador.Models
 			var query = "INSERT INTO SGE.EstadoSensor VALUES ('{0}', '{1}')";
 			Query(String.Format(query, estado.IdSensor, estado.Magnitud));
 		}
-		
+
 		// ------------------------------------ UPDATES ------------------------------------
 		// No se actualizan los Estados de los Sensores
 		// ------------------------------------ DELETE ------------------------------------
@@ -987,12 +1031,12 @@ namespace tp_integrador.Models
 			query = "UPDATE SGE.DispositivoGenerico SET disp_dispositivo = '{0}', disp_concreto = '{1}', disp_inteligente = '{2}', disp_bajoConsumo = '{3}', disp_consumo = '{4}' WHERE disp_idDispositivo = '{5}'";
 			Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0, tdisp.Bajoconsumo ? 1 : 0, tdisp.Consumo, tdisp.ID));
 		}
-		
+
 		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
-
 		
+
 		public int GetIDUsuarioIfExists(string username, string password)
 		{			
 			using (SqlConnection connection = new SqlConnection(connectionString))

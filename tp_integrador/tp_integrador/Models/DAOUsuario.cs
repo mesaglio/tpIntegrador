@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using tp_integrador.Models;
 
@@ -9,7 +10,7 @@ namespace tp_integrador.Models
 {
     public class DAOUsuario
     {
-
+		private Timer timer;
         public List<Usuarios> listusuarios;
         public void Listusuarios()
         {
@@ -18,7 +19,8 @@ namespace tp_integrador.Models
 
         public DAOUsuario()
         {
-            Listusuarios();            
+            Listusuarios();
+			IniciarAutoSimplex();
         }
               
         public Usuarios InicioSecion(Usuarios u)
@@ -61,6 +63,45 @@ namespace tp_integrador.Models
         {
             listusuarios.Remove(BuscarCliente(id));
         }
-    }
+
+		public void IniciarAutoSimplex()
+		{
+			var startTimeSpan = TimeSpan.Zero;
+			var periodTimeSpan = TimeSpan.FromDays(30);
+
+			timer = new System.Threading.Timer((e) => {	AutoSimplex(); }, null, startTimeSpan, periodTimeSpan);
+		}
+
+		public void StopAutoSimplex()
+		{
+			timer.Dispose();
+		}
+
+		private void AutoSimplex()
+		{
+			var clientes = ORM.Instancia.GetClientesAutoSimplex();
+			var simplex = new SIMPLEX();
+			var listaDisp = new List<Inteligente>();
+			string[] respuesta;
+			int total;
+			double consumoMes;
+
+			foreach (Cliente c in clientes)
+			{
+				listaDisp = c.dispositivos.OfType<Inteligente>().ToList();
+				listaDisp.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");				
+				total = listaDisp.Count;
+				
+				respuesta = simplex.GetSimplexData(simplex.CrearConsulta(new List<Dispositivo>(listaDisp)));
+				for(var i = 0; i < total; i++)
+				{					
+					consumoMes = listaDisp[i].ConsumoEnElMes();
+					if (consumoMes > Double.Parse(respuesta[i + 1])) listaDisp[i].Apagar();
+					ORM.Instancia.Update(listaDisp[i]);
+				}
+
+			}
+		}
+	}
 
 }

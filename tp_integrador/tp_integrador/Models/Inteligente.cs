@@ -59,7 +59,7 @@ namespace tp_integrador.Models
 
         public double ConsumoDesdeHasta(DateTime desde, DateTime hasta)
         {
-            List<EstadoDispositivo> estadosEnPeriodo = daoEstado.GetEstados(desde, hasta);
+			List<EstadoDispositivo> estadosEnPeriodo = daoEstado.GetEstados(desde, hasta);
 
             double valor = 0;
             foreach (EstadoDispositivo guardado in estadosEnPeriodo)
@@ -70,7 +70,7 @@ namespace tp_integrador.Models
             return valor;
         }
                
-        public double ConsumoUltimasHoras(byte horas)
+        public double ConsumoUltimasHoras(int horas)
         {
             DateTime fechaAhora = DateTime.Now;
             DateTime fechaObjetivo = fechaAhora.Subtract(new TimeSpan(horas,0,0));
@@ -99,6 +99,13 @@ namespace tp_integrador.Models
 
             CambiarAEstado(2);
         }
-        
-    }
+
+		public override double ConsumoEnElMes()
+		{
+			var ahora = DateTime.Now;
+			var desde = new DateTime(ahora.Year, ahora.Month, 1);
+			int horas = (Int32)ahora.Subtract(desde).TotalHours;
+			return ConsumoUltimasHoras(horas);
+		}
+	}
 }

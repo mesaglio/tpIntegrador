@@ -34,6 +34,14 @@ namespace tp_integrador.Models
         {
             usoDiario = horas;
         }
-                
-    }
+
+		public override double ConsumoEnElMes()
+		{
+			var ahora = DateTime.Now;
+			var desde = new DateTime(ahora.Year, ahora.Month, 1);
+			var dias = (ahora - desde).TotalDays;
+
+			return dias * usoDiario * Consumo;
+		}
+	}
 }

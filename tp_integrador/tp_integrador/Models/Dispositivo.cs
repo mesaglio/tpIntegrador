@@ -5,7 +5,7 @@ using System.Web;
 
 namespace tp_integrador.Models
 {
-    public class Dispositivo
+    public abstract class Dispositivo
     {
 		public int IdDispositivo { get; set; }
 		public int IdCliente { get; set; }
@@ -24,6 +24,7 @@ namespace tp_integrador.Models
             Consumo = consumo;            
         }
 
+		public abstract double ConsumoEnElMes();
        
 
     }

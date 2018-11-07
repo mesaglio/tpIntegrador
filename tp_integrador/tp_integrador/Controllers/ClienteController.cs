@@ -144,7 +144,11 @@ namespace tp_integrador.Controllers
 			Cliente uncliente = (Cliente)Session["Usuario"];
 
 			SIMPLEX sim = new SIMPLEX();
-			var respuesta = sim.GetSimplexData(sim.CrearConsulta(uncliente.dispositivos));
+
+			var listaDisp = uncliente.dispositivos;
+			listaDisp.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");
+
+			var respuesta = sim.GetSimplexData(sim.CrearConsulta(listaDisp));
 
 			var sb = new StringBuilder();
 			sb.AppendLine("<b>Consumo Optimo Para Sus Dispositivos: " + "</b><br/>");
@@ -158,6 +162,18 @@ namespace tp_integrador.Controllers
 			}
 			
 			return Content(sb.ToString());
+		}
+
+		[HttpPost]
+		[AllowAnonymous]
+		public ActionResult AhorroAutomatico()
+		{
+			Cliente uncliente = (Cliente)Session["Usuario"];
+			uncliente.AutoSimplex = !uncliente.AutoSimplex;
+
+			ORM.Instancia.Update(uncliente);
+			
+			return View("GestionDeDispositivos", model: uncliente);
 		}
 	}
 }

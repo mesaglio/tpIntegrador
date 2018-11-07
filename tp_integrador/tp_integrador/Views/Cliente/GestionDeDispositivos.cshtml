@@ -11,5 +11,15 @@
 	<button type="submit">Calcular Mejor Consumo</button>
 }
 
-@Html.CheckBoxFor(m => m.AutoSimplex)
+&nbsp;
+
+<div class="btn-group">
+	<span class="label label-default">Ahorro Automatico: @Html.DisplayFor(Model => Model.AutoSimplex)  </span>
+	@using (Html.BeginForm("AhorroAutomatico", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		<input type="hidden"/><button type="submit">Activar/Desactivar</button>
+	}
+
+</div>
+
 
