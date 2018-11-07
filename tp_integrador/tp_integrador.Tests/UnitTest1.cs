@@ -53,21 +53,35 @@ namespace tp_integrador.Tests
             ORM.Instancia.Insert(userCreado);
 
             //obtengo los dispositivos del cliente
-            List<Dispositivo> dispo = ORM.Instancia.GetDispositivos(3);
+            List<Dispositivo> dispo = ORM.Instancia.GetDispositivos(2);
             Dispositivo dispositivo = dispo.First();
             //int id = dispositivo.IdDispositivo;
             String nombreOriginal = dispo.First().Nombre;
 
+            //mostrar los intervalos
+            DateTime desde = new DateTime(2018, 3, 11, 0, 0,0);
+            DateTime hasta = DateTime.Today;
+            List<EstadoDispositivo> estados= ORM.Instancia.GetEstadosEntre(2, 8, 1, desde, hasta);
+            String intervalos = "Intervalos que estuvo encendido\r\n" +
+                "Encendido                     Apagado \r\n";
+            foreach(EstadoDispositivo d in estados)
+            {
+
+                intervalos += d.FechaInicio.ToString();
+                intervalos += " - ";
+                intervalos += d.FechaFin.ToString();
+                intervalos += "\r\n";
+            }
 
             //modifico el televisor cambiandole el nombre
-            dispositivo.Nombre = "Aire Samsung";
+            dispositivo.Nombre = "Televisor Led 40' Samsung";
             ORM.Instancia.Update(dispositivo);
 
             //recupero el dispositivo modificado
-            List<Dispositivo> dispositivoss = ORM.Instancia.GetDispositivos(3);
+            List<Dispositivo> dispositivoss = ORM.Instancia.GetDispositivos(2);
             Dispositivo disCambiado = dispo.First();
             String nombreCambiado = dispo.First().Nombre;
-
+            Console.WriteLine(intervalos);
             Assert.AreNotEqual(nombreCambiado, nombreOriginal);
         }
 
