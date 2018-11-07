@@ -64,7 +64,7 @@
     <Reference Include="Gmap.net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GMap.Net.1.0.1\lib\Gmap.net.dll</HintPath>
     </Reference>
-     					<Reference Include="GMap.NET.Core, Version=1.9.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
+    <Reference Include="GMap.NET.Core, Version=1.9.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
       <HintPath>..\packages\GMap.NET.Windows.1.9.0\lib\net40\GMap.NET.Core.dll</HintPath>
     </Reference>
     <Reference Include="GMap.NET.WindowsForms, Version=1.9.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
@@ -72,7 +72,7 @@
     </Reference>
     <Reference Include="GMap.NET.WindowsPresentation, Version=1.9.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL">
       <HintPath>..\packages\GMap.NET.Windows.1.9.0\lib\net40\GMap.NET.WindowsPresentation.dll</HintPath>
-    						</Reference>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
     </Reference>
@@ -287,9 +287,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Cliente\CargarTransformadores.cshtml" />
+    <Content Include="Views\Home\CargarTransformadores.cshtml" />
     <Content Include="Views\Cliente\CargarTransformadoresPorDefecto.cshtml" />
-    <Content Include="Views\Cliente\LoadTransformadoresJson.cshtml" />
+    <Content Include="Views\Home\LoadTransformadoresJson.cshtml" />
     <Content Include="Views\Home\Administrador.cshtml" />
     <Content Include="Views\Cliente\Cliente.cshtml" />
     <Content Include="Views\Reportes\Reportes.cshtml" />

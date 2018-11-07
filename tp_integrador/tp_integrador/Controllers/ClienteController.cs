@@ -48,29 +48,9 @@ namespace tp_integrador.Controllers
 
           }*/
 
-        public ActionResult CargarTransformadores()
-        {
-            if ((bool)Session["Admin"]) return PermisoDenegado();
-            
-           
-           
-          
-            return View("CargarTransformadores");
 
-        }
 
-        [HttpPost]
-        public ActionResult LoadTransformadoresJson(HttpPostedFileBase file)
-        {
-            if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            if (file == null) return CargarTransformadores();
-
-            CargarJson cargar = new CargarJson();
-            cargar.LoadJson<Transformador>(file.InputStream);
-
-            return View();
-        }
 
         public ActionResult CargarDispositivo()
         {
