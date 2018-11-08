@@ -55,7 +55,7 @@ namespace tp_integrador.Controllers
         public ActionResult CargarDispositivo()
         {
             if ((bool)Session["Admin"]) return PermisoDenegado();
-
+            // trae los templates para que el cliente sume un dispositivo
             DAOTemplates a = new DAOTemplates();
 
             return View("CargarDispositivo",model: a);
@@ -68,8 +68,9 @@ namespace tp_integrador.Controllers
 
             if (file == null) return CargarDispositivo();
 
-            CargarJson cargar = new CargarJson();
-            cargar.LoadJson<Inteligente>(file.InputStream);
+            Cliente unclietne = (Cliente)Session["Usuario"];
+            unclietne.CargarDispositivosInteligenes(file);
+
 
             return View();
         }
@@ -83,13 +84,9 @@ namespace tp_integrador.Controllers
             if (disp == 0) return CargarDispositivo();			
             else
             {
-                DAOTemplates a = new DAOTemplates();
-                TemplateDispositivo dispositivo = a.Searchtemplatebyid(disp);
                 Cliente unclietne = (Cliente)Session["Usuario"];
-
-                if (dispositivo.Inteligente) unclietne.NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo);
-                else unclietne.NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, 0);
-
+                unclietne.AgregarDispositivoDeTemplate(disp);
+                                
                 return View("LoadDispositivoJson");
             }
         }
@@ -100,9 +97,7 @@ namespace tp_integrador.Controllers
         {
             Cliente unclietne = (Cliente)Session["Usuario"];
             unclietne.EncenderDispositivo(postdispositivo);
-            /*  foreach (Inteligente undispo in unclietne.DispositivosInteligentes)
-            { if (undispo.Nombre == postdispositivo) undispo.Encender(); }
-            */
+            
             return View("Dashboard", model: unclietne);
         }
 
@@ -112,10 +107,7 @@ namespace tp_integrador.Controllers
         {
             Cliente unclietne = (Cliente)Session["Usuario"];
             unclietne.ApagarDispositivo(postdispositivo);
-            /*
-            foreach (Inteligente undispo in unclietne.DispositivosInteligentes)
-            { if (undispo.Nombre == postdispositivo) undispo.Apagar(); }
-            */
+            
             return View("Dashboard", model: unclietne);
         }
 
@@ -124,28 +116,10 @@ namespace tp_integrador.Controllers
 		{
 			if ((bool)Session["Admin"]) return PermisoDenegado();
 
-			Cliente uncliente = (Cliente)Session["Usuario"];
-           var sb = uncliente.RunSimplex();
-            /*
-			SIMPLEX sim = new SIMPLEX();
+		    Cliente uncliente = (Cliente)Session["Usuario"];
+            var sb = uncliente.RunSimplex();
 
-			var listaDisp = uncliente.dispositivos;
-			listaDisp.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");
-
-			var respuesta = sim.GetSimplexData(sim.CrearConsulta(listaDisp));
-
-			var sb = new StringBuilder();
-			sb.AppendLine("<b>Consumo Optimo Para Sus Dispositivos: " + "</b><br/>");
-			sb.AppendLine(""+"<br/>");
-			sb.AppendLine("<b>Maximo: </b>" + respuesta[0] + "<br/>");
-			var cantDisp = uncliente.dispositivos.Count;
-
-			for (int i = 1; i < respuesta.Length; i++)
-			{
-				sb.AppendLine("<b>" + uncliente.dispositivos[cantDisp-i].Nombre + ": </b>" + respuesta[i] + "<br/>");
-			}
-			*/
-			return Content(sb.ToString());
+           return Content(sb.ToString());
 		}
 
 		[HttpPost]
