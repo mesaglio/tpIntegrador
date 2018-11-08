@@ -69,7 +69,22 @@ namespace tp_integrador.Controllers
             if (file == null) return CargarDispositivo();
 
             Cliente unclietne = (Cliente)Session["Usuario"];
-            unclietne.CargarDispositivosInteligenes(file);
+            // INTELIGENTE = 1
+            unclietne.CargarDispositivos(file,1);
+
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult LoadDispositivoJsone(HttpPostedFileBase file)
+        {
+            if ((bool)Session["Admin"]) return PermisoDenegado();
+
+            if (file == null) return CargarDispositivo();
+
+            Cliente unclietne = (Cliente)Session["Usuario"];
+            // ESTANDAR = 0
+            unclietne.CargarDispositivos(file,0);
 
 
             return View();

@@ -1,27 +1,34 @@
 ﻿@model tp_integrador.Models.DAOTemplates
 
 
-<h2>View</h2>
+<h2>Dispositivo Inteligente</h2>
 
 @using (Html.BeginForm("LoadDispositivoJson", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <input type="file" name="file" />
     <button type="submit">Subir archivo</button>
 }
+    <h2>Dispositivo Estandar</h2>
+@using (Html.BeginForm("LoadDispositivoJsone", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" />
+    <button type="submit">Subir archivo</button>
+}
 
-@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post)) {
-<fieldset>
-    Seleccione un Dispositivo <select name="disp">
+@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post))
+{
+    <fieldset>
+        Seleccione un Dispositivo <select name="disp">
 
-    <option selected="selected" value=0></option>
-    
-    @foreach (var item in Model.templateDisps)
-    {
-    <option value= @item.ID>@item.getNombreEntero()</option>
-    }
+            <option selected="selected" value=0></option>
 
-</select>
-     <button type="submit">Agregar</button>
+            @foreach (var item in Model.templateDisps)
+            {
+                <option value=@item.ID>@item.getNombreEntero()</option>
+            }
 
-</fieldset>
+        </select>
+        <button type="submit">Agregar</button>
+
+    </fieldset>
 }

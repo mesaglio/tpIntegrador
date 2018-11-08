@@ -157,10 +157,13 @@ namespace tp_integrador.Models
         }
 
 
-        public void CargarDispositivosInteligenes(HttpPostedFileBase file)
+        public void CargarDispositivos(HttpPostedFileBase file, int flag)
         {
             CargarJson cargar = new CargarJson();
-            cargar.LoadJson<Inteligente>(file.InputStream);
+            if (flag == 1)
+                cargar.LoadJson<Inteligente>(file.InputStream);
+            else
+                cargar.LoadJson<Estandar>(file.InputStream);
         }
         public void AgregarDispositivoDeTemplate(int disp)
         {
