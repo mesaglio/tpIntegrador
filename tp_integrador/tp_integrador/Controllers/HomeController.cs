@@ -85,7 +85,7 @@ namespace tp_integrador.Controllers
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             if (file == null) return View("JsonImport");
 
-            Administrador adm = Session["Usuario";
+            Administrador adm = (Administrador)Session["Usuario"];
             adm.CargarClienter(file);
 
             return View();
@@ -123,7 +123,7 @@ namespace tp_integrador.Controllers
 
             if (file == null) return CargarTransformadores();
 
-            Administrador adm = Session["Usuario";
+            Administrador adm = (Administrador)Session["Usuario"];
             adm.CargarTransformador(file);
 
             return View();

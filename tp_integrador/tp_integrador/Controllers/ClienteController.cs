@@ -99,9 +99,10 @@ namespace tp_integrador.Controllers
         public ActionResult EncenderDispositivo(string postdispositivo)
         {
             Cliente unclietne = (Cliente)Session["Usuario"];
-            foreach (Inteligente undispo in unclietne.DispositivosInteligentes)
+            unclietne.EncenderDispositivo(postdispositivo);
+            /*  foreach (Inteligente undispo in unclietne.DispositivosInteligentes)
             { if (undispo.Nombre == postdispositivo) undispo.Encender(); }
-
+            */
             return View("Dashboard", model: unclietne);
         }
 
@@ -110,9 +111,11 @@ namespace tp_integrador.Controllers
         public ActionResult ApagarDispositivo(string postdispositivo)
         {
             Cliente unclietne = (Cliente)Session["Usuario"];
+            unclietne.ApagarDispositivo(postdispositivo);
+            /*
             foreach (Inteligente undispo in unclietne.DispositivosInteligentes)
             { if (undispo.Nombre == postdispositivo) undispo.Apagar(); }
-
+            */
             return View("Dashboard", model: unclietne);
         }
 
@@ -122,7 +125,8 @@ namespace tp_integrador.Controllers
 			if ((bool)Session["Admin"]) return PermisoDenegado();
 
 			Cliente uncliente = (Cliente)Session["Usuario"];
-
+           var sb = uncliente.RunSimplex();
+            /*
 			SIMPLEX sim = new SIMPLEX();
 
 			var listaDisp = uncliente.dispositivos;
@@ -140,7 +144,7 @@ namespace tp_integrador.Controllers
 			{
 				sb.AppendLine("<b>" + uncliente.dispositivos[cantDisp-i].Nombre + ": </b>" + respuesta[i] + "<br/>");
 			}
-			
+			*/
 			return Content(sb.ToString());
 		}
 

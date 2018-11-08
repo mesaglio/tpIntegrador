@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Text;
+
 
 namespace tp_integrador.Models
 {
@@ -120,5 +122,38 @@ namespace tp_integrador.Models
 		{			
 			return (dispositivos.FindAll(x => x.Nombre == nombre)).Count + 1;
 		}
+
+        public dynamic RunSimplex()
+        {
+            SIMPLEX sim = new SIMPLEX();
+
+            var listaDisp = this.dispositivos;
+            listaDisp.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");
+
+            var respuesta = sim.GetSimplexData(sim.CrearConsulta(listaDisp));
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<b>Consumo Optimo Para Sus Dispositivos: " + "</b><br/>");
+            sb.AppendLine("" + "<br/>");
+            sb.AppendLine("<b>Maximo: </b>" + respuesta[0] + "<br/>");
+            var cantDisp = this.dispositivos.Count;
+
+            for (int i = 1; i < respuesta.Length; i++)
+            {
+                sb.AppendLine("<b>" + this.dispositivos[cantDisp - i].Nombre + ": </b>" + respuesta[i] + "<br/>");
+            }
+            return sb;
+        }
+
+        public void ApagarDispositivo(string nombreDisp)
+        {
+            foreach (Inteligente undispo in this.DispositivosInteligentes)
+            { if (undispo.Nombre == nombreDisp) undispo.Apagar(); }
+        }
+        public void EncenderDispositivo(string nombreDisp)
+        {
+            foreach (Inteligente undispo in this.DispositivosInteligentes)
+            { if (undispo.Nombre == nombreDisp) undispo.Encender(); }
+        }
     }
 }
