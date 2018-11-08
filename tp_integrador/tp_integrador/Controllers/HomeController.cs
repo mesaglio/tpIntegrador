@@ -122,8 +122,10 @@ namespace tp_integrador.Controllers
 
             if (file == null) return CargarTransformadores();
 
-            CargarJson cargar = new CargarJson();
-            cargar.LoadJson<Transformador>(file.InputStream);
+            Administrador adm = Session["Usuario";
+            adm.CargarTransformador(file);
+            //CargarJson cargar = new CargarJson();
+            //cargar.LoadJson<Transformador>(file.InputStream);
 
             return View();
         }
