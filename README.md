@@ -7,7 +7,7 @@ Completar el [Excel de Justificaciones](https://drive.google.com/open?id=1KMen2V
 ## Correcciones para la entrega 4
  
 ### Abrir las reglas, para evaluar si es mayor o menor a la magnitud, no solo ==.
-- [x]  ### Sacar el boton que esta en cliente cargar transformadores, y agregarlo al Administrador.
+- [x]  Sacar el boton que esta en cliente cargar transformadores, y agregarlo al Administrador.
 ### Consumo por hogar en cliente.
 ### Llamar desde el controles a los modelos.
 
