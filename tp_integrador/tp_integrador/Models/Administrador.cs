@@ -17,12 +17,24 @@ namespace tp_integrador.Models
         {
             return Math.Abs(DateTime.Now.Year - AltaSistema.Year) * 12 + (DateTime.Now.Month - AltaSistema.Month);
         }
+
+        #region Carga de datos
         public void CargarTransformador(HttpPostedFileBase file)
         {
 
             CargarJson cargar = new CargarJson();
             cargar.LoadJson<Transformador>(file.InputStream);
         }
+
+        public void CargarClienter(HttpPostedFileBase file)
+        {
+
+            CargarJson cargar = new CargarJson();
+            cargar.LoadJson<Cliente>(file.InputStream);
+        }
+
+        #endregion
+
 
         public Administrador(string v1, string v2)
         {

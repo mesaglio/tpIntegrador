@@ -85,8 +85,9 @@ namespace tp_integrador.Controllers
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             if (file == null) return View("JsonImport");
 
-            CargarJson cargar = new CargarJson();
-            cargar.LoadJson<Cliente>(file.InputStream);
+            Administrador adm = Session["Usuario";
+            adm.CargarClienter(file);
+
             return View();
         }
 
@@ -124,8 +125,6 @@ namespace tp_integrador.Controllers
 
             Administrador adm = Session["Usuario";
             adm.CargarTransformador(file);
-            //CargarJson cargar = new CargarJson();
-            //cargar.LoadJson<Transformador>(file.InputStream);
 
             return View();
         }
