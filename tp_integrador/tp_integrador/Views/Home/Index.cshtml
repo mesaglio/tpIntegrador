@@ -1,59 +1,33 @@
 ﻿@model tp_integrador.Models.Usuarios
 
 @{
-    ViewBag.Title = "Inicio";
-}  
+	ViewBag.Title = "Inicio";
+}
 
-<h2>@ViewBag.Title.</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
+<!-- Bootstrap core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="~/Content/signin.css" rel="stylesheet">
 
+<div class="text-center">
+	@using (Html.BeginForm("Login", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin" }))
+	{
+		<img class="mb-4" src="~/Content/Assets/sge-logo3.svg" alt="" width="100" height="100">
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		<h1 class="h3 mb-3 font-weight-normal">Inicie Sesión</h1>
+		@Html.LabelFor(m => m.usuario, new { @for = "inputUsername", @class = "sr-only" })
+		@Html.TextBoxFor(m => m.usuario, new { @type = "username", @id = "inputUsername", @class = "form-control", @placeholder = "Username", @required = true, @autofocus = true })
+		@Html.ValidationMessageFor(m => m.usuario, "", new { @class = "text-danger" })
 
+		@Html.LabelFor(m => m.password, new { @for = "inputPassword", @class = "sr-only" })
+		@Html.PasswordFor(m => m.password, new { @type = "password", @id = "inputPassword", @class = "form-control", @placeholder = "Contraseña", @required = true })
+		@Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
 
-                @Html.AntiForgeryToken()
-
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.usuario, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.usuario, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.usuario, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @* @Html.CheckBoxFor(m => m.RememberMe)
-                                @Html.LabelFor(m => m.RememberMe)*@
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Iniciar sesión" class="btn btn-default" />
-                    </div>
-                </div>
-
-                @* Habilite esta opción después de habilitar la confirmación de la cuenta para la función de restablecimiento de contraseña
-                    <p>
-                        @Html.ActionLink("¿Ha olvidado su contraseña?", "ForgotPassword")
-                    </p>*@
-            }
-        </section>
-    </div>
+		<button class="btn btn-lg btn-primary btn-block" type="submit" value="Iniciar Sesión">Sign in</button>
+	}
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryval")
 }
