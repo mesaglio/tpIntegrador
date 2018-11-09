@@ -81,5 +81,36 @@ namespace tp_integrador.Models
 
 			return -1;
 		}
-    }
+
+		public List<TransJson> GetTransformadores()
+		{
+			var lista = new List<TransJson>();
+			var trans = new List<Transformador>();
+
+			foreach (var z in zonas)
+			{
+				trans.AddRange(z.Transformadores.FindAll(x => !trans.Contains(x)));
+			}
+
+			foreach (var t in trans)
+			{
+				lista.Add(new TransJson(t));
+			}
+
+			return lista;
+		}
+
+		public class TransJson
+		{
+
+			public int Id;
+			public string PlaceName, GeoLong, GeoLat;
+
+			public TransJson(Transformador t)
+			{
+				Id = t.id; PlaceName = "Transformador " + t.id; GeoLong = t.location.Longitude.ToString(); GeoLat = t.location.Latitude.ToString();
+			}
+
+		}
+	}
 }

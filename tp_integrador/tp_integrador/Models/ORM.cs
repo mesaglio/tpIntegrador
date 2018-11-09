@@ -694,7 +694,7 @@ namespace tp_integrador.Models
 
 		private int GetReglaID(int idSensor, string detalle)
 		{
-			var query = "SELECT * FROM SGE.Regla WHERE regla_idSensor = '{0}' AND regla_detalle = '{0}'";
+			var query = "SELECT * FROM SGE.Regla WHERE regla_idSensor = '{0}' AND regla_detalle = '{1}'";
 			var data = Query(String.Format(query, idSensor, detalle)).Tables[0];
 			if (data.Rows.Count == 1) return (Int32)data.Rows[0]["regla_idRegla"];
 
@@ -720,13 +720,16 @@ namespace tp_integrador.Models
 		private Regla GetReglaFromData(DataRow row)
 		{
 			int id, sensor, valor;
+			string detalle, operador;
 
-			string detalle = row["regla_detalle"].ToString();
+			detalle = row["regla_detalle"].ToString();
+			operador = row["regla_operador"].ToString();
 			id = (Int32)row["regla_idRegla"];
 			sensor = (Int32)row["regla_idSensor"];
 			valor = (Int32)row["regla_valor"];
+			
 
-			return new Regla(id, sensor, detalle, valor, GetActuadores(id));
+			return new Regla(id, sensor, detalle, operador, valor, GetActuadores(id));
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------
@@ -735,8 +738,8 @@ namespace tp_integrador.Models
 		{
 			if (GetReglaID(regla.idSensor, regla.Detalle) != -1) return;
 
-			var query = "INSERT INTO SGE.Regla VALUES ('{0}', '{0}', '{0}')";
-			Query(String.Format(query, regla.idSensor, regla.Detalle, regla.Valor));
+			var query = "INSERT INTO SGE.Regla VALUES ('{0}', '{1}', '{2}', '{3}')";
+			Query(String.Format(query, regla.idSensor, regla.Detalle, regla.Valor, regla.Operador));
 
 			regla.idRegla = GetReglaID(regla.idSensor, regla.Detalle);
 

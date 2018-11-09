@@ -46,6 +46,16 @@ namespace tp_integrador.Controllers
 			}
 		}
 
+		public ActionResult Administrador()
+		{
+			return View("Administrador");
+		}
+
+		public ActionResult Cliente()
+		{
+			return View("../Cliente/Cliente");
+		}
+
 		public ActionResult Logout()
         {
             Session.Contents.RemoveAll();
@@ -70,6 +80,7 @@ namespace tp_integrador.Controllers
 
             return View();
         }
+
         // ADMINISTRADOR
         public ActionResult JsonImport()
         {
@@ -85,19 +96,25 @@ namespace tp_integrador.Controllers
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             if (file == null) return View("JsonImport");
 
-            CargarJson cargar = new CargarJson();
-            cargar.LoadJson<Cliente>(file.InputStream);
+            Administrador adm = (Administrador)Session["Usuario"];
+            adm.CargarClienter(file);
+
             return View();
         }
 
-        public ActionResult Maps() {
+		public ActionResult Maps()
+		{
+			return View();
+		}
 
-			//TODO: WIP
-            Zona z = new Zona(1, 40, 36.81881, 10.16596, new List<Transformador>());
-             return View( z.Transformadores);
-        }
-        
-        public ActionResult Reporte()
+		[HttpGet]
+		public JsonResult GetTransData()
+		{
+			var transformadores = DAOzona.Instancia.GetTransformadores();
+			return Json(transformadores, "aplication/json", System.Text.Encoding.UTF8, JsonRequestBehavior.AllowGet);
+		}
+
+		public ActionResult Reporte()
         {
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             
@@ -105,16 +122,14 @@ namespace tp_integrador.Controllers
 
             return View("../Reportes/Reportes");
         }
+
         public ActionResult CargarTransformadores()
         {
             if (!(bool)Session["Admin"]) return PermisoDenegado();
-
-
-
-
+			
             return View("CargarTransformadores");
-
         }
+
         [HttpPost]
         public ActionResult LoadTransformadoresJson(HttpPostedFileBase file)
         {
@@ -122,8 +137,8 @@ namespace tp_integrador.Controllers
 
             if (file == null) return CargarTransformadores();
 
-            CargarJson cargar = new CargarJson();
-            cargar.LoadJson<Transformador>(file.InputStream);
+            Administrador adm = (Administrador)Session["Usuario"];
+            adm.CargarTransformador(file);
 
             return View();
         }
