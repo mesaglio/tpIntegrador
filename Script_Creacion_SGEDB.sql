@@ -139,6 +139,7 @@ CREATE TABLE SGE.Regla (
   regla_idSensor INT NOT NULL,
   regla_detalle VARCHAR(45),
   regla_valor INT,
+  regla_operador VARCHAR(2),
   PRIMARY KEY (regla_idRegla),
   FOREIGN KEY (regla_idSensor) REFERENCES SGE.Sensor (sensor_idSensor))
 GO
