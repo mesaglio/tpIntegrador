@@ -1,21 +1,145 @@
 ﻿@{
-    /**/
-
-    ViewBag.Title = "Administrador";
-
-
-
+	ViewBag.Title = "Administrador";
 }
-
-
-
+@*
 <div class="jumbotron">
-    <p><h3>Aplicaciones</h3></p>
+	<p><h3>Aplicaciones</h3></p>
 
 
-    @Html.ActionLink("Cantidad de meses", "Listar", "Home", "/Home/listar", new { @class = "btn btn-primary btn-lg" })
+	@Html.ActionLink("Cantidad de meses", "Listar", "Home", "/Home/listar", new { @class = "btn btn-primary btn-lg" })
 
-    @Html.ActionLink("Importar desde json", "JsonImport", "Home", "/Home/JsonImport", new { @class = "btn btn-primary btn-lg" })
-    @Html.ActionLink("Reportes", "Reporte", "Home", "/Home/Reporte", new { @class = "btn btn-primary btn-lg" })
-    @Html.ActionLink("Cargar Transformadores", "CargarTransformadores", "Home", "/Home/CargarTransformadores", new { @class = "btn btn-primary btn-lg" })
+	@Html.ActionLink("Importar desde json", "JsonImport", "Home", "/Home/JsonImport", new { @class = "btn btn-primary btn-lg" })
+	@Html.ActionLink("Reportes", "Reporte", "Home", "/Home/Reporte", new { @class = "btn btn-primary btn-lg" })
+	@Html.ActionLink("Cargar Transformadores", "CargarTransformadores", "Home", "/Home/CargarTransformadores", new { @class = "btn btn-primary btn-lg" })
 </div>
+*@
+
+<!-- Bootstrap core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="~/Content/dashboard.css" rel="stylesheet">
+
+<main role="main" class="container" style="float:right;">
+	<div class="container-fluid">
+		<div class="row">
+
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+				<div class="sidebar-sticky">
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link active" href="#">
+								<span data-feather="home"></span>
+								Consumo Hogares <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="monitor"></span>
+								Alta Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("JsonImport", "Home")" class="nav-link">
+								<span data-feather="user-plus"></span>
+								Alta de Usuarios
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Transformadores
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Listar", "Home")" class="nav-link">
+								<span data-feather="edit"></span>
+								Mis Datos
+							</a>
+						</li>
+					</ul>
+
+					<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+						<span>Reportes</span>						
+					</h6>
+					<ul class="nav flex-column mb-2">
+						<li class="nav-item">
+							<a href="@Url.Action("Reporte", "Home")" class="nav-link">
+								<span data-feather="file-text"></span>
+								- Nombre Reporte 1 -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="file-text"></span>
+								- Nombre Reporte 2 -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="file-text"></span>
+								- Nombre Reporte 3 -
+							</a>
+						</li>						
+					</ul>
+
+
+				</div>
+			</nav>
+			<!-- Fin Sidebar -->
+
+
+
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+			feather.replace()
+	</script>
+
+	<!-- Graphs -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+	<script>
+			var ctx = document.getElementById("myChart");
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+					datasets: [{
+						data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+						lineTension: 0,
+						backgroundColor: 'transparent',
+						borderColor: '#007bff',
+						borderWidth: 4,
+						pointBackgroundColor: '#007bff'
+					}]
+				},
+				options: {
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: false
+							}
+						}]
+					},
+					legend: {
+						display: false,
+					}
+				}
+			});
+	</script>
+</main>
+
+

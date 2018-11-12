@@ -1,13 +1,12 @@
 ﻿
 
 
+<main role="main" class="container" style="float:right;">
+	<h2>View</h2>
 
-<h2>View</h2>
-
-@using (Html.BeginForm("LoadTransformadoresJson", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <input type="file" name="file" />
-    <button type="submit">Subir archivo</button>
-}
-
-
+	@using (Html.BeginForm("LoadTransformadoresJson", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		<input type="file" name="file" />
+		<button type="submit">Subir archivo</button>
+	}
+</main>

@@ -25,7 +25,11 @@ namespace tp_integrador.Controllers
 			int sesionid = ORM.Instancia.GetIDUsuarioIfExists(model.usuario, HashThis.Instancia.GetHash(p));
 			Session["IDUsuario"] = sesionid;
 			//Usuarios u =  data.InicioSecion(model);
-			if ((int)Session["IDUsuario"] <= 0) return View();
+			if ((int)Session["IDUsuario"] <= 0)
+			{
+				ModelState.AddModelError(String.Empty,"Usuario y/o Contraseña incorecto/s");
+				return View("Index",model);
+			}
 			else
 			{
 				dynamic user = ORM.Instancia.GetUsuario((int)Session["IDUsuario"]);
@@ -35,11 +39,13 @@ namespace tp_integrador.Controllers
 				//u.SetLoginOn();
 				if (user.GetType() == typeof(Administrador))
 				{
+					MvcApplication.Daobjeto.CargarUsuario((Administrador)Session["Usuario"]);
 					Session["Admin"] = true;
 					return View("Administrador");
 				}
 				else
 				{
+					MvcApplication.Daobjeto.CargarUsuario((Cliente)Session["Usuario"]);
 					Session["Admin"] = false;
 					return View("../Cliente/Cliente");
 				}
@@ -117,9 +123,7 @@ namespace tp_integrador.Controllers
 		public ActionResult Reporte()
         {
             if (!(bool)Session["Admin"]) return PermisoDenegado();
-            
-
-
+			
             return View("../Reportes/Reportes");
         }
 

@@ -7,11 +7,11 @@ namespace tp_integrador.Models
 {
     public class DAOTemplates
     {
-        public List<TemplateDispositivo> templateDisps; 
-        
+        public List<TemplateDispositivo> templateDisps;		
+		
         public DAOTemplates()
         {
-			templateDisps = ORM.Instancia.GetAllTemplates();
+			templateDisps = ORM.Instancia.GetAllTemplates();			
         }
 
 		public TemplateDispositivo Searchtemplatebyid(int id)

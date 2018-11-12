@@ -1,34 +1,197 @@
-﻿@model tp_integrador.Models.DAOTemplates
+﻿@model Boolean
+@*
+	<h2>Dispositivo Inteligente</h2>
 
+	@using (Html.BeginForm("LoadDispositivoJson", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		<input type="file" name="file" />
+		<button type="submit">Subir archivo</button>
+	}
+	<h2>Dispositivo Estandar</h2>
+	@using (Html.BeginForm("LoadDispositivoJsone", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		<input type="file" name="file" />
+		<button type="submit">Subir archivo</button>
+	}
 
-<h2>Dispositivo Inteligente</h2>
+	@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post))
+	{
+		<fieldset>
+			Seleccione un Dispositivo <select name="disp">
 
-@using (Html.BeginForm("LoadDispositivoJson", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <input type="file" name="file" />
-    <button type="submit">Subir archivo</button>
+				<option selected="selected" value=0></option>
+
+				@foreach (var item in Model.templateDisps)
+				{
+					<option value=@item.ID>@item.getNombreEntero()</option>
+				}
+
+			</select>
+			<button type="submit">Agregar</button>
+
+		</fieldset>
+	}
+*@
+@{
+	ViewBag.Title = "Login";	
 }
-    <h2>Dispositivo Estandar</h2>
-@using (Html.BeginForm("LoadDispositivoJsone", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <input type="file" name="file" />
-    <button type="submit">Subir archivo</button>
-}
 
-@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post))
-{
-    <fieldset>
-        Seleccione un Dispositivo <select name="disp">
+<!-- Bootstrap core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet">
 
-            <option selected="selected" value=0></option>
+<!-- Custom styles for this template -->
+<link href="~/Content/dashboard.css" rel="stylesheet">
 
-            @foreach (var item in Model.templateDisps)
-            {
-                <option value=@item.ID>@item.getNombreEntero()</option>
-            }
+<link href="~/Content/cardbox.css">
 
-        </select>
-        <button type="submit">Agregar</button>
+<main role="main" class="container" style="float:right;">
+	<div class="container-fluid">
+		<div class="row">
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+				<div class="sidebar-sticky">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a href="@Url.Action("Cliente", "Home")" class="nav-link">
+								<span data-feather="home"></span>
+								Estado del Hogar 
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="activity"></span>
+								Consumo por Periodo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarDispositivo", "Cliente")" class="nav-link active">
+								<span data-feather="file"></span>
+								Cargar Archivo de Dispositivo <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionDeDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="clock"></span>
+								Simplex
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Dashboard", "Cliente")" class="nav-link">
+								<span data-feather="monitor"></span>
+								Gestionar Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="wifi"></span>
+								Gestionar Sensores
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
 
-    </fieldset>
-}
+			<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+				<h1 class="display-4">Cargar Dispositivos</h1>
+				<p class="lead">Cargue sus dispositivos de forma sencilla a traves de un archivo json.</p>
+			</div>
+
+			<div class="container">
+				<div class="card-deck mb-3 text-center" style="margin-left:175px;">
+
+					<!-- Inteligentes -->
+					<div class="card mb-4 shadow-sm" style="max-width:350px;">
+						<div class="card-header">
+							<h4 class="my-0 font-weight-normal">Dispositivos Inteligentes</h4>
+						</div>
+						<div class="card-body">
+							<div class="file-field">
+								@using (Html.BeginForm("LoadDispositivoJson", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+								{
+									<label for="upload" class="btn btn-sm btn-primary">Buscar..</label>
+									<input type="file" class="text-center form-control-file custom_file" id="upload" name="user_file" style="display:none" accept=".json">
+									<label for="file_default">No se ha seleccionado ningun archivo. </label>
+									<label for="file_name"><b></b></label>
+
+									<button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>
+								}
+							</div>
+						</div>
+					</div>
+
+					<!-- Estandar -->
+					<div class="card mb-4 shadow-sm" style="max-width:350px;">
+						<div class="card-header">
+							<h4 class="my-0 font-weight-normal">Dispositivos Estandar</h4>
+						</div>
+						<div class="card-body">
+							<div class="file-field">
+								@using (Html.BeginForm("LoadDispositivoJsone", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+								{
+									<label for="upload_est" class="btn btn-sm btn-primary">Buscar..</label>
+									<input type="file" class="text-center form-control-file custom_file" id="upload_est" name="user_file" style="display:none" accept=".json">
+									<label for="file_default_est">No se ha seleccionado ningun archivo. </label>
+									<label for="file_name_est"><b></b></label>
+
+									<button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>
+								}
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			@if (Model)
+			{
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+					<p class="lead" style="color:green"><b>@TempData["Message"]</b></p>
+				</div>
+			}
+
+		</div>
+	</div>
+</main>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<!--FileUpload-->
+	<script>
+		$('#upload').change(function () {
+			var filename = $('#upload').val();
+			if (filename.substring(3, 11) == 'fakepath') {
+				filename = filename.substring(12);
+			} // For Remove fakepath
+			$("label[for='file_name'] b").html(filename);
+			$("label[for='file_default']").text('Selected File: ');
+			if (filename == "") {
+				$("label[for='file_default']").text('No File Choosen');
+			}
+		});
+	</script>
+
+	<script>
+		$('#upload_est').change(function () {
+			var filename = $('#upload_est').val();
+			if (filename.substring(3, 11) == 'fakepath') {
+				filename = filename.substring(12);
+			} // For Remove fakepath
+			$("label[for='file_name_est'] b").html(filename);
+			$("label[for='file_default_est']").text('Selected File: ');
+			if (filename == "") {
+				$("label[for='file_default_est']").text('No File Choosen');
+			}
+		});
+	</script>
+
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+		feather.replace()
+	</script>

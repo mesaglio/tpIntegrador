@@ -9,13 +9,14 @@ namespace tp_integrador.Models
     {
         public byte usoDiario { get; private set; }
 
-        public Estandar(int idDisp, int idClie, int numero, string nombre, double consumo, byte horasPromedio) : base(idDisp, idClie, numero ,nombre, consumo)
+        public Estandar(int idDisp, int idClie, int numero, string nombre, double consumo, bool bajoconsumo, byte horasPromedio) : base(idDisp, idClie, numero ,nombre, consumo, bajoconsumo)
         {
 			IdDispositivo = idDisp;
 			IdCliente = idClie;
 			Numero = numero;
             Nombre = nombre;
             Consumo = consumo;
+			BajoConsumo = bajoconsumo;
             usoDiario = horasPromedio;
         }
 

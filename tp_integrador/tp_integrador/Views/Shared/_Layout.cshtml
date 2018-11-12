@@ -21,10 +21,10 @@
 
 			@if (Session["Admin"] != null)
 			{
-				if ((Boolean)Session["Admin"]){@Html.ActionLink("SGE", "Administrador", "Home", new { @class = "navbar-brand" });}
-				else {@Html.ActionLink("SGE", "Cliente", "Home", new { @class = "navbar-brand" });}
+				if ((Boolean)Session["Admin"]){@Html.ActionLink("SGE", "Administrador", "Home", null, new { @class = "navbar-brand" })}
+				else {@Html.ActionLink("SGE", "Cliente", "Home", null, new { @class = "navbar-brand" })}
 			}
-			else {@Html.ActionLink("SGE", "Index", "Home", new { @class = "navbar-brand" })}
+			else {@Html.ActionLink("SGE", "Index", "Home", null, new { @class = "navbar-brand" })}
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -33,31 +33,26 @@
 				<ul class="navbar-nav mr-auto">
 
 					<li class="nav-item">
-						@Html.ActionLink("Contacto", "Contact", "Home", new { @class = "nav-link" })
+						@Html.ActionLink("Contacto", "Contact", "Home", null, new { @class = "nav-link" })
 					</li>
 
 					<li class="nav-item">
-						@if (Session["Admin"] != null && (Boolean)Session["Admin"])
-						{
-							@Html.ActionLink("Mapa de Transformadores", "Maps", "Home", "/Home/Maps", new { @class = "nav-link" });
-						}
+						@Html.ActionLink("Mapa de Transformadores", "Maps", "Home", null, new { @class = "nav-link" })
 					</li>
 				</ul>
 
 				<form class="form-inline mt-2 mt-md-0">
 					@if (Session["IDUsuario"] == null) { }
-					else {@Html.ActionLink("Cerrar Sesión", "Logout", "Home", new { @class = "btn btn-outline-primary" });	}
+					else {@Html.ActionLink("Cerrar Sesión", "Logout", "Home", null, new { @class = "btn btn-outline-primary" })}
 				</form>
 
 			</div>
 		</nav>
 	</header>
 
-	<main role="main" class="container">
-		@RenderBody()
-	</main>
-
-	<footer class="footer">
+	@RenderBody()
+	
+	<footer class="footer fixed-bottom">
 		<div class="container">
 			<span class="text-muted">@DateTime.Now.Year - Sistema de Gesti&oacute;n Energ&eacute;tica - EnCasaCompilaba</span>
 		</div>

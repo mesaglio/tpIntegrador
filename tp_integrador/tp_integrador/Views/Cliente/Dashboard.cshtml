@@ -1,37 +1,245 @@
 ﻿@model tp_integrador.Models.Cliente
 
 @{
-    ViewBag.Title = "Dashboard";
+	ViewBag.Title = "Dashboard";
 }
+@*
+	<div>
+				@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post))
+				{
+					<fieldset>
+						Seleccione un Dispositivo <select name="disp">
 
-<h2>Dashboard</h2>
+							<option selected="selected" value=0></option>
 
-<span class="label label-default">Dispositivos Encendidos: @Model.CantEncendidos()</span><br />
+							@foreach (var item in Model.GetTemplateDisp())
+							{
+								<option value=@item.ID>@item.getNombreEntero()</option>
+							}
 
-<span class="label label-default">Dispositivos Apagados: @Model.CantApagados()</span><br />
+						</select>
+						<button type="submit">Agregar</button>
 
-<span class="label label-default">Dispositivos:</span><br />
-@foreach (var item in Model.dispositivos)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Consumo)
-        </td>
-        <td>
-            @if (item.EsInteligente)    {
+					</fieldset>
+				}
+			</div>
 
-            <div class="btn-group">
-                @using (Html.BeginForm("EncenderDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" })){
-                <input type="hidden" name="postdispositivo" value="@item.Nombre" /><button type="submit">Encender</button>}
+			<div>
+				<span class="label label-default">Dispositivos Encendidos: @Model.CantEncendidos()</span><br />
 
-                @using (Html.BeginForm("ApagarDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {<input type="hidden" name="postdispositivo" value="@item.Nombre" /> <button type="submit">Apagar</button>}
-            </div>
-            }
-        </td>
-    </tr><br />
-}
+				<span class="label label-default">Dispositivos Apagados: @Model.CantApagados()</span><br />
+
+				<span class="label label-default">Dispositivos:</span><br />
+				@foreach (var item in Model.dispositivos)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.Nombre)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Consumo)
+						</td>
+						<td>
+							@if (item.EsInteligente)
+							{
+
+								<div class="btn-group">
+									@using (Html.BeginForm("EncenderDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+									{
+										<input type="hidden" name="postdispositivo" value="@item.Nombre" /><button type="submit">Encender</button>}
+
+									@using (Html.BeginForm("ApagarDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+									{<input type="hidden" name="postdispositivo" value="@item.Nombre" /> <button type="submit">Apagar</button>}
+								</div>
+							}
+						</td>
+					</tr>
+					<br />
+				}
+			</div>
+*@
+
+<!-- Bootstrap core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet"/>
+
+<!-- Custom styles for this template -->
+<link href="~/Content/dashboard.css" rel="stylesheet"/>
+
+<link href="~/Content/cardbox.css"/>
+
+<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
+	<div class="container-fluid">
+		<div class="row">
+
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar" style="height:auto">
+				<div class="sidebar-sticky">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a href="@Url.Action("Cliente", "Home")" class="nav-link">
+								<span data-feather="home"></span>
+								Estado del Hogar
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="activity"></span>
+								Consumo por Periodo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarDispositivo", "Cliente")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Dispositivo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionDeDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="clock"></span>
+								Simplex
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Dashboard", "Cliente")" class="nav-link active">
+								<span data-feather="monitor"></span>
+								Gestionar Dispositivos <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="wifi"></span>
+								Gestionar Sensores
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<div class="container" style="margin-left:20px; overflow:auto;">
+
+				<!-- COMBOBOX AGREGAR DISPOSITIVO -->
+				<h4 for="country" class="mb-3" style="margin-top:30px;">Agregar un Dispositivo</h4>
+				<div class="container" style="margin-bottom:40px;">
+
+					@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post, new { @class = "row" }))
+					{
+						<fieldset>
+							<select class="custom-select d-block w-100" name="disp" required>
+								<option value="">Elija un Dispositivo...</option>
+								@foreach (var item in Model.GetTemplateDisp())
+								{
+									<option value=@item.ID>@item.getNombreEntero()</option>
+								}
+							</select>						
+						</fieldset>
+						<button type="submit" class="btn btn-lg btn-block btn-primary" style="width:100px; height:30px;margin-left: 10px;align-self: center; font: 12px arial;">Agregar</button>						
+					}
+				</div>
+
+				<!-- DISPLAYS -->
+				<div class="container" style="width:460px;">
+					<div class="card-deck mb-3 text-center">
+
+						<!-- Display Encendidos -->
+						<div class="card mb-4 shadow-sm" style="max-width:200px;">
+							<div class="card-header">
+								<h4 class="mb3">Inteligentes Encendidos</h4>
+							</div>
+							<div class="card-body">
+								<div class="file-field">
+									<h1 class="card-title pricing-card-title">@Model.CantEncendidos()</h1>
+								</div>
+							</div>
+						</div>
+
+						<!-- Display Apagados -->
+						<div class="card mb-4 shadow-sm" style="max-width:200px;">
+							<div class="card-header">
+								<h4 class="mb3">Inteligentes Apagados</h4>
+							</div>
+							<div class="card-body">
+								<div class="file-field">
+									<h1 class="card-title pricing-card-title">@Model.CantApagados()</h1>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<!-- LISTADO DISPOSITIVOS -->
+				<h4 for="country" class="mb-3">Mis Dispositivos</h4>
+				<div class="table-responsive">
+					<table class="table table-striped table-sm">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Tipo</th>
+								<th>Estado</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@{
+								foreach (var item in Model.dispositivos)
+								{
+									<tr>
+										<td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+										@if (item.EsInteligente)
+										{
+											<td>Inteligente</td>}
+										else
+										{
+											<td>Estandar   </td>}
+										@if (item.EsInteligente)
+										{
+											var i = (tp_integrador.Models.Inteligente)item;
+											if (i.Estado == 0)
+											{
+												<td>Apagado    </td>}
+											else if (i.Estado == 1)
+											{
+												<td>Encendido  </td>}
+											else
+											{
+												<td>Modo Ahorro</td>}
+										}
+										else
+										{
+											<td>N/A</td>}
+										@if (item.EsInteligente)
+										{
+											<td style="width:200px; height:15px;">
+												@Html.ActionLink("Cambiar Estado", "EstadoDispositivo", "Cliente", new { idD = item.IdDispositivo, idC = item.IdCliente, numero = item.Numero }, new { @style = "font: 12px arial;", @class = "btn btn-lg btn-block btn-primary" })
+											</td>
+										}
+										else
+										{
+											<td></td>}
+									</tr>
+								}
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+		feather.replace()
+	</script>
+
+</main>
 

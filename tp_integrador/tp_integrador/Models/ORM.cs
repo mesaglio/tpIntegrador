@@ -304,7 +304,7 @@ namespace tp_integrador.Models
 			DateTime fechaEstado;
 			double consumo;
 			string nombre, concreto;
-			bool convertido;
+			bool convertido, bajoconsumo;
 
 			idD = (Int32)row["dpc_idDispositivo"];
 			idC = (Int32)row["dpc_idUsuario"];
@@ -315,8 +315,9 @@ namespace tp_integrador.Models
 			estado = (Byte)row["dpc_estado"];
 			fechaEstado = (DateTime)row["dpc_fechaEstado"];
 			convertido = (Boolean)row["dpc_convertido"];
+			bajoconsumo = (Boolean)row["disp_bajoConsumo"];
 
-			return new Inteligente(idD, idC, numero, nombre + " " + concreto, consumo, estado, fechaEstado, convertido);
+			return new Inteligente(idD, idC, numero, nombre + " " + concreto, consumo, bajoconsumo, estado, fechaEstado, convertido);
 		}
 
 		private Estandar GetEstandarFromData(DataRow row)
@@ -325,6 +326,7 @@ namespace tp_integrador.Models
 			byte usoDiario;
 			double consumo;
 			string nombre, concreto;
+			bool bajoconsumo;
 
 			idD = (Int32)row["dpc_idDispositivo"];
 			idC = (Int32)row["dpc_idUsuario"];
@@ -333,8 +335,9 @@ namespace tp_integrador.Models
 			concreto = row["disp_concreto"].ToString();
 			consumo = Double.Parse(row["disp_consumo"].ToString());
 			usoDiario = (Byte)row["dpc_usoDiario"];
+			bajoconsumo = (Boolean)row["disp_bajoConsumo"];
 
-			return new Estandar(idD, idC, numero, nombre + " " + concreto, consumo, usoDiario);
+			return new Estandar(idD, idC, numero, nombre + " " + concreto, consumo, bajoconsumo, usoDiario);
 		}
 
 		private List<Inteligente> GetDispositivosOfActuador(int idActuador)

@@ -4503,7 +4503,7 @@ input[type="button"].btn-block {
     -ms-flex-flow: row wrap;
     flex-flow: row wrap;
     margin-right: -15px;
-    margin-left: -15px;
+    margin-left: -15px;	
   }
   .card-deck .card {
     display: -ms-flexbox;
