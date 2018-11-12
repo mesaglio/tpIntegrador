@@ -91,7 +91,7 @@ namespace tp_integrador.Tests
             DAOzona.Instancia.InitialLoad();
             DateTime dia = new DateTime(2018, 10, 01, 10, 00, 30);
             List<Inteligente> dispositivo = new List<Inteligente>();
-            Inteligente televisor = new Inteligente(1, 31, 1, "Televisor", 40, 0, dia, false);
+            Inteligente televisor = new Inteligente(1, 31, 1, "Televisor", 40, false, 0, dia, false);
             dispositivo.Add(televisor);
             List<int> reglas = new List<int>();
             Actuador actuador = new Actuador(1, "actuador", reglas, 31, dispositivo);

@@ -9,24 +9,26 @@
 <!-- Custom styles for this template -->
 <link href="~/Content/signin.css" rel="stylesheet">
 
-<div class="text-center">
-	@using (Html.BeginForm("Login", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin" }))
-	{
-		<img class="mb-4" src="~/Content/Assets/sge-logo3.svg" alt="" width="100" height="100">
-		@Html.AntiForgeryToken()
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-		<h1 class="h3 mb-3 font-weight-normal">Inicie Sesión</h1>
-		@Html.LabelFor(m => m.usuario, new { @for = "inputUsername", @class = "sr-only" })
-		@Html.TextBoxFor(m => m.usuario, new { @type = "username", @id = "inputUsername", @class = "form-control", @placeholder = "Username", @required = true, @autofocus = true })
-		@Html.ValidationMessageFor(m => m.usuario, "", new { @class = "text-danger" })
+<main role="main" class="container">
+	<div class="text-center">
+		@using (Html.BeginForm("Login", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin" }))
+		{
+			<img class="mb-4" src="~/Content/Assets/sge-logo3.svg" alt="" width="100" height="100">
+			@Html.AntiForgeryToken()
+			@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+			<h1 class="h3 mb-3 font-weight-normal">Inicie Sesión</h1>
+			@Html.LabelFor(m => m.usuario, new { @for = "inputUsername", @class = "sr-only" })
+			@Html.TextBoxFor(m => m.usuario, new { @type = "username", @id = "inputUsername", @class = "form-control", @placeholder = "Username", @required = true, @autofocus = true })
+			@Html.ValidationMessageFor(m => m.usuario, "", new { @class = "text-danger" })
 
-		@Html.LabelFor(m => m.password, new { @for = "inputPassword", @class = "sr-only" })
-		@Html.PasswordFor(m => m.password, new { @type = "password", @id = "inputPassword", @class = "form-control", @placeholder = "Contraseña", @required = true })
-		@Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+			@Html.LabelFor(m => m.password, new { @for = "inputPassword", @class = "sr-only" })
+			@Html.PasswordFor(m => m.password, new { @type = "password", @id = "inputPassword", @class = "form-control", @placeholder = "Contraseña", @required = true })
+			@Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
 
-		<button class="btn btn-lg btn-primary btn-block" type="submit" value="Iniciar Sesión">Sign in</button>
-	}
-</div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit" value="Iniciar Sesión">Sign in</button>
+		}
+	</div>
+</main>
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")

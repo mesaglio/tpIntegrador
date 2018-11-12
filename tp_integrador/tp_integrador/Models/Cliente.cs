@@ -94,20 +94,28 @@ namespace tp_integrador.Models
             aparato.SetUsoDiario(horas);
         }
 
-        public void NuevoDispositivoInteligente(int idDisp, string nombre, double consumo)
+        public int NuevoDispositivoInteligente(int idDisp, string nombre, double consumo, bool bajoconsumo)
         {
-            dispositivos.Add(new Inteligente(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, 0, DateTime.Now, false));
+			int numero = CalcularNumero(nombre);
+
+			dispositivos.Add(new Inteligente(idDisp, idUsuario, numero, nombre, consumo, bajoconsumo, 0, DateTime.Now, false));
             Puntos += 15;
+
+			return numero;
         }
 
-        public void NuevoDispositivoEstandar(int idDisp, string nombre, double consumo, byte usoPromedio)
+        public int NuevoDispositivoEstandar(int idDisp, string nombre, double consumo, bool bajoconsumo, byte usoPromedio)
         {
-            dispositivos.Add(new Estandar(idDisp, idUsuario, dispositivos.Count + 1, nombre, consumo, usoPromedio));
+			int numero = CalcularNumero(nombre);
+
+			dispositivos.Add(new Estandar(idDisp, idUsuario, numero, nombre, consumo, bajoconsumo, usoPromedio));
+
+			return numero;
         }
 
         public void ConvertirAInteligente(Estandar aparato)
         {
-            Inteligente adaptado = new Inteligente(aparato.IdDispositivo, idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, 0, DateTime.Now, true);
+            Inteligente adaptado = new Inteligente(aparato.IdDispositivo, idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, aparato.BajoConsumo, 0, DateTime.Now, true);
             dispositivos.Remove(aparato);
             dispositivos.Add(adaptado);
             Puntos += 10;
@@ -122,6 +130,12 @@ namespace tp_integrador.Models
         {
             return (dispositivos.FindAll(x => x.Nombre == nombre)).Count + 1;
         }
+
+		public dynamic BuscarDispositivo(int idDispositivo, int idCliente, int numero)
+		{
+			return dispositivos.Find(x => (x.IdDispositivo == idDispositivo) && (x.IdCliente == idCliente) && (x.Numero == numero));
+		}
+
         #region INTERFAZ CONTROLLER
         public dynamic RunSimplex()
         {
@@ -165,17 +179,36 @@ namespace tp_integrador.Models
             else
                 cargar.LoadJson<Estandar>(file.InputStream);
         }
+
         public void AgregarDispositivoDeTemplate(int disp)
         {
             DAOTemplates a = new DAOTemplates();
             TemplateDispositivo dispositivo = a.Searchtemplatebyid(disp);
-                
-            if (dispositivo.Inteligente)
-                this.NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo);
-             else
-                this.NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, 0);
+			int numero;
+
+            if (dispositivo.Inteligente) numero = NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo);
+            else numero = NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo, 0);
+
+			ORM.Instancia.Insert(BuscarDispositivo(dispositivo.ID, idUsuario, numero));
         }
 
+		public List<TemplateDispositivo> GetTemplateDisp()
+		{
+			var daot = new DAOTemplates();
+
+			return daot.templateDisps;
+		}
+
+		public void CambiarEstado(Inteligente disp)
+		{
+			if (disp.Estado == 0) EncenderDispositivo(disp);
+			else if (disp.Estado == 1)
+			{
+				if (disp.BajoConsumo) ModoAhorroDispositivo(disp);
+				else ApagarDispositivo(disp);
+			}
+			else if (disp.Estado == 2) ApagarDispositivo(disp);
+		}
 
     #endregion
 }

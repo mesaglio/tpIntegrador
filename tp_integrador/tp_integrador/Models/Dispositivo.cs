@@ -12,16 +12,18 @@ namespace tp_integrador.Models
 		public int Numero { get; set; }
 		public string Nombre { get; set; }
         public double Consumo { get; set; }
+		public bool BajoConsumo { get; set; }
 
         public bool EsInteligente = false;
 
-        public Dispositivo(int idDisp, int idClie, int numero, string nombre, double consumo)
+        public Dispositivo(int idDisp, int idClie, int numero, string nombre, double consumo, bool bajoconsumo)
         {
 			IdDispositivo = idDisp;
 			IdCliente = idClie;
 			Numero = numero;
             Nombre = nombre;
-            Consumo = consumo;            
+            Consumo = consumo;
+			BajoConsumo = bajoconsumo;
         }
 
 		public abstract double ConsumoEnElMes();

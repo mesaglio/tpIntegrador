@@ -1,30 +1,42 @@
 [
   {
-    "id": 1,
-    "nombre": "TV01",
-    "consumo": 20,
-    "estado": 1,
-    "fechaEstado": "2018-06-11T20:45:36"
+    "IdDispositivo": 6,
+    "IdCliente": 2,
+    "Numero": 2,
+    "Nombre": "Televisor LED 24",
+    "Consumo": 0.004000,
+    "Estado": 1,
+    "fechaEstado": "2018-06-11T20:45:36",
+    "Convertido": false
   },
   {
-    "id": 3,
-    "nombre": "TV02",
-    "consumo": 20,
-    "estado": 2,
-    "fechaEstado": "2018-06-9T22:12:43"
+    "IdDispositivo": 7,
+    "IdCliente": 2,
+    "Numero": 3,
+    "Nombre": "Televisor LED 32",
+    "Consumo": 0.055000,
+    "Estado": 0,
+    "fechaEstado": "2018-06-9T22:12:43",
+    "Convertido": false
   },
   {
-    "id": 5,
-    "nombre": "Heladera01",
-    "consumo": 55,
-    "estado": 1,
-    "fechaEstado": "2016-05-03T14:35:24"
+    "IdDispositivo": 19,
+    "IdCliente": 2,
+    "Numero": 1,
+    "Nombre": "Lampara de 11 w",
+    "Consumo": 0.011000,
+    "Estado": 0,
+    "fechaEstado": "2016-05-03T14:35:24",
+    "Convertido": false
   },
   {
-    "id": 9,
-    "nombre": "Lavarropas01",
-    "consumo": 30,
-    "estado": 0,
-    "fechaEstado": "2018-06-10T21:33:12"
+    "IdDispositivo": 12,
+    "IdCliente": 2,
+    "Numero": 1,
+    "Nombre": "Lavarropas automatico 5kg",
+    "Consumo": 0.175000,
+    "Estado": 0,
+    "fechaEstado": "2018-06-10T21:33:12",
+    "Convertido": false
   }
 ]

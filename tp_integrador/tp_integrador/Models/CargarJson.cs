@@ -22,55 +22,42 @@ namespace tp_integrador.Models
         }
 
 
-            public void LoadJson<T>(Stream path)
-            {
+        public void LoadJson<T>(Stream path)
+        {
             Type type = typeof(T);
             string json = (new StreamReader(path)).ReadToEnd();
             dynamic djson;
+			            
+            if (type == typeof(Cliente)) djson = JsonConvert.DeserializeObject<List<Cliente>>(json);			
+            else if (type == typeof(Administrador)) djson = JsonConvert.DeserializeObject<List<Administrador>>(json);
+			else if (type == typeof(Inteligente)) djson = JsonConvert.DeserializeObject<List<Inteligente>>(json);
+			else if (type == typeof(Estandar)) djson = JsonConvert.DeserializeObject<List<Estandar>>(json);
+			else if (type == typeof(Transformador)) djson = JsonConvert.DeserializeObject<List<Transformador>>(json);
+			else return;
 
-            if (type == typeof(Transformador))
-            {
-                djson = JsonConvert.DeserializeObject<List<Transformador>>(json);
-
-                foreach (var t in djson)
-                {
-                    DaoZona.AgregarTransformadorAZona(t);
-                }
-            }
-
-            if (type == typeof(Cliente))
-            {
-                djson = JsonConvert.DeserializeObject<List<Cliente>>(json);                
-            }
-            else if (type == typeof(Administrador))
-            {
-                djson = JsonConvert.DeserializeObject<List<Administrador>>(json);               
-            }
-            else if (type == typeof(Inteligente))
-            {
-                djson = JsonConvert.DeserializeObject<List<Inteligente>>(json);
-            }
-            else if (type == typeof(Estandar))
-            {
-                djson = JsonConvert.DeserializeObject<List<Estandar>>(json);
-            }
-            else return;
-
-            if (type == typeof(Cliente) || type == typeof(Administrador))
-            {
-                foreach (var usuario in djson)
-                {
-                    DaoUser.CargarUsuario(usuario);
-                }
-            }
-            else
-            {
-                foreach (var dispositivo in djson)
-                {
-                    //DaoDis.CargarDispositivo(dispositivo);
-                    DaoUser.BuscarCliente(31).AgregarDispositivo(dispositivo);
-                }
-            }
+			if (type == typeof(Cliente) || type == typeof(Administrador))
+			{
+				foreach (var usuario in djson)
+				{
+					DaoUser.CargarUsuario(usuario);
+				}
+			}
+			else if (type == typeof(Inteligente) || type == typeof(Estandar))
+			{
+				foreach (var dispositivo in djson)
+				{
+					DaoUser.BuscarCliente(dispositivo.IdCliente).AgregarDispositivo(dispositivo);
+					DAODispositivo.Instancia.CargarDispositivo(dispositivo);
+					ORM.Instancia.Insert(dispositivo);
+				}
+			}
+			else if (type == typeof(Transformador))
+			{
+				foreach (var t in djson)
+				{
+					DaoZona.AgregarTransformadorAZona(t);
+				}
+			}		
             
         }
 
