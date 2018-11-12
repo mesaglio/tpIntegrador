@@ -189,7 +189,9 @@ namespace tp_integrador.Models
             if (dispositivo.Inteligente) numero = NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo);
             else numero = NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo, 0);
 
-			ORM.Instancia.Insert(BuscarDispositivo(dispositivo.ID, idUsuario, numero));
+			dynamic nuevo = BuscarDispositivo(dispositivo.ID, idUsuario, numero);
+			DAODispositivo.Instancia.CargarDispositivo(nuevo);
+			ORM.Instancia.Insert(nuevo);
         }
 
 		public List<TemplateDispositivo> GetTemplateDisp()
