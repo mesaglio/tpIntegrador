@@ -69,7 +69,7 @@ namespace tp_integrador.Models
 			var startTimeSpan = TimeSpan.Zero;
 			var periodTimeSpan = TimeSpan.FromDays(30);
 
-			timer = new System.Threading.Timer((e) => {	AutoSimplex(); }, null, startTimeSpan, periodTimeSpan);
+			timer = new Timer((e) => {	AutoSimplex(); }, null, startTimeSpan, periodTimeSpan);
 		}
 
 		public void StopAutoSimplex()

@@ -51,6 +51,8 @@ namespace tp_integrador.Models
             daoEstado.CargarEstado(Estado, fechaEstado, nuevaFecha);
             Estado = nuevoEstado;
             fechaEstado = nuevaFecha;
+
+			ORM.Instancia.Update(this);
         }
 		
         public bool Encendido()

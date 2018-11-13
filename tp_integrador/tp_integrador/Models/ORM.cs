@@ -243,8 +243,8 @@ namespace tp_integrador.Models
 			var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.password, cliente.idUsuario));
 
-			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = '{1}', clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}', clie_autoSimplex = '{10}' WHERE clie_idUsuario = '{9}'";
-			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio, cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario, cliente.AutoSimplex));
+			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = CONVERT(DATETIME,'{1}',121), clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}', clie_autoSimplex = '{10}' WHERE clie_idUsuario = '{9}'";
+			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario, cliente.AutoSimplex));
 		}
 
 		private void ActualizarAdministrador(Administrador admin)
@@ -254,8 +254,8 @@ namespace tp_integrador.Models
 			var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
 			Query(String.Format(query, admin.nombre, admin.apellido, admin.domicilio, admin.password, admin.idUsuario));
 
-			query = "UPDATE SGE.Administrador SET admin_fechaAlta = '{0}' WHERE usua_idUsuario = '{1}'";
-			Query(String.Format(query, admin.AltaSistema, admin.idUsuario));
+			query = "UPDATE SGE.Administrador SET admin_fechaAlta = CONVERT(DATETIME,'{0}',121) WHERE usua_idUsuario = '{1}'";
+			Query(String.Format(query, admin.AltaSistema.ToString("yyyy-MM-dd HH:mm:ss.mmm"), admin.idUsuario));
 		}
 
 		// ------------------------------------ DELETE ------------------------------------
@@ -401,9 +401,9 @@ namespace tp_integrador.Models
 		private void ActualizarInteligente(Inteligente disp)
 		{
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
-			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
+			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count == 0) return;
 
-			query = "UPDATE SGE.DispositivoPorCliente SET dpc_estado = '{0}', dpc_fechaEstado = '{1}', dpc_convertido = '{5}' WHERE dpc_idDispositivo = '{2}' AND dpc_idUsuario = '{3}' AND dpc_numero = '{4}'";
+			query = "UPDATE SGE.DispositivoPorCliente SET dpc_estado = '{0}', dpc_fechaEstado = CONVERT(DATETIME,'{1}',121), dpc_convertido = '{5}' WHERE dpc_idDispositivo = '{2}' AND dpc_idUsuario = '{3}' AND dpc_numero = '{4}'";
 			Query(String.Format(query, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), disp.IdDispositivo, disp.IdCliente, disp.Numero, disp.Convertido ? 1 : 0));
 
 		}
@@ -411,7 +411,7 @@ namespace tp_integrador.Models
 		private void ActualizarEstandar(Estandar disp)
 		{
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
-			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
+			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count == 0) return;
 
 			query = "UPDATE SGE.DispositivoPorCliente SET dpc_usoDiario = '{0}' WHERE dpc_idDispositivo = '{1}' AND dpc_idUsuario = '{2}' AND dpc_numero = '{3}'";
 			Query(String.Format(query, disp.usoDiario, disp.IdDispositivo, disp.IdCliente, disp.Numero));

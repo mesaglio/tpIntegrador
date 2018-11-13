@@ -121,10 +121,13 @@ namespace tp_integrador.Models
             Puntos += 10;
         }
 
-        public void AgregarDispositivo(Dispositivo dispositivo)
+        public void AgregarDispositivoDesdeJson(Dispositivo dispositivo)
         {
+			dispositivo.Numero = CalcularNumero(nombre);
             dispositivos.Add(dispositivo);
-        }
+			ORM.Instancia.Insert(dispositivo);
+			DAODispositivo.Instancia.CargarDispositivo(dispositivo);
+		}
 
         private int CalcularNumero(string nombre)
         {
@@ -158,18 +161,6 @@ namespace tp_integrador.Models
             }
             return sb;
         }
-
-        public void ApagarDispositivo(string nombreDisp)
-        {
-            foreach (Inteligente undispo in this.DispositivosInteligentes)
-            { if (undispo.Nombre == nombreDisp) undispo.Apagar(); }
-        }
-        public void EncenderDispositivo(string nombreDisp)
-        {
-            foreach (Inteligente undispo in this.DispositivosInteligentes)
-            { if (undispo.Nombre == nombreDisp) undispo.Encender(); }
-        }
-
 
         public void CargarDispositivos(HttpPostedFileBase file, int flag)
         {

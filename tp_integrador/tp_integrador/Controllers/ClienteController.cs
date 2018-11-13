@@ -102,28 +102,7 @@ namespace tp_integrador.Controllers
                 return View("Dashboard", model: unclietne);
             }
         }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult EncenderDispositivo(string postdispositivo)
-        {
-            Cliente unclietne = (Cliente)Session["Usuario"];
-            unclietne.EncenderDispositivo(postdispositivo);
-            
-            return View("Dashboard", model: unclietne);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult ApagarDispositivo(string postdispositivo)
-        {
-            Cliente unclietne = (Cliente)Session["Usuario"];
-            unclietne.ApagarDispositivo(postdispositivo);
-            
-            return View("Dashboard", model: unclietne);
-        }
-
-		
+		       
 		public ActionResult EstadoDispositivo(int idD, int idC, int numero)
 		{
 			Cliente uncliente = (Cliente)Session["Usuario"];
