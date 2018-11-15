@@ -53,6 +53,17 @@ namespace tp_integrador.Models
 
 			return null;
 		}
+
+		public void ReemplazarPorAdaptado(Inteligente dispositivo)
+		{
+			QuitarDispositivo(dispositivo);
+			CargarDispositivo(dispositivo);
+		}
+
+		public void QuitarDispositivo(Dispositivo disp)
+		{
+			listdispositivos.Remove(listdispositivos.Find(x => x.IdDispositivo == disp.IdDispositivo && x.IdCliente == disp.IdCliente && x.Numero == disp.Numero));
+		}
         
     }
 }

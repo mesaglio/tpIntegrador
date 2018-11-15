@@ -7,7 +7,9 @@ namespace tp_integrador.Models
 {
     public class Estandar : Dispositivo
     {
-        public byte usoDiario { get; private set; }
+        public byte usoDiario { get; set; }
+
+		public Estandar() :base() { }
 
         public Estandar(int idDisp, int idClie, int numero, string nombre, double consumo, bool bajoconsumo, byte horasPromedio) : base(idDisp, idClie, numero ,nombre, consumo, bajoconsumo)
         {
@@ -34,6 +36,8 @@ namespace tp_integrador.Models
         public void SetUsoDiario(byte horas)
         {
             usoDiario = horas;
+
+			ORM.Instancia.Update(this);
         }
 
 		public override double ConsumoEnElMes()

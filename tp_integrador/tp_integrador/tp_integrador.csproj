@@ -297,6 +297,7 @@
     <Content Include="Views\Home\Administrador.cshtml" />
     <Content Include="Views\Cliente\Cliente.cshtml" />
     <Content Include="Views\Reportes\Reportes.cshtml" />
+    <Content Include="Views\Cliente\EditarEstandar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />
