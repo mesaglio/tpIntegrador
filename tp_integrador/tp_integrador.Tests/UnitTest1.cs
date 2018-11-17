@@ -44,7 +44,7 @@ namespace tp_integrador.Tests
         [TestMethod]
         public void TestDeDispositivo()
         {
-            //Crear un dispositivo, mostrar por consola los intervalos que estuvo encendido
+            //Recuperar un dispositivo, mostrar por consola los intervalos que estuvo encendido
             //durante el ultimo mes, modificar su nombre updetearlo y verificar que se updeteo
             //creo user
             DAOzona.Instancia.InitialLoad();
@@ -53,7 +53,7 @@ namespace tp_integrador.Tests
             ORM.Instancia.Insert(userCreado);
 
             //obtengo los dispositivos del cliente
-            List<Dispositivo> dispo = ORM.Instancia.GetDispositivos(2);
+            List<Dispositivo> dispo = ORM.Instancia.GetDispositivos(3);
             Dispositivo dispositivo = dispo.First();
             //int id = dispositivo.IdDispositivo;
             String nombreOriginal = dispo.First().Nombre;
