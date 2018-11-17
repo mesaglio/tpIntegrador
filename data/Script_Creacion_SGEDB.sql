@@ -140,6 +140,7 @@ CREATE TABLE SGE.Regla (
   regla_detalle VARCHAR(45),
   regla_valor INT,
   regla_operador VARCHAR(2),
+  regla_accion VARCHAR(16),
   PRIMARY KEY (regla_idRegla),
   FOREIGN KEY (regla_idSensor) REFERENCES SGE.Sensor (sensor_idSensor))
 GO
@@ -301,9 +302,17 @@ INSERT INTO SGE.Cliente VALUES (2, 34.604048, 58.381673, '9999999999', GETDATE()
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3, 0)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 1, 1, 0, CONVERT(datetime,'2018-11-17 10:12:53:242',121), NULL, 0)
 
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-12 20:12:53:242',121), CONVERT(datetime,'2018-03-13 06:02:13:345',121), 0)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 06:02:13:346',121), CONVERT(datetime,'2018-03-13 14:08:23:545',121), 1)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 14:08:23:546',121), CONVERT(datetime,'2018-03-15 06:07:55:125',121), 0)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 06:07:55:126',121), CONVERT(datetime,'2018-03-15 23:04:35:234',121), 1)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 23:04:35:235',121), CONVERT(datetime,'2018-03-17 05:06:42:332',121), 0)
+
+INSERT INTO SGE.Sensor VALUES (2, 'Sensor Temperatura', 20)
+INSERT INTO SGE.Regla VALUES (1, 'Temperatura', 30, '>', 'Encender')
+INSERT INTO SGE.Actuador VALUES (2, 'Actuardor-Temperatura')
+INSERT INTO SGE.ActuadorPorRegla VALUES (1, 1)
+INSERT INTO SGE.DispositivoPorActuador VALUES (1, 2, 1, 1)
+INSERT INTO SGE.DispositivoPorActuador VALUES (1, 2, 8, 1)
