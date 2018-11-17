@@ -28,9 +28,8 @@ namespace tp_integrador.Models
             Nombre = nombre;
             Consumo = consumo;
 			BajoConsumo = bajoconsumo;
-        }	
+        }
+			
 
-		public abstract double ConsumoEnElMes();  
-
-    }
+	}
 }

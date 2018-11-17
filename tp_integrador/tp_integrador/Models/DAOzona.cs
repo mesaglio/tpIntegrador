@@ -43,35 +43,33 @@ namespace tp_integrador.Models
 
         public void AgregarTransformadorAZona(Transformador t)
         {
-            foreach (Zona z in zonas)
-            {
-                if (z.distancia(z.Radar.Point, t.location) < z.Radar.Radius)
-                {
-                    z.AgregarTransformador(t);
-                } 
-            }
-
+			var zonasord = zonas.OrderBy(x => x.Distancia(t.location, x.Radar.Point));
+			var zona = zonasord.First(x => x.EstaEnLaZona(t.location));
+			zona.AgregarNuevoTransformador(t);			
         }
 
 		public int AsignarTransformador(Cliente unCliente)
 		{
-			foreach (Zona zona in zonas)
+			int idTActual = BuscarTransformadorDeCliente(unCliente.idUsuario);
+			if (idTActual != -1)
 			{
-				if (zona.ClienteViveAqui(unCliente))
-				{
-					zona.AsignarTransformadorAlCliente(unCliente);
-					break;
-				}
+				var trans = zonas.Find(x => x.Transformadores.Exists(t => t.id == idTActual)).Transformadores.Find(x => x.id == idTActual);
+				trans.ClientesID.Remove(unCliente.idUsuario);
 			}
+
+			var zonasord = zonas.OrderBy(x => x.Distancia(unCliente.Coordenadas, x.Radar.Point));
+			var zona = zonasord.First(x => x.EstaEnLaZona(unCliente.Coordenadas));
+
+			zona.AsignarTransformadorAlCliente(unCliente);
 
 			var idTrans = BuscarTransformadorDeCliente(unCliente.idUsuario);
 
-			return idTrans != -1 ? idTrans : -1;
+			return idTrans;
 		}
 
 		public int BuscarTransformadorDeCliente(int idCliente)
 		{
-			int id; 
+			int id;
 			foreach (Zona z in zonas)
 			{
 				id = z.TransformadorQueTiene(idCliente);

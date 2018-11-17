@@ -1,0 +1,42 @@
+[
+  {
+    "id":,
+	"idZona";,
+    "latitude": -34.635777,
+	"longitude": -58.482135,    
+    "EstaActivo": true,
+	"clientes": []    
+  },
+  {
+    "id":,
+	"idZona";,
+    "latitude": -34.553988,
+	"longitude": -58.468995,    
+    "EstaActivo": true,
+	"clientes": []    
+  },
+  {
+    "id":,
+	"idZona";,
+    "latitude": -34.611334,
+	"longitude": -58.398145,    
+    "EstaActivo": true,
+	"clientes": []    
+  },
+  {
+    "id":,
+	"idZona";,
+    "latitude": -34.655419,
+	"longitude": -58.430017,    
+    "EstaActivo": true,
+	"clientes": []    
+  },
+  {
+    "id":,
+	"idZona";,
+    "latitude": -34.622026,
+	"longitude": -58.456555,    
+    "EstaActivo": true,
+	"clientes": []    
+  }
+]

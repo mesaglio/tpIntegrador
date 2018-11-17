@@ -39,15 +39,15 @@ namespace tp_integrador.Controllers
 				//u.SetLoginOn();
 				if (user.GetType() == typeof(Administrador))
 				{
-					MvcApplication.Daobjeto.CargarUsuario((Administrador)Session["Usuario"]);
+					DAOUsuario.Instancia.CargarUsuario((Administrador)Session["Usuario"]);
 					Session["Admin"] = true;
-					return View("Administrador");
+					return Administrador();
 				}
 				else
 				{
-					MvcApplication.Daobjeto.CargarUsuario((Cliente)Session["Usuario"]);
+					DAOUsuario.Instancia.CargarUsuario((Cliente)Session["Usuario"]);
 					Session["Admin"] = false;
-					return View("../Cliente/Cliente");
+					return Cliente();
 				}
 			}
 		}
@@ -59,7 +59,10 @@ namespace tp_integrador.Controllers
 
 		public ActionResult Cliente()
 		{
-			return View("../Cliente/Cliente");
+			if ((Boolean)Session["Admin"]) return PermisoDenegado();
+			var user = (Cliente)Session["Usuario"];
+
+			return View("../Cliente/Cliente", model: user );
 		}
 
 		public ActionResult Logout()

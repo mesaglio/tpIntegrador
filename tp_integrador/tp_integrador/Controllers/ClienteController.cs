@@ -28,6 +28,14 @@ namespace tp_integrador.Controllers
 
             return View(user);
         }
+
+		public ActionResult ConsumoPorPeriodo()
+		{
+			if ((Boolean)Session["Admin"]) return PermisoDenegado();
+			Cliente user = (Cliente)Session["Usuario"];
+
+			return View(user);
+		}
 		        
         public ActionResult GestionDeDispositivos()
         {

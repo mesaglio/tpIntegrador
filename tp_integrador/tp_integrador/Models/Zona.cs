@@ -23,44 +23,55 @@ namespace tp_integrador.Models
 			Radio = radio;
 			Latitude = latitude;
 			Longitude = longitude;
-
+			
             Radar = new CircleMarker(id.ToString());
             Radar.Radius = radio;
             Radar.Point = new Location(latitude, longitude);
 			Transformadores = trans;
         }
       
-        public void AgregarTransformador(Transformador unTransformador)
+        public void AgregarNuevoTransformador(Transformador unTransformador)
         {
-            if (distancia(unTransformador.location, Radar.Point) < Radar.Radius)
-                Transformadores.Add(unTransformador);
-            //else podemos mandar un exeption diciendo que el transformador no esta localizado en esta zona
+			unTransformador.idZona = idZona;
+            Transformadores.Add(unTransformador);
+			ORM.Instancia.Insert(unTransformador);
         }
 
+		public bool EstaEnLaZona(Location tlocation)
+		{
+			return (Distancia(tlocation, Radar.Point) < Radar.Radius);
+		}
 
-        public double distancia(Location l1, Location l2)
-        {			
-            return Math.Sqrt(Math.Pow(l1.Latitude - l2.Latitude, 2) + Math.Pow(l1.Latitude - l2.Latitude, 2));
-        }
-
-        public bool ClienteViveAqui(Cliente cliente)
+        public double Distancia(Location l1, Location l2)
         {
-            return distancia(cliente.Coordenadas, Radar.Point) < Radar.Radius;
-        }
+			var l1Rad = Math.PI * l1.Latitude / 180;
+			var l2Rad = Math.PI * l2.Latitude / 180;
+			var theta = l1.Longitude - l2.Longitude;
+			var thetaRad = Math.PI * theta / 180;
+
+			double dist = Math.Sin(l1Rad) * Math.Sin(l2Rad) + Math.Cos(l1Rad) *	Math.Cos(l2Rad) * Math.Cos(thetaRad);
+			dist = Math.Acos(dist);
+
+			dist = dist * 180 / Math.PI;
+			dist = dist * 60 * 1.1515;
+
+			return dist * 1.609344;
+		}       
 
         public void AsignarTransformadorAlCliente(Cliente cliente)
         {
             Location l = cliente.Coordenadas;
-            if (ClienteViveAqui(cliente))
+            if (EstaEnLaZona(cliente.Coordenadas))
             {
                 Transformador masCercano = Transformadores.First();
 
                 foreach (Transformador t in Transformadores)
                 {
-                    if (distancia(t.location, l) <= distancia(masCercano.location, l))
+                    if (Distancia(t.location, l) <= Distancia(masCercano.location, l))
                         masCercano = t;
                 }
-                masCercano.ClientesID.Add(cliente.idUsuario);
+
+				masCercano.AgregarCliente(cliente);
             }
         }
 

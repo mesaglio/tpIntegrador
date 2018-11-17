@@ -143,6 +143,57 @@ namespace tp_integrador.Models
 			return dispositivos.Find(x => (x.IdDispositivo == idDispositivo) && (x.IdCliente == idCliente) && (x.Numero == numero));
 		}
 
+		public double ConsumoActual()
+		{
+			double total = 0;
+
+			foreach (var disp in dispositivos.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnEstadoActual();
+			}
+
+			return total;
+		}
+
+		public double ConsumoEstandarDiario()
+		{
+			double total = 0;
+
+			foreach (var disp in dispositivos.OfType<Estandar>())
+			{
+				total += GetEstimado(disp);
+			}
+
+			return total;
+		}
+
+		public PeriodoData PeriodoActual()
+		{
+			var periodo = new PeriodoData();
+			periodo.PeriodoActual();
+
+			return periodo;
+		}
+
+		public PeriodoData ConsumoDelPeriodoActual()
+		{
+			var periodo = PeriodoActual();
+			double total = 0;
+
+			foreach (var disp in dispositivos.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnElPeriodo(periodo);
+			}
+
+			periodo.Consumo = total;
+			return periodo;
+		}
+
+		public List<Sensor> MisSensores()
+		{
+			return DAOSensores.Instancia.FindAllFromCliente(idUsuario);
+		}
+
         #region INTERFAZ CONTROLLER
         public dynamic RunSimplex()
         {
@@ -178,13 +229,13 @@ namespace tp_integrador.Models
         public void AgregarDispositivoDeTemplate(int disp)
         {
             DAOTemplates a = new DAOTemplates();
-            TemplateDispositivo dispositivo = a.Searchtemplatebyid(disp);			
+            DispositivoGenerico dispositivo = a.Searchtemplatebyid(disp);			
 
             if (dispositivo.Inteligente) NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo);
             else NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo, 0);
         }
 
-		public List<TemplateDispositivo> GetTemplateDisp()
+		public List<DispositivoGenerico> GetTemplateDisp()
 		{
 			var daot = new DAOTemplates();
 
