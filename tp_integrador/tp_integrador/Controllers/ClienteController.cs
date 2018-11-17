@@ -110,6 +110,31 @@ namespace tp_integrador.Controllers
 			return View("Dashboard", model: uncliente);
 		}
 
+		public ActionResult EditarEstandar(int idD, int idC, int numero)
+		{
+			Cliente uncliente = (Cliente)Session["Usuario"];
+			var dispositivo = uncliente.BuscarDispositivo(idD, idC, numero);
+			return View(dispositivo);
+		}
+
+		[HttpPost]
+		public ActionResult EditarEstandar(Estandar disp)
+		{			
+			Cliente uncliente = (Cliente)Session["Usuario"];
+			
+			uncliente.UsoDiario(uncliente.BuscarDispositivo(disp.IdDispositivo, disp.IdCliente, disp.Numero), disp.usoDiario);
+
+			return View("Dashboard", model: uncliente);
+		}
+
+		public ActionResult ConvertirEstandar(int idD, int idC, int numero)
+		{
+			Cliente uncliente = (Cliente)Session["Usuario"];
+			uncliente.ConvertirAInteligente(uncliente.BuscarDispositivo(idD, idC, numero));
+			
+			return View("Dashboard", model: uncliente);
+		}
+
 		[HttpPost]
 		public ActionResult CalculoSimplex()
 		{

@@ -16,7 +16,11 @@ namespace tp_integrador.Models
 
         public bool EsInteligente = false;
 
-        public Dispositivo(int idDisp, int idClie, int numero, string nombre, double consumo, bool bajoconsumo)
+		protected Dispositivo()
+		{
+		}
+
+		public Dispositivo(int idDisp, int idClie, int numero, string nombre, double consumo, bool bajoconsumo)
         {
 			IdDispositivo = idDisp;
 			IdCliente = idClie;
@@ -24,10 +28,9 @@ namespace tp_integrador.Models
             Nombre = nombre;
             Consumo = consumo;
 			BajoConsumo = bajoconsumo;
-        }
+        }	
 
-		public abstract double ConsumoEnElMes();
-       
+		public abstract double ConsumoEnElMes();  
 
     }
 }

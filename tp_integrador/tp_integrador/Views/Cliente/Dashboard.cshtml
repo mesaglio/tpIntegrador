@@ -3,61 +3,6 @@
 @{
 	ViewBag.Title = "Dashboard";
 }
-@*
-	<div>
-				@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post))
-				{
-					<fieldset>
-						Seleccione un Dispositivo <select name="disp">
-
-							<option selected="selected" value=0></option>
-
-							@foreach (var item in Model.GetTemplateDisp())
-							{
-								<option value=@item.ID>@item.getNombreEntero()</option>
-							}
-
-						</select>
-						<button type="submit">Agregar</button>
-
-					</fieldset>
-				}
-			</div>
-
-			<div>
-				<span class="label label-default">Dispositivos Encendidos: @Model.CantEncendidos()</span><br />
-
-				<span class="label label-default">Dispositivos Apagados: @Model.CantApagados()</span><br />
-
-				<span class="label label-default">Dispositivos:</span><br />
-				@foreach (var item in Model.dispositivos)
-				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Nombre)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Consumo)
-						</td>
-						<td>
-							@if (item.EsInteligente)
-							{
-
-								<div class="btn-group">
-									@using (Html.BeginForm("EncenderDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-									{
-										<input type="hidden" name="postdispositivo" value="@item.Nombre" /><button type="submit">Encender</button>}
-
-									@using (Html.BeginForm("ApagarDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-									{<input type="hidden" name="postdispositivo" value="@item.Nombre" /> <button type="submit">Apagar</button>}
-								</div>
-							}
-						</td>
-					</tr>
-					<br />
-				}
-			</div>
-*@
 
 <!-- Bootstrap core CSS -->
 <link href="~/Content/bootstrap.min.css" rel="stylesheet"/>
@@ -136,6 +81,8 @@
 					}
 				</div>
 
+				<hr />
+
 				<!-- DISPLAYS -->
 				<div class="container" style="width:460px;">
 					<div class="card-deck mb-3 text-center">
@@ -166,6 +113,8 @@
 
 					</div>
 				</div>
+
+				<hr />
 
 				<!-- LISTADO DISPOSITIVOS -->
 				<h4 for="country" class="mb-3">Mis Dispositivos</h4>
@@ -215,7 +164,10 @@
 										}
 										else
 										{
-											<td></td>}
+											<td style="width:200px; height:15px;">
+												@Html.ActionLink("Editar", "EditarEstandar", "Cliente", new { idD = item.IdDispositivo, idC = item.IdCliente, numero = item.Numero }, new { @style = "font: 12px arial; background-color:crimson;", @class = "btn btn-lg btn-block btn-primary" })
+											</td>
+										}
 									</tr>
 								}
 							}

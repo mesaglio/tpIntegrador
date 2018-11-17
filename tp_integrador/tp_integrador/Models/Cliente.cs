@@ -90,27 +90,27 @@ namespace tp_integrador.Models
         }
 
         public void UsoDiario(Estandar aparato, byte horas)
-        {
+        {	
             aparato.SetUsoDiario(horas);
         }
 
-        public int NuevoDispositivoInteligente(int idDisp, string nombre, double consumo, bool bajoconsumo)
+        public void NuevoDispositivoInteligente(int idDisp, string nombre, double consumo, bool bajoconsumo)
         {
-			int numero = CalcularNumero(nombre);
+			Inteligente nuevo = new Inteligente(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, bajoconsumo, 0, DateTime.Now, false);
 
-			dispositivos.Add(new Inteligente(idDisp, idUsuario, numero, nombre, consumo, bajoconsumo, 0, DateTime.Now, false));
+			dispositivos.Add(nuevo);
+			ORM.Instancia.Insert(nuevo);
+
             Puntos += 15;
-
-			return numero;
+			ORM.Instancia.Update(this);
         }
 
-        public int NuevoDispositivoEstandar(int idDisp, string nombre, double consumo, bool bajoconsumo, byte usoPromedio)
+        public void NuevoDispositivoEstandar(int idDisp, string nombre, double consumo, bool bajoconsumo, byte usoPromedio)
         {
-			int numero = CalcularNumero(nombre);
+			Estandar nuevo = new Estandar(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, bajoconsumo, usoPromedio);
+			dispositivos.Add(nuevo);
 
-			dispositivos.Add(new Estandar(idDisp, idUsuario, numero, nombre, consumo, bajoconsumo, usoPromedio));
-
-			return numero;
+			ORM.Instancia.Insert(nuevo);
         }
 
         public void ConvertirAInteligente(Estandar aparato)
@@ -118,7 +118,11 @@ namespace tp_integrador.Models
             Inteligente adaptado = new Inteligente(aparato.IdDispositivo, idUsuario, aparato.Numero, aparato.Nombre, aparato.Consumo, aparato.BajoConsumo, 0, DateTime.Now, true);
             dispositivos.Remove(aparato);
             dispositivos.Add(adaptado);
+			DAODispositivo.Instancia.ReemplazarPorAdaptado(adaptado);
+			ORM.Instancia.Update(adaptado);
+
             Puntos += 10;
+			ORM.Instancia.Update(this);
         }
 
         public void AgregarDispositivoDesdeJson(Dispositivo dispositivo)
@@ -174,15 +178,10 @@ namespace tp_integrador.Models
         public void AgregarDispositivoDeTemplate(int disp)
         {
             DAOTemplates a = new DAOTemplates();
-            TemplateDispositivo dispositivo = a.Searchtemplatebyid(disp);
-			int numero;
+            TemplateDispositivo dispositivo = a.Searchtemplatebyid(disp);			
 
-            if (dispositivo.Inteligente) numero = NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo);
-            else numero = NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo, 0);
-
-			dynamic nuevo = BuscarDispositivo(dispositivo.ID, idUsuario, numero);
-			DAODispositivo.Instancia.CargarDispositivo(nuevo);
-			ORM.Instancia.Insert(nuevo);
+            if (dispositivo.Inteligente) NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo);
+            else NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo, 0);
         }
 
 		public List<TemplateDispositivo> GetTemplateDisp()
