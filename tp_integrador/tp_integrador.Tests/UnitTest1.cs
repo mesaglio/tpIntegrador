@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Gmap.net;
 using tp_integrador.Models;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
 
 
 namespace tp_integrador.Tests
@@ -109,6 +111,20 @@ namespace tp_integrador.Tests
             String sql = (ORM.Instancia.Query("select count(*) from SGE.Transformador").Tables[0].Rows[0][0].ToString());
             string cantidad = "La cantidad de Transformadores es de " + sql;
             Console.WriteLine(cantidad);
+        }
+        [TestMethod]
+        public void TestMongo()
+        {
+            ODM odm = new ODM();
+            odm.mapeo();
+            IMongoDatabase ba = odm.conection();
+            var bas = ba.GetCollection<Reporte>("userreportes");
+            Reporte repo = new Reporte("1", "2018", "Enero", "2000");
+            odm.agregarReporte(ba, "2","2018","Febrero","300");
+            odm.agregarReporte(ba, "5", "2018", "Febrero", "300");
+
+
+
         }
     }
 }

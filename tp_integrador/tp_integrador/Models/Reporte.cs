@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace tp_integrador.Models
 {
-    class Reporte
+    public class Reporte
     {
         [BsonId]
         public ObjectId ID { get; set; }
@@ -19,10 +19,10 @@ namespace tp_integrador.Models
         [BsonElement("anio")]
         public string anio { get; set; }
 
-        [BsonElement("mes")]
+        [BsonElement("Mes")]
         public string mes { get; set; }
 
-        [BsonElement("consumoTotal")]
+        [BsonElement("ConsumoTotal")]
         public string consumoTotal { get; set; }
 
         public Reporte(string cliente, string _anio, string _mes, string _consumo)

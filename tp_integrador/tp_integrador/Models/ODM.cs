@@ -15,12 +15,17 @@ namespace tp_integrador.Models
         }
         public IMongoDatabase conection()
         {
-            var monguis = new MongoClient("mongodb://<disenio>:<disenio2018>@ds031108.mlab.com:31108/sgemdb");
+            var connectionString = "mongodb://prueba:prueba123@ds031108.mlab.com:31108/sgemdb";
+            var monguis = new MongoClient(connectionString);
             return monguis.GetDatabase("sgemdb");
+        }
+        public void agregarReporte(IMongoDatabase data, Reporte repo)
+        {
+            agregarReporte(data, repo.clienteID, repo.anio, repo.mes, repo.consumoTotal);
         }
         public void agregarReporte(IMongoDatabase data, string cliente,string anio,string mes, string consumo)
         {
-            mapeo();
+            
             var reportes = data.GetCollection<Reporte>("userreportes");
             var reporte = new Reporte(cliente, anio, mes, consumo);
 
@@ -28,7 +33,7 @@ namespace tp_integrador.Models
         }
         public void eliminarReporteDeClientePorAnioMes(IMongoDatabase data,string _cliente,string _anio,string _mes)
         {
-            mapeo();
+            
             //filtro
             var builder = Builders<Reporte>.Filter;
             var filtro = builder.Eq("clienteID", _cliente) & builder.Eq("anio", _anio) & builder.Eq("mes", _mes);

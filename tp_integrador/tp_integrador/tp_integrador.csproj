@@ -187,6 +187,7 @@
     <Compile Include="Models\Administrador.cs" />
     <Compile Include="Models\CargarJson.cs" />
     <Compile Include="Models\Categoria.cs" />
+    <Compile Include="Models\ODM.cs" />
     <Compile Include="Models\Reporte.cs" />
     <Compile Include="Models\DAOSensores.cs" />
     <Compile Include="Models\DAOzona.cs" />
