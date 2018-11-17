@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Gmap.net;
 using tp_integrador.Models;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
 
 
 namespace tp_integrador.Tests
@@ -44,7 +46,7 @@ namespace tp_integrador.Tests
         [TestMethod]
         public void TestDeDispositivo()
         {
-            //Crear un dispositivo, mostrar por consola los intervalos que estuvo encendido
+            //Recuperar un dispositivo, mostrar por consola los intervalos que estuvo encendido
             //durante el ultimo mes, modificar su nombre updetearlo y verificar que se updeteo
             //creo user
             DAOzona.Instancia.InitialLoad();
@@ -53,7 +55,7 @@ namespace tp_integrador.Tests
             ORM.Instancia.Insert(userCreado);
 
             //obtengo los dispositivos del cliente
-            List<Dispositivo> dispo = ORM.Instancia.GetDispositivos(2);
+            List<Dispositivo> dispo = ORM.Instancia.GetDispositivos(3);
             Dispositivo dispositivo = dispo.First();
             //int id = dispositivo.IdDispositivo;
             String nombreOriginal = dispo.First().Nombre;
@@ -109,6 +111,20 @@ namespace tp_integrador.Tests
             String sql = (ORM.Instancia.Query("select count(*) from SGE.Transformador").Tables[0].Rows[0][0].ToString());
             string cantidad = "La cantidad de Transformadores es de " + sql;
             Console.WriteLine(cantidad);
+        }
+        [TestMethod]
+        public void TestMongo()
+        {
+            ODM odm = new ODM();
+            odm.mapeo();
+            IMongoDatabase ba = odm.conection();
+            var bas = ba.GetCollection<Reporte>("userreportes");
+            Reporte repo = new Reporte("1", "2018", "Enero", "2000");
+            odm.agregarReporte(ba, "2","2018","Febrero","300");
+            odm.agregarReporte(ba, "5", "2018", "Febrero", "300");
+
+
+
         }
     }
 }
