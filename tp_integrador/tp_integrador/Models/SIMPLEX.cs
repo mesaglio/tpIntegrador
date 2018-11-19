@@ -29,7 +29,7 @@ namespace tp_integrador.Models
 			datosRestricciones.Add(Tuple.Create("Ventilador", 120d, 360d));
 		}
 				
-        public string[] GetSimplexData(string postData)
+        private string[] GetSimplexData(string postData)
         {
 			HttpResponseMessage response = null;
 			using (var client = new HttpClient())
@@ -42,8 +42,11 @@ namespace tp_integrador.Models
 			}
 		}
 
-		public string CrearConsulta(List<Dispositivo> dispositivos)
-		{			
+		public SimplexResult Consulta(List<Dispositivo> listaDispositivos)
+		{
+			var dispositivos = new List<Dispositivo>(listaDispositivos);
+			dispositivos.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");
+
 			var json = new JSONObject(dispositivos);
 			json.Restrictions.Add(new Restriction(dispositivos));
 
@@ -60,7 +63,10 @@ namespace tp_integrador.Models
 				}
 			}
 			
-			return JsonConvert.SerializeObject(json).ToLower();
+			var postData = JsonConvert.SerializeObject(json).ToLower();
+			var respuesta = GetSimplexData(postData);
+
+			return new SimplexResult(respuesta, dispositivos);
 		}
 
 		//Clases Para Crear JSON

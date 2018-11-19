@@ -1,7 +1,7 @@
-﻿@model tp_integrador.Models.Usuarios
+﻿@model tp_integrador.Models.Cliente
 
 @{
-	ViewBag.Title = "ConsumoPorPeriodo";
+	ViewBag.Title = "GestionarSensores";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -26,9 +26,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
 								<span data-feather="activity"></span>
-								Consumo por Periodo <span class="sr-only">(current)</span>
+								Consumo por Periodo
 							</a>
 						</li>
 						<li class="nav-item">
@@ -50,9 +50,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link active">
 								<span data-feather="wifi"></span>
-								Gestionar Sensores
+								Gestionar Sensores <span class="sr-only">(current)</span>
 							</a>
 						</li>
 					</ul>
@@ -62,24 +62,13 @@
 			<div class="container" style="margin-left:20px; overflow:auto;">
 
 				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-					<h1 class="display-4">Consumo Por Periodo</h1>
-					<p class="lead">Consulte los consumos de periodos anteriores.</p>
+					<h1 class="display-4">Gestión de Sensores</h1>
+					<p class="lead">Agregue, Modifique o Elimine sus Sensores/Reglas/Actuadores.</p>
 				</div>
 
-				<hr />
-				<!--DASHBOARD-->
-				<div class="container text-center">
-					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-						<h1 class="h2">Consumos Mensuales</h1>
-						<div class="btn-toolbar mb-2 mb-md-0">							
-							<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-								<span data-feather="calendar"></span>
-								This week
-							</button>
-						</div>
-					</div>
+				<hr/>
+				<div class="container">
 
-					<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
 				</div>
 
 			</div>
@@ -99,38 +88,6 @@
 	<script src="https://unpkg.com/feather-icons"></script>
 	<script>
 		feather.replace()
-	</script>
-
-	<!-- Graphs -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-	<script>
-		var ctx = document.getElementById("myChart");
-		var myChart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-				datasets: [{
-					data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-					lineTension: 0,
-					backgroundColor: 'transparent',
-					borderColor: '#007bff',
-					borderWidth: 4,
-					pointBackgroundColor: '#007bff'
-				}]
-			},
-			options: {
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero: false
-						}
-					}]
-				},
-				legend: {
-					display: false,
-				}
-			}
-		});
 	</script>
 
 </main>

@@ -1,8 +1,6 @@
-﻿@model tp_integrador.Models.Usuarios
-
+﻿@model tp_integrador.Models.Cliente
 @{
-	ViewBag.Title = "ConsumoPorPeriodo";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Simplex";
 }
 
 <!-- Bootstrap core CSS -->
@@ -10,6 +8,8 @@
 
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet" />
+
+<link href="~/Content/switch.css" rel="stylesheet" />
 
 <main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
@@ -26,9 +26,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
 								<span data-feather="activity"></span>
-								Consumo por Periodo <span class="sr-only">(current)</span>
+								Consumo por Periodo
 							</a>
 						</li>
 						<li class="nav-item">
@@ -38,9 +38,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link active">
 								<span data-feather="clock"></span>
-								Simplex
+								Simplex <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
@@ -62,26 +62,30 @@
 			<div class="container" style="margin-left:20px; overflow:auto;">
 
 				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-					<h1 class="display-4">Consumo Por Periodo</h1>
-					<p class="lead">Consulte los consumos de periodos anteriores.</p>
-				</div>
+					<h1 class="display-4">Ahorro Simplex</h1>
+					<p class="lead">Calcule de qué manera distribuir el consumo de sus dispositivos para lograr un consumo eficiente.</p>
 
-				<hr />
-				<!--DASHBOARD-->
-				<div class="container text-center">
-					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-						<h1 class="h2">Consumos Mensuales</h1>
-						<div class="btn-toolbar mb-2 mb-md-0">							
-							<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-								<span data-feather="calendar"></span>
-								This week
-							</button>
-						</div>
+					<hr />
+					<div class="container" style="width:400px;">
+						<a href="@Url.Action("CalculoSimplex", "Cliente")" style="width:400px;" class="btn btn-lg btn-block btn-primary">Calcular Simplex</a>
 					</div>
 
-					<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+					<hr />
+					<h1 class="display-4">Ahorro Automático</h1>
+					<p class="lead">Active el ahorro automático y el sistema se encargara de apagar los dispositivos que alcancen el limite simplex.</p>
+					<!-- Switch -->
+					<div class="container" style="width:180px; height:34px;">
+						@using (Html.BeginForm("AhorroAutomatico", "Cliente", FormMethod.Post))
+						{	
+							<label style="vertical-align:text-top; font-size:large; padding-right:10px;">Off</label>
+								<label class="switch">
+									<input type="checkbox" checked="@Model.AutoSimplex" onclick="this.form.submit()"/>
+									<span class="slider round"></span>
+								</label>
+							<label style="vertical-align:text-top; font-size:large; padding-left:10px;">On</label>
+						}
+					</div>					
 				</div>
-
 			</div>
 
 		</div>
@@ -101,37 +105,4 @@
 		feather.replace()
 	</script>
 
-	<!-- Graphs -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-	<script>
-		var ctx = document.getElementById("myChart");
-		var myChart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-				datasets: [{
-					data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-					lineTension: 0,
-					backgroundColor: 'transparent',
-					borderColor: '#007bff',
-					borderWidth: 4,
-					pointBackgroundColor: '#007bff'
-				}]
-			},
-			options: {
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero: false
-						}
-					}]
-				},
-				legend: {
-					display: false,
-				}
-			}
-		});
-	</script>
-
 </main>
-

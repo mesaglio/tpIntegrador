@@ -10,8 +10,6 @@
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet">
 
-<link href="~/Content/cardbox.css">
-
 <main role="main" class="container" style="float:right;">
 	<div class="container-fluid">
 		<div class="row">
@@ -26,31 +24,31 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
 								<span data-feather="activity"></span>
 								Consumo por Periodo
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("CargarDispositivo", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link active">
 								<span data-feather="file"></span>
 								Cargar Archivo de Dispositivo <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionDeDispositivos", "Cliente")" class="nav-link">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
 								<span data-feather="clock"></span>
 								Simplex
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Dashboard", "Cliente")" class="nav-link">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link">
 								<span data-feather="monitor"></span>
 								Gestionar Dispositivos
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
 								<span data-feather="wifi"></span>
 								Gestionar Sensores
 							</a>

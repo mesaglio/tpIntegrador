@@ -106,7 +106,7 @@ namespace tp_integrador.Models
 
 			public TransJson(Transformador t)
 			{
-				Id = t.id; PlaceName = "Transformador " + t.id; GeoLong = t.location.Longitude.ToString(); GeoLat = t.location.Latitude.ToString();
+				Id = t.id; PlaceName = "Transformador " + t.id; GeoLong = t.location.Longitude.ToString().Replace(',','.'); GeoLat = t.location.Latitude.ToString().Replace(',', '.');
 			}
 
 		}

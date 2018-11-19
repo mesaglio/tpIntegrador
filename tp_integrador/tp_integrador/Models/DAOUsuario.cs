@@ -85,24 +85,27 @@ namespace tp_integrador.Models
 			var clientes = ORM.Instancia.GetClientesAutoSimplex();
 			var simplex = new SIMPLEX();
 			var listaDisp = new List<Inteligente>();
-			string[] respuesta;
+			SimplexResult respuesta;
 			int total;
-			double consumoMes;			
+			double consumoMes;
+			double consumoRespuesta;
 
 			foreach (Cliente c in clientes)
 			{
-				listaDisp = c.dispositivos.OfType<Inteligente>().ToList();
-				listaDisp.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");
+				listaDisp = c.dispositivos.OfType<Inteligente>().ToList();				
 				total = listaDisp.Count;
 				
-				respuesta = simplex.GetSimplexData(simplex.CrearConsulta(new List<Dispositivo>(listaDisp)));
-				for(var i = 0; i < total; i++)
+				respuesta = simplex.Consulta(new List<Dispositivo>(listaDisp));
+				foreach(var dispo in listaDisp)
 				{
-					consumoMes = listaDisp[i].ConsumoEnElMes();
-					if (consumoMes > Double.Parse(respuesta[i + 1])) listaDisp[i].Apagar();
-					ORM.Instancia.Update(listaDisp[i]);
+					consumoMes = dispo.ConsumoEnElMes();
+					consumoRespuesta = Double.Parse(respuesta.Valores.Find(x => x.Nombre == dispo.Nombre && x.Numero == dispo.Numero).Consumo);
+					if (consumoMes > consumoRespuesta)
+					{
+						dispo.Apagar();
+						ORM.Instancia.Update(dispo);
+					}					
 				}
-
 			}
 		}
 	}

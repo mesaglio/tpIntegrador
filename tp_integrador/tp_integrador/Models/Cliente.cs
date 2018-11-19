@@ -195,26 +195,13 @@ namespace tp_integrador.Models
 		}
 
         #region INTERFAZ CONTROLLER
-        public dynamic RunSimplex()
+        public SimplexResult RunSimplex()
         {
             SIMPLEX sim = new SIMPLEX();
-
-            var listaDisp = this.dispositivos;
-            listaDisp.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");
-
-            var respuesta = sim.GetSimplexData(sim.CrearConsulta(listaDisp));
-
-            var sb = new StringBuilder();
-            sb.AppendLine("<b>Consumo Optimo Para Sus Dispositivos: " + "</b><br/>");
-            sb.AppendLine("" + "<br/>");
-            sb.AppendLine("<b>Maximo: </b>" + respuesta[0] + "<br/>");
-            var cantDisp = this.dispositivos.Count;
-
-            for (int i = 1; i < respuesta.Length; i++)
-            {
-                sb.AppendLine("<b>" + this.dispositivos[cantDisp - i].Nombre + ": </b>" + respuesta[i] + "<br/>");
-            }
-            return sb;
+			
+			var resultado = sim.Consulta(dispositivos);
+			           
+			return resultado;
         }
 
         public void CargarDispositivos(HttpPostedFileBase file, int flag)
@@ -251,6 +238,12 @@ namespace tp_integrador.Models
 				else ApagarDispositivo(disp);
 			}
 			else if (disp.Estado == 2) ApagarDispositivo(disp);
+		}
+
+		public void CambiarAutoSimplex()
+		{
+			AutoSimplex = !AutoSimplex;
+			ORM.Instancia.Update(this);
 		}
 
     #endregion

@@ -1,7 +1,7 @@
 ﻿@model tp_integrador.Models.Cliente
 
 @{
-	ViewBag.Title = "Dashboard";
+	ViewBag.Title = "GestionarDispositivos";
 }
 
 <!-- Bootstrap core CSS -->
@@ -9,8 +9,6 @@
 
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet"/>
-
-<link href="~/Content/cardbox.css"/>
 
 <main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
@@ -27,31 +25,31 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
 								<span data-feather="activity"></span>
 								Consumo por Periodo
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("CargarDispositivo", "Cliente")" class="nav-link">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link">
 								<span data-feather="file"></span>
 								Cargar Archivo de Dispositivo
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionDeDispositivos", "Cliente")" class="nav-link">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
 								<span data-feather="clock"></span>
 								Simplex
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Dashboard", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link active">
 								<span data-feather="monitor"></span>
 								Gestionar Dispositivos <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
 								<span data-feather="wifi"></span>
 								Gestionar Sensores
 							</a>
@@ -62,6 +60,12 @@
 
 			<div class="container" style="margin-left:20px; overflow:auto;">
 
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+					<h1 class="display-4">Gestión de Dispositivos</h1>
+					<p class="lead">Agregue o Modifique sus Dispositivos</p>
+				</div>
+
+				<hr/>
 				<!-- COMBOBOX AGREGAR DISPOSITIVO -->
 				<h4 for="country" class="mb-3" style="margin-top:30px;">Agregar un Dispositivo</h4>
 				<div class="container" style="margin-bottom:40px;">

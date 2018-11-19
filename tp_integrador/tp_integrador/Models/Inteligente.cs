@@ -122,7 +122,7 @@ namespace tp_integrador.Models
 			if (!periodoData.EsElActual()) return 0; //Traer Datos de Mongo
 			else return ConsumoDesdeHasta(periodoData.FechaInicio, periodoData.FechaFin);
 		}
-
+		
 		public void BajarTemperatura()
 		{			
 		}

@@ -54,11 +54,14 @@ namespace tp_integrador.Controllers
 
 		public ActionResult Administrador()
 		{
+			if (!SessionStateOK()) return View("Index");
+
 			return View("Administrador");
 		}
 
 		public ActionResult Cliente()
 		{
+			if (!SessionStateOK()) return View("Index");
 			if ((Boolean)Session["Admin"]) return PermisoDenegado();
 			var user = (Cliente)Session["Usuario"];
 
@@ -67,7 +70,9 @@ namespace tp_integrador.Controllers
 
 		public ActionResult Logout()
         {
-            Session.Contents.RemoveAll();
+			if (!SessionStateOK()) return View("Index");
+
+			Session.Contents.RemoveAll();
             return View("Index");
         }
 
@@ -93,7 +98,8 @@ namespace tp_integrador.Controllers
         // ADMINISTRADOR
         public ActionResult JsonImport()
         {
-            if (!(bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
             ViewBag.Message = "Your contact page.";
 
             return View();
@@ -102,7 +108,8 @@ namespace tp_integrador.Controllers
         [HttpPost]
         public ActionResult CargarArchivo(HttpPostedFileBase file)
         {
-            if (!(bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
             if (file == null) return View("JsonImport");
 
             Administrador adm = (Administrador)Session["Usuario"];
@@ -120,19 +127,22 @@ namespace tp_integrador.Controllers
 		public JsonResult GetTransData()
 		{
 			var transformadores = DAOzona.Instancia.GetTransformadores();
-			return Json(transformadores, "aplication/json", System.Text.Encoding.UTF8, JsonRequestBehavior.AllowGet);
+			
+			return Json(transformadores, JsonRequestBehavior.AllowGet);
 		}
 
 		public ActionResult Reporte()
         {
-            if (!(bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
 			
             return View("../Reportes/Reportes");
         }
 
         public ActionResult CargarTransformadores()
         {
-            if (!(bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
 			
             return View("CargarTransformadores");
         }
@@ -140,7 +150,8 @@ namespace tp_integrador.Controllers
         [HttpPost]
         public ActionResult LoadTransformadoresJson(HttpPostedFileBase file)
         {
-            if (!(bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
 
             if (file == null) return CargarTransformadores();
 
@@ -150,5 +161,11 @@ namespace tp_integrador.Controllers
             return View();
         }
 
+		public bool SessionStateOK()
+		{
+			if (Session["Usuario"] == null) return false;
+			if (Session["Admin"] == null) Session["Admin"] = (Session["Usuario"].GetType() == typeof(Administrador));
+			return true;			
+		}
     }
 }
