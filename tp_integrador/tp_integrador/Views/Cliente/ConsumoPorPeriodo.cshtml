@@ -104,6 +104,30 @@
 	<!-- Graphs -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 	<script>
+
+        var getObjet = function () {
+
+            return fetch("https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-", {
+                "credentials": "omit", "headers":
+                    {
+                        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                        "accept-language": "es-ES,es;q=0.9",
+                        "cache-control": "max-age=0",
+                        "upgrade-insecure-requests": "1"
+                    },
+                "referrerPolicy": "no-referrer-when-downgrade", "body": null, "method": "GET", "mode": "cors"
+            }).then(res => res.text()).then(body => sessionStorage.setItem('json', body));
+
+        }
+        getObjet();
+        var json = sessionStorage.getItem('json');
+        var obj = JSON.parse(json);
+        for (var o in obj)
+        {
+            sessionStorage.setItem(o.mes, o.ConsumoTotal);                 
+        }
+
+
 		var ctx = document.getElementById("myChart");
 		var myChart = new Chart(ctx, {
 			type: 'line',
