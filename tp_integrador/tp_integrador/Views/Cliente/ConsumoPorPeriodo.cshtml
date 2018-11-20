@@ -74,7 +74,7 @@
 						<div class="btn-toolbar mb-2 mb-md-0">							
 							<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
 								<span data-feather="calendar"></span>
-								This week
+								2018
 							</button>
 						</div>
 					</div>
@@ -105,9 +105,9 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 	<script>
 
-        var getObjet = function () {
+        var getObjet = function (idclietne) {
 
-            return fetch("https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-", {
+            return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
                 "credentials": "omit", "headers":
                     {
                         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
@@ -119,22 +119,22 @@
             }).then(res => res.text()).then(body => sessionStorage.setItem('json', body));
 
         }
-        getObjet();
+        
+
+        getObjet(1);
         var json = sessionStorage.getItem('json');
         var obj = JSON.parse(json);
-        for (var o in obj)
-        {
-            sessionStorage.setItem(o.mes, o.ConsumoTotal);                 
-        }
-
+        var consumo = [15339, 21345, 18483, 24003, 23489, 24092, 12034,15865, obj[0].ConsumoTotal, obj[1].ConsumoTotal, 0, 0];
+        var etiqueta = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        var dato = 1 ;
 
 		var ctx = document.getElementById("myChart");
 		var myChart = new Chart(ctx, {
 			type: 'line',
 			data: {
-				labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-				datasets: [{
-					data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
+                labels: etiqueta,
+                datasets: [{
+                    data: consumo ,
 					lineTension: 0,
 					backgroundColor: 'transparent',
 					borderColor: '#007bff',
