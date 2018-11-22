@@ -119,13 +119,23 @@
             }).then(res => res.text()).then(body => sessionStorage.setItem('json', body));
 
         }
+        function findkey(key, array)
+        {
+            for (var i = 0; i < array.length; i++ )
+            {
+                if (array[i].Mes === key )
+                {
+                    return array[i].ConsumoTotal;
+                }
+            }
+        }
         
 
         getObjet(1);
         var json = sessionStorage.getItem('json');
         var obj = JSON.parse(json);
-        var consumo = [15339, 21345, 18483, 24003, 23489, 24092, 12034,15865, obj[0].ConsumoTotal, obj[1].ConsumoTotal, 0, 0];
-        var etiqueta = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+        var consumo = [findkey('Enero', obj), findkey('Febrero', obj), findkey('Marzo', obj), findkey('Abril', obj), findkey('Mayo', obj), findkey('Junio', obj), findkey('Julio', obj), findkey('Agosto', obj), findkey('Septiembre', obj), findkey('Octubre', obj), findkey('Noviembre', obj), findkey('Diciembre', obj)];
+        var etiqueta = [       "Enero",               "Febrero",               "Marzo",               "Abril",               "Mayo",               "Junio",               "Julio",               "Agosto",               "Septiembre",               "Octubre",               "Noviembre",                "Diciembre"]
         var dato = 1 ;
 
 		var ctx = document.getElementById("myChart");
