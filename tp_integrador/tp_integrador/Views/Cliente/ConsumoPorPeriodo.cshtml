@@ -106,8 +106,8 @@
 	<script>
 
         var getObjet = function (idclietne) {
-
-            return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
+            anio = '2018';
+            return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '","anio":"'+anio+'"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
                 "credentials": "omit", "headers":
                     {
                         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
