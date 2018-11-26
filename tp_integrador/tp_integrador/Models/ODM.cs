@@ -12,6 +12,9 @@ namespace tp_integrador.Models
         public void mapeo()
         {
             BsonClassMap.RegisterClassMap<Reporte>();
+            BsonClassMap.RegisterClassMap<ReporteDispo>();
+            BsonClassMap.RegisterClassMap<ReporteUser>();
+            BsonClassMap.RegisterClassMap<ReporteTransf>();
         }
         public IMongoDatabase conection()
         {
@@ -19,31 +22,69 @@ namespace tp_integrador.Models
             var monguis = new MongoClient(connectionString);
             return monguis.GetDatabase("sgemdb");
         }
-        public void agregarReporte(IMongoDatabase data, Reporte repo)
+        public void agregarReporteUser(IMongoDatabase data, ReporteUser repo)
         {
-            agregarReporte(data, repo.clienteID, repo.anio, repo.mes, repo.consumoTotal);
+            agregarReporte(1,data, repo.clienteID, repo.anio, repo.mes, repo.consumo);
         }
-        public void agregarReporte(IMongoDatabase data, string cliente,string anio,string mes, string consumo)
+        public void agregarReporteDispo(IMongoDatabase data, ReporteDispo repo)
         {
-            
-            var reportes = data.GetCollection<Reporte>("userreportes");
-            var reporte = new Reporte(cliente, anio, mes, consumo);
-
-            reportes.InsertOne(reporte);
+            agregarReporte(2, data, repo.dispositivoID, repo.anio, repo.mes, repo.consumo);
         }
-        public void eliminarReporteDeClientePorAnioMes(IMongoDatabase data,string _cliente,string _anio,string _mes)
+        public void agregarReporteTransf(IMongoDatabase data, ReporteTransf repo)
         {
-            
-            //filtro
-            var builder = Builders<Reporte>.Filter;
-            var filtro = builder.Eq("clienteID", _cliente) & builder.Eq("anio", _anio) & builder.Eq("mes", _mes);
-
-            var reportes = data.GetCollection<Reporte>("userreportes");
-
-            reportes.DeleteOne(filtro);
-            
-            
+            agregarReporte(3, data, repo.transformadorID, repo.anio, repo.mes, repo.consumo);
         }
+
+
+        public void agregarReporte(int tipo,IMongoDatabase data, string id,string anio,string mes, string consumo)
+        {
+            switch (tipo) {
+                case 1: //USERS
+                    var reportesUser = data.GetCollection<ReporteUser>("userreportes");
+                    var reporteU = new ReporteUser(id, anio, mes, consumo);
+                    reportesUser.InsertOne(reporteU);
+                    break;
+                case 2: //DISPOSITIVOS
+                    var reportesDisp = data.GetCollection<ReporteDispo>("adminreportesdispo");
+                    var reporteD = new ReporteDispo(id, anio, mes, consumo);
+                    reportesDisp.InsertOne(reporteD);
+                    break;
+                case 3: //TRANSFORMADORES
+                    var reportesTransf = data.GetCollection<ReporteTransf>("adminreportestransf");
+                    var reporteT = new ReporteTransf(id, anio, mes, consumo);
+                    reportesTransf.InsertOne(reporteT);
+                    break;
+            }
+        }
+        public void eliminarReportePorAnioMes(int tipo, IMongoDatabase data, string _id, string _anio, string _mes)
+        {
+            switch (tipo)
+            {
+                case 1:
+                    var builderU = Builders<ReporteUser>.Filter;
+                    var filtroU = builderU.Eq("clienteID", _id) & builderU.Eq("anio", _anio) & builderU.Eq("mes", _mes);
+                    var reportesU = data.GetCollection<ReporteUser>("userreportes");
+                    reportesU.DeleteOne(filtroU);
+                    break;
+                case 2:
+                    var builderD = Builders<ReporteDispo>.Filter;
+                    var filtroD = builderD.Eq("dispositivoID", _id) & builderD.Eq("anio", _anio) & builderD.Eq("mes", _mes);
+                    var reportesD = data.GetCollection<ReporteDispo>("adminreportesdispo");
+                    reportesD.DeleteOne(filtroD);
+                    break;
+                case 3:
+                    var builderT = Builders<ReporteTransf>.Filter;
+                    var filtroT = builderT.Eq("transformadorID", _id) & builderT.Eq("anio", _anio) & builderT.Eq("mes", _mes);
+                    var reportesT = data.GetCollection<ReporteTransf>("adminreportestransf");
+                    reportesT.DeleteOne(filtroT);
+                    break;
+            }
+        }
+            
+        
+
+        }
+        
 
     }
-}
+

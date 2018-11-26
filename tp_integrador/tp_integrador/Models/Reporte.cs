@@ -13,24 +13,20 @@ namespace tp_integrador.Models
         [BsonId]
         public ObjectId ID { get; set; }
 
-        [BsonElement("clienteID")]
-        public string clienteID { get; set; }
-
         [BsonElement("anio")]
         public string anio { get; set; }
 
-        [BsonElement("Mes")]
+        [BsonElement("mes")]
         public string mes { get; set; }
 
-        [BsonElement("ConsumoTotal")]
-        public string consumoTotal { get; set; }
+        [BsonElement("consumo")]
+        public string consumo { get; set; }
 
-        public Reporte(string cliente, string _anio, string _mes, string _consumo)
+        public Reporte(string _anio, string _mes, string _consumo)
         {
-            this.clienteID = cliente;
             this.anio = _anio;
             this.mes = _mes;
-            this.consumoTotal = _consumo;
+            this.consumo = _consumo;
         }
 
     }

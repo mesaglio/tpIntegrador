@@ -7,6 +7,7 @@ using Gmap.net;
 using tp_integrador.Models;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using tp_integrador;
 
 
 namespace tp_integrador.Tests
@@ -124,6 +125,23 @@ namespace tp_integrador.Tests
             odm.agregarReporte(ba, "5", "2018", "Febrero", "300");
 
 
+
+        }
+        [TestMethod]
+        public void TestNico()
+        {
+            //serializo la clase para que matchee con la db
+            BsonClassMap.RegisterClassMap<repoNico>();
+            //connection
+            var connectionString = "mongodb://admin1:admin1@ds062097.mlab.com:62097/dbtp0";
+            var monguis = new MongoClient(connectionString);
+            var ba = monguis.GetDatabase("dbtp0");
+            //reportes
+            var reportes = ba.GetCollection<repoNico>("reportes");
+            //creo reporte para insertar
+            DateTime fecha1 = new DateTime(2018, 01, 20);
+            var reporte = new repoNico("user","1",20,fecha1,fecha1);
+            reportes.InsertOne(reporte);
 
         }
     }
