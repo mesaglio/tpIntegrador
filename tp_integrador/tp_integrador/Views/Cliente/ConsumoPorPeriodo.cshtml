@@ -135,13 +135,15 @@
         }
         function findkey(key, array)
         {
-            for (var i = 0; i < array.length; i++ )
-            {
-                if (array[i].Mes === key )
-                {
-                    return array[i].ConsumoTotal;
+      
+       
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].Mes === key) {
+                        return array[i].ConsumoTotal;
+                    }
                 }
-            }
+       
+
         }
         
         
@@ -150,7 +152,16 @@
         var json = sessionStorage.getItem('json');
         var obj = JSON.parse(json);
         sessionStorage.removeItem('json');
-        var consumo = [findkey('Enero', obj), findkey('Febrero', obj), findkey('Marzo', obj), findkey('Abril', obj), findkey('Mayo', obj), findkey('Junio', obj), findkey('Julio', obj), findkey('Agosto', obj), findkey('Septiembre', obj), findkey('Octubre', obj), findkey('Noviembre', obj), findkey('Diciembre', obj)];
+        if (obj == null)
+        {
+            var consumo = [, , , , , , , , , , ,];
+            alert("No hay reportes para esas fechas");
+
+        }
+        else
+        {
+            var consumo = [findkey('Enero', obj), findkey('Febrero', obj), findkey('Marzo', obj), findkey('Abril', obj), findkey('Mayo', obj), findkey('Junio', obj), findkey('Julio', obj), findkey('Agosto', obj), findkey('Septiembre', obj), findkey('Octubre', obj), findkey('Noviembre', obj), findkey('Diciembre', obj)];
+        }
         var etiqueta = [       "Enero",               "Febrero",               "Marzo",               "Abril",               "Mayo",               "Junio",               "Julio",               "Agosto",               "Septiembre",               "Octubre",               "Noviembre",                "Diciembre"]
         var dato = 1 ;
 
