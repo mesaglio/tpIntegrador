@@ -20,17 +20,11 @@ namespace tp_integrador.Models
             Consumo = consumo;
 			BajoConsumo = bajoconsumo;
             usoDiario = horasPromedio;
-        }
-
-
-        private double EnergiaPorHora()
-        {
-            return Consumo;
-        }
+        }		
 
         public double ConsumoEstimado()
         {
-            return EnergiaPorHora() * usoDiario;
+            return Consumo * usoDiario;
         }
 
         public void SetUsoDiario(byte horas)
@@ -39,14 +33,6 @@ namespace tp_integrador.Models
 
 			ORM.Instancia.Update(this);
         }
-
-		public override double ConsumoEnElMes()
-		{
-			var ahora = DateTime.Now;
-			var desde = new DateTime(ahora.Year, ahora.Month, 1);
-			var dias = (ahora - desde).TotalDays;
-
-			return dias * usoDiario * Consumo;
-		}
+				
 	}
 }

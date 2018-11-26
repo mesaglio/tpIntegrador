@@ -19,49 +19,61 @@ namespace tp_integrador.Controllers
 
         // GET: Cliente
 
-        public ActionResult Dashboard()
+        public ActionResult GestionarDispositivos()
         {
-            if ((bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
             Cliente user = (Cliente)Session["Usuario"];
 
 
-            return View(user);
+            return View("GestionarDispositivos",user);
         }
+
+		public ActionResult ConsumoPorPeriodo()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((Boolean)Session["Admin"]) return PermisoDenegado();
+			Cliente user = (Cliente)Session["Usuario"];
+
+			return View(user);
+		}
 		        
-        public ActionResult GestionDeDispositivos()
+        public ActionResult Simplex()
         {
-            if ((bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
             Cliente user = (Cliente)Session["Usuario"];
 
-            return View(user);
-        }
-
-        /*  public ActionResult CargarTransformadoresPorDefecto()
-          {
-              if ((bool)Session["Admin"]) return PermisoDenegado();
-              //LA zona tiene que venir junto con un json, esta zona la pongo por defecto
-              Zona model = new Zona("La Matanza", 100, 5478, 7896);
-              model.RellenarTransformadores();
-              return View(model);
-
-          }*/
+            return View("Simplex",user);
+        }       
 		  
-        public ActionResult CargarDispositivo()
+        public ActionResult CargarArchivoDispositivos()
         {
+			if (!SessionStateOK()) return View("Index");			
             if ((bool)Session["Admin"]) return PermisoDenegado();
             // trae los templates para que el cliente sume un dispositivo
             
-            return View("CargarDispositivo",model: false);
+            return View("CargarArchivoDispositivos",model: false);
         }
+
+		public ActionResult GestionarSensores()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+			Cliente user = (Cliente)Session["Usuario"];
+
+			return View("GestionarSensores", user);
+		}
 
         [HttpPost]
         public ActionResult LoadDispositivoJson(HttpPostedFileBase user_file)
         {
-            if ((bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            if (user_file == null) return CargarDispositivo();
+            if (user_file == null) return CargarArchivoDispositivos();
 
             Cliente unclietne = (Cliente)Session["Usuario"];
             // INTELIGENTE = 1
@@ -69,14 +81,15 @@ namespace tp_integrador.Controllers
 			
 			TempData["Message"] = "Dispositivos Inteligentes Cargados :D";
 
-			return View("CargarDispositivo", model: true);
+			return View("CargarArchivoDispositivos", model: true);
         }
         [HttpPost]
         public ActionResult LoadDispositivoJsone(HttpPostedFileBase user_file)
         {
-            if ((bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            if (user_file == null) return CargarDispositivo();
+            if (user_file == null) return CargarArchivoDispositivos();
 
             Cliente unclietne = (Cliente)Session["Usuario"];
             // ESTANDAR = 0
@@ -84,14 +97,15 @@ namespace tp_integrador.Controllers
 			
 			TempData["Message"] = "Dispositivos Estandar Cargados :D";
 
-			return View("CargarDispositivo", model: true);
+			return View("CargarArchivoDispositivos", model: true);
         }
 
         [HttpPost]
         [AllowAnonymous]
         public ActionResult SelecTemplate_dis(int disp)
         {
-            if ((bool)Session["Admin"]) return PermisoDenegado();
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 			Cliente unclietne = (Cliente)Session["Usuario"];
 
 			if (disp == 0) return View("Dashboard", model: unclietne);
@@ -99,19 +113,23 @@ namespace tp_integrador.Controllers
             {                
                 unclietne.AgregarDispositivoDeTemplate(disp);
                                 
-                return View("Dashboard", model: unclietne);
+                return View("GestionarDispositivos", model: unclietne);
             }
         }
 		       
 		public ActionResult EstadoDispositivo(int idD, int idC, int numero)
 		{
+			if (!SessionStateOK()) return View("Index");
+
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			uncliente.CambiarEstado(uncliente.BuscarDispositivo(idD, idC, numero));
-			return View("Dashboard", model: uncliente);
+			return View("GestionarDispositivos", model: uncliente);
 		}
 
 		public ActionResult EditarEstandar(int idD, int idC, int numero)
 		{
+			if (!SessionStateOK()) return View("Index");
+
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			var dispositivo = uncliente.BuscarDispositivo(idD, idC, numero);
 			return View(dispositivo);
@@ -119,43 +137,54 @@ namespace tp_integrador.Controllers
 
 		[HttpPost]
 		public ActionResult EditarEstandar(Estandar disp)
-		{			
+		{
+			if (!SessionStateOK()) return View("Index");
+
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			
 			uncliente.UsoDiario(uncliente.BuscarDispositivo(disp.IdDispositivo, disp.IdCliente, disp.Numero), disp.usoDiario);
 
-			return View("Dashboard", model: uncliente);
+			return View("GestionarDispositivos", model: uncliente);
 		}
 
 		public ActionResult ConvertirEstandar(int idD, int idC, int numero)
 		{
+			if (!SessionStateOK()) return View("Index");
+
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			uncliente.ConvertirAInteligente(uncliente.BuscarDispositivo(idD, idC, numero));
 			
-			return View("Dashboard", model: uncliente);
+			return View("GestionarDispositivos", model: uncliente);
 		}
-
-		[HttpPost]
+				
 		public ActionResult CalculoSimplex()
 		{
+			if (!SessionStateOK()) return View("Index");
 			if ((bool)Session["Admin"]) return PermisoDenegado();
 
 		    Cliente uncliente = (Cliente)Session["Usuario"];
-            var sb = uncliente.RunSimplex();
+            var resultado = uncliente.RunSimplex();
 
-           return Content(sb.ToString());
+           return View("RespuestaSimplex", model: resultado);
 		}
 
 		[HttpPost]
 		[AllowAnonymous]
 		public ActionResult AhorroAutomatico()
 		{
-			Cliente uncliente = (Cliente)Session["Usuario"];
-			uncliente.AutoSimplex = !uncliente.AutoSimplex;
+			if (!SessionStateOK()) return View("Index");
 
-			ORM.Instancia.Update(uncliente);
+			Cliente uncliente = (Cliente)Session["Usuario"];
+			uncliente.CambiarAutoSimplex();			
 			
-			return View("GestionDeDispositivos", model: uncliente);
+			return View("Simplex", model: uncliente);
+		}
+
+		public bool SessionStateOK()
+		{
+			if (Session["Usuario"] == null) return false;
+			if (Session["Admin"] == null) Session["Admin"] = (Session["Usuario"].GetType() == typeof(Administrador));
+			return true;			
 		}
 	}
 }

@@ -203,10 +203,12 @@
     <Compile Include="Models\HashThis.cs" />
     <Compile Include="Models\Inteligente.cs" />
     <Compile Include="Models\ORM.cs" />
+    <Compile Include="Models\PeriodoData.cs" />
     <Compile Include="Models\Regla.cs" />
     <Compile Include="Models\Sensor.cs" />
     <Compile Include="Models\SIMPLEX.cs" />
-    <Compile Include="Models\TemplateDispositivo.cs" />
+    <Compile Include="Models\DispositivoGenerico.cs" />
+    <Compile Include="Models\SimplexResult.cs" />
     <Compile Include="Models\Transformador.cs" />
     <Compile Include="Models\Usuarios.cs" />
     <Compile Include="Models\Zona.cs" />
@@ -226,6 +228,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\cardbox.css" />
     <Content Include="Content\dashboard.css" />
+    <Content Include="Content\ErrorStyle.css" />
     <Content Include="Content\signin.css" />
     <Content Include="Content\sticky-footer-navbar.css" />
     <Content Include="favicon.ico" />
@@ -296,11 +299,10 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\CargarArchivo.cshtml" />
     <Content Include="Views\Home\JsonImport.cshtml" />
-    <Content Include="Views\Cliente\Dashboard.cshtml" />
-    <Content Include="Views\Cliente\GestionDeDispositivos.cshtml" />
+    <Content Include="Views\Cliente\GestionarDispositivos.cshtml" />
+    <Content Include="Views\Cliente\Simplex.cshtml" />
     <Content Include="Views\Errors\Error404.cshtml" />
-    <Content Include="Views\Cliente\CargarDispositivo.cshtml" />
-    <Content Include="Views\Cliente\LoadDispositivoJson.cshtml" />
+    <Content Include="Views\Cliente\CargarArchivoDispositivos.cshtml" />
     <Content Include="Views\Home\Maps.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -312,12 +314,14 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\CargarTransformadores.cshtml" />
-    <Content Include="Views\Cliente\CargarTransformadoresPorDefecto.cshtml" />
     <Content Include="Views\Home\LoadTransformadoresJson.cshtml" />
     <Content Include="Views\Home\Administrador.cshtml" />
     <Content Include="Views\Cliente\Cliente.cshtml" />
     <Content Include="Views\Reportes\Reportes.cshtml" />
     <Content Include="Views\Cliente\EditarEstandar.cshtml" />
+    <Content Include="Views\Cliente\ConsumoPorPeriodo.cshtml" />
+    <Content Include="Views\Cliente\GestionarSensores.cshtml" />
+    <Content Include="Views\Cliente\RespuestaSimplex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

@@ -1,0 +1,108 @@
+﻿@model tp_integrador.Models.Cliente
+@{
+	ViewBag.Title = "Simplex";
+}
+
+<!-- Bootstrap core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="~/Content/dashboard.css" rel="stylesheet" />
+
+<link href="~/Content/switch.css" rel="stylesheet" />
+
+<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
+	<div class="container-fluid">
+		<div class="row">
+
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar" style="height:auto">
+				<div class="sidebar-sticky">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a href="@Url.Action("Cliente", "Home")" class="nav-link">
+								<span data-feather="home"></span>
+								Estado del Hogar
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
+								<span data-feather="activity"></span>
+								Consumo por Periodo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Dispositivo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link active">
+								<span data-feather="clock"></span>
+								Simplex <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="monitor"></span>
+								Gestionar Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
+								<span data-feather="wifi"></span>
+								Gestionar Sensores
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<div class="container" style="margin-left:20px; overflow:auto;">
+
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+					<h1 class="display-4">Ahorro Simplex</h1>
+					<p class="lead">Calcule de qué manera distribuir el consumo de sus dispositivos para lograr un consumo eficiente.</p>
+
+					<hr />
+					<div class="container" style="width:400px;">
+						<a href="@Url.Action("CalculoSimplex", "Cliente")" style="width:400px;" class="btn btn-lg btn-block btn-primary">Calcular Simplex</a>
+					</div>
+
+					<hr />
+					<h1 class="display-4">Ahorro Automático</h1>
+					<p class="lead">Active el ahorro automático y el sistema se encargara de apagar los dispositivos que alcancen el limite simplex.</p>
+					<!-- Switch -->
+					<div class="container" style="width:180px; height:34px;">
+						@using (Html.BeginForm("AhorroAutomatico", "Cliente", FormMethod.Post))
+						{	
+							<label style="vertical-align:text-top; font-size:large; padding-right:10px;">Off</label>
+								<label class="switch">
+									<input type="checkbox" checked="@Model.AutoSimplex" onclick="this.form.submit()"/>
+									<span class="slider round"></span>
+								</label>
+							<label style="vertical-align:text-top; font-size:large; padding-left:10px;">On</label>
+						}
+					</div>					
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+		feather.replace()
+	</script>
+
+</main>

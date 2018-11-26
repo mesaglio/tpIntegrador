@@ -143,27 +143,65 @@ namespace tp_integrador.Models
 			return dispositivos.Find(x => (x.IdDispositivo == idDispositivo) && (x.IdCliente == idCliente) && (x.Numero == numero));
 		}
 
+		public double ConsumoActual()
+		{
+			double total = 0;
+
+			foreach (var disp in dispositivos.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnEstadoActual();
+			}
+
+			return total;
+		}
+
+		public double ConsumoEstandarDiario()
+		{
+			double total = 0;
+
+			foreach (var disp in dispositivos.OfType<Estandar>())
+			{
+				total += GetEstimado(disp);
+			}
+
+			return total;
+		}
+
+		public PeriodoData PeriodoActual()
+		{
+			var periodo = new PeriodoData();
+			periodo.PeriodoActual();
+
+			return periodo;
+		}
+
+		public PeriodoData ConsumoDelPeriodoActual()
+		{
+			var periodo = PeriodoActual();
+			double total = 0;
+
+			foreach (var disp in dispositivos.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnElPeriodo(periodo);
+			}
+
+			periodo.Consumo = total;
+			return periodo;
+		}
+
+		public List<Sensor> MisSensores()
+		{
+			return DAOSensores.Instancia.FindAllFromCliente(idUsuario);
+		}
+
         #region INTERFAZ CONTROLLER
-        public dynamic RunSimplex()
+        public SimplexResult RunSimplex()
         {
             SIMPLEX sim = new SIMPLEX();
-
-            var listaDisp = this.dispositivos;
-            listaDisp.RemoveAll(x => x.Nombre.Split(' ')[0] == "Heladera");
-
-            var respuesta = sim.GetSimplexData(sim.CrearConsulta(listaDisp));
-
-            var sb = new StringBuilder();
-            sb.AppendLine("<b>Consumo Optimo Para Sus Dispositivos: " + "</b><br/>");
-            sb.AppendLine("" + "<br/>");
-            sb.AppendLine("<b>Maximo: </b>" + respuesta[0] + "<br/>");
-            var cantDisp = this.dispositivos.Count;
-
-            for (int i = 1; i < respuesta.Length; i++)
-            {
-                sb.AppendLine("<b>" + this.dispositivos[cantDisp - i].Nombre + ": </b>" + respuesta[i] + "<br/>");
-            }
-            return sb;
+			
+			var resultado = sim.Consulta(dispositivos);
+			           
+			return resultado;
         }
 
         public void CargarDispositivos(HttpPostedFileBase file, int flag)
@@ -178,13 +216,13 @@ namespace tp_integrador.Models
         public void AgregarDispositivoDeTemplate(int disp)
         {
             DAOTemplates a = new DAOTemplates();
-            TemplateDispositivo dispositivo = a.Searchtemplatebyid(disp);			
+            DispositivoGenerico dispositivo = a.Searchtemplatebyid(disp);			
 
             if (dispositivo.Inteligente) NuevoDispositivoInteligente(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo);
             else NuevoDispositivoEstandar(dispositivo.ID, dispositivo.getNombreEntero(), dispositivo.Consumo, dispositivo.Bajoconsumo, 0);
         }
 
-		public List<TemplateDispositivo> GetTemplateDisp()
+		public List<DispositivoGenerico> GetTemplateDisp()
 		{
 			var daot = new DAOTemplates();
 
@@ -200,6 +238,12 @@ namespace tp_integrador.Models
 				else ApagarDispositivo(disp);
 			}
 			else if (disp.Estado == 2) ApagarDispositivo(disp);
+		}
+
+		public void CambiarAutoSimplex()
+		{
+			AutoSimplex = !AutoSimplex;
+			ORM.Instancia.Update(this);
 		}
 
     #endregion

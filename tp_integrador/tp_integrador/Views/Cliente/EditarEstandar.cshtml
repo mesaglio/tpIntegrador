@@ -11,8 +11,6 @@
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet" />
 
-<link href="~/Content/cardbox.css" />
-
 <main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
 		<div class="row">
@@ -28,31 +26,31 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
 								<span data-feather="activity"></span>
 								Consumo por Periodo
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("CargarDispositivo", "Cliente")" class="nav-link">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link">
 								<span data-feather="file"></span>
 								Cargar Archivo de Dispositivo
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionDeDispositivos", "Cliente")" class="nav-link">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
 								<span data-feather="clock"></span>
 								Simplex
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Dashboard", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link active">
 								<span data-feather="monitor"></span>
 								Gestionar Dispositivos <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
 								<span data-feather="wifi"></span>
 								Gestionar Sensores
 							</a>
@@ -126,7 +124,7 @@
 				</div>
 				
 				<div class="row">
-					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "Dashboard", null, new { @class = "btn btn-lg btn-block btn-primary col"})</div>
+					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "GestionarDispositivos", null, new { @class = "btn btn-lg btn-block btn-primary col"})</div>
 					<div class="col-sm-6"></div>
 					<div class="col-sm-3">@Html.ActionLink("Convertir a Inteligente", "ConvertirEstandar", new { idD = Model.IdDispositivo, idC = Model.IdCliente, numero = Model.Numero}, new { @class = "btn btn-lg btn-block btn-primary col", @style="background-color:crimson"})</div>
 				</div>

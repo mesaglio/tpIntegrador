@@ -11,20 +11,17 @@ namespace tp_integrador
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        public static DAOUsuario Daobjeto;
-        public static DAOzona GlobalZonas;
-
-        protected void Application_Start()
+		protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Daobjeto = new DAOUsuario();
+            BundleConfig.RegisterBundles(BundleTable.Bundles);        
+			
 			DAOzona.Instancia.InitialLoad();
 			DAODispositivo.Instancia.InitialLoad();
 			DAOSensores.Instancia.InitialLoad();
-			Daobjeto.IniciarAutoSimplex();
+			DAOUsuario.Instancia.IniciarAutoSimplex();
 		}
     }
 

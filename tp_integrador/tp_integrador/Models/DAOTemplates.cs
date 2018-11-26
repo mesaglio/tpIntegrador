@@ -7,16 +7,16 @@ namespace tp_integrador.Models
 {
     public class DAOTemplates
     {
-        public List<TemplateDispositivo> templateDisps;		
+        public List<DispositivoGenerico> templateDisps;		
 		
         public DAOTemplates()
         {
 			templateDisps = ORM.Instancia.GetAllTemplates();			
         }
 
-		public TemplateDispositivo Searchtemplatebyid(int id)
+		public DispositivoGenerico Searchtemplatebyid(int id)
 		{
-			foreach (TemplateDispositivo tem in templateDisps)
+			foreach (DispositivoGenerico tem in templateDisps)
 			{
 				if (tem.ID == id) return tem;
 			}

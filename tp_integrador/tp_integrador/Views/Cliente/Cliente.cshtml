@@ -1,5 +1,7 @@
-﻿@{
-	ViewBag.Title = "Login";
+﻿@model tp_integrador.Models.Cliente
+
+@{
+	ViewBag.Title = "Cliente";
 }
 
 <!-- Bootstrap core CSS -->
@@ -8,122 +10,257 @@
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet">
 
-<main role="main" class="container">
-		<div class="container-fluid">
-			<div class="row">
+<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
+	<div class="container-fluid">
+		<div class="row">
 
-				<!-- SIDEBAR -->
-				<nav class="col-md-2 d-none d-md-block bg-light sidebar">
-					<div class="sidebar-sticky">
-						<ul class="nav flex-column">
-							<li class="nav-item">
-								<a href="@Url.Action("Cliente", "Home")" class="nav-link active">
-									<span data-feather="home"></span>
-									Estado del Hogar <span class="sr-only">(current)</span>
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									<span data-feather="activity"></span>
-									Consumo por Periodo
-								</a>
-							</li>
-							<li class="nav-item">
-								<a href="@Url.Action("CargarDispositivo", "Cliente")" class="nav-link">
-									<span data-feather="file"></span>
-									Cargar Archivo de Dispositivo
-								</a>
-							</li>
-							<li class="nav-item">
-								<a href="@Url.Action("GestionDeDispositivos", "Cliente")" class="nav-link">								
-									<span data-feather="clock"></span>
-									Simplex
-								</a>
-							</li>
-							<li class="nav-item">
-								<a href="@Url.Action("Dashboard", "Cliente")" class="nav-link">
-									<span data-feather="monitor"></span>
-									Gestionar Dispositivos
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">
-									<span data-feather="wifi"></span>
-									Gestionar Sensores
-								</a>
-							</li>
-						</ul>
-					</div>
-				</nav>
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+				<div class="sidebar-sticky">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a href="@Url.Action("Cliente", "Home")" class="nav-link active">
+								<span data-feather="home"></span>
+								Estado del Hogar <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
+								<span data-feather="activity"></span>
+								Consumo por Periodo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Dispositivo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
+								<span data-feather="clock"></span>
+								Simplex
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="monitor"></span>
+								Gestionar Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
+								<span data-feather="wifi"></span>
+								Gestionar Sensores
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
 
-				<!--DASHBOARD-->
-				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-						<h1 class="h2">Consumos Mensuales</h1>
-						<div class="btn-toolbar mb-2 mb-md-0">
-							<div class="btn-group mr-2">
-								<button class="btn btn-sm btn-outline-secondary">Share</button>
-								<button class="btn btn-sm btn-outline-secondary">Export</button>
+			<div class="container" style="margin-left:20px; overflow:auto;">
+
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+					<h1 class="display-4">Bienvenido @Html.DisplayFor(model => model.nombre)!</h1>
+					<p class="lead">Este es el Estado de su Hogar al momento:</p>
+				</div>
+
+				<hr />
+				<div class="container" style="width:660px; margin-top:40px;">
+					<div class="card-deck mb-3 text-center">
+
+						<!-- ULTIMAS MEDICIONES -->
+						<div class="container" style="width:300px;">
+							<!-- CONSUMO ACTUAL -->
+							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:335px;">
+								<div class="card-header">
+									<h4 class="my-0 font-weight-normal">Consumo Actual</h4>
+								</div>
+								@{var consumoactual = Model.ConsumoActual();}
+								<div class="card-body">
+									<h1 class="card-title pricing-card-title">@consumoactual<small class="text-muted">kw/h</small></h1>
+									<ul class="list-unstyled mt-3 mb-4">
+										<li>De sus Dispositivos Inteligentes</li>
+										<li>&nbsp;</li>
+										<li>&nbsp;</li>
+										<li>&nbsp;</li>
+										<li>+ <b style="font-size:large">@Model.ConsumoEstandarDiario()</b>kw.</li>
+										<li>De sus Dispositivos Estandar (Por dia)</li>
+									</ul>
+								</div>
 							</div>
-							<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-								<span data-feather="calendar"></span>
-								This week
-							</button>
 						</div>
-					</div>
 
-					<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-				</main>
+
+						<!-- CONSUMO DEL PERIODO -->
+						<div class="container" style="width:300px;">
+							@{var periododata = Model.ConsumoDelPeriodoActual();}
+							<!-- CONSUMO PERIODO -->
+							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:335px;">
+								<div class="card-header">
+									<h4 class="my-0 font-weight-normal">Consumidos</h4>
+								</div>
+								<div class="card-body" ">
+									<h1 class="card-title pricing-card-title"><span id="number">@String.Format("{0:0.000}", periododata.Consumo)</span><small class="text-muted">kw</small></h1>
+									<ul class="list-unstyled mt-3 mb-4">
+										<li>Desde el: @periododata.FechaInicio</li>
+										<li>Hasta el: @periododata.FechaFin</li>
+										<li>De sus Dispositivos Inteligentes</li>
+										<li>&nbsp;</li>
+										<li>+ <b style="font-size:large">@(Model.ConsumoEstandarDiario() * periododata.TotalDias())</b>kw.</li>
+										<li>De sus Dispositivos Estandar (Por periodo)</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<hr />
+				<!-- ESTADO DISPOSITIVOS -->
+				<h4 for="country" class="mb-3" style="margin-top:30px;">Estado de Dispositivos</h4>
+				<div class="table-responsive">
+					<table class="table table-striped table-sm">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Numero</th>
+								<th>Tipo</th>
+								<th>Estado</th>
+								<th>Consumidos</th>
+							</tr>
+						</thead>
+						<tbody>
+							@{
+								foreach (var item in Model.dispositivos)
+								{
+									var periodo = Model.PeriodoActual();
+									<tr>
+										<td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+										<td>@Html.DisplayFor(modelItem => item.Numero)</td>
+										@if (item.EsInteligente)
+										{
+											<td>Inteligente</td>}
+										else
+										{
+											<td>Estandar   </td>}
+										@if (item.EsInteligente)
+										{
+											var i = (tp_integrador.Models.Inteligente)item;
+											if (i.Estado == 0)
+											{
+												<td>Apagado    </td>}
+											else if (i.Estado == 1)
+											{
+												<td>Encendido  </td>}
+											else
+											{
+												<td>Modo Ahorro</td>}
+										}
+										else
+										{
+											<td>N/A</td>
+										}
+										@if (item.EsInteligente)
+										{
+											var i = (tp_integrador.Models.Inteligente)item;
+											<td>@String.Format("{0:0.000}", i.ConsumoEnElPeriodo(periodo))</td>
+										}
+										else
+										{
+											<td>N/A</td>
+										}
+									</tr>
+								}
+							}
+						</tbody>
+					</table>
+				</div>
+
+				<hr />				
+				<!-- REGLAS ACTIVAS -->
+				<h4 for="country" class="mb-3" style="margin-top:30px;">Reglas Activas</h4>
+				<div class="table-responsive">
+					<table class="table table-striped table-sm">
+						<thead>
+							<tr>
+								<th>Tipo</th>
+								<th>Operador</th>
+								<th>Magnitud</th>
+								<th>Accion</th>
+								<th>Dispositivo</th>
+								<th>Numero</th>
+							</tr>
+						</thead>
+						<tbody>
+							@{
+								foreach (var item in Model.MisSensores())
+								{
+									foreach (var regla in item.Observadores)
+									{
+										<tr>
+											<td>@Html.DisplayFor(modelRegla => regla.Detalle)</td>
+											<td>@Html.DisplayFor(modelRegla => regla.Operador)</td>
+											<td>@Html.DisplayFor(modelRegla => regla.Valor)</td>
+											<td>@Html.DisplayFor(modelRegla => regla.Accion)</td>
+											<td>@Html.DisplayFor(modelRegla => regla.Actuadores[0].Dispositivos[0].Nombre)</td>
+											<td>@Html.DisplayFor(modelRegla => regla.Actuadores[0].Dispositivos[0].Numero)</td>
+										</tr>
+										foreach (var actua in regla.Actuadores)
+										{
+
+											foreach (var dispo in actua.Dispositivos)
+											{
+												if (dispo != null && !dispo.Equals(actua.Dispositivos[0]))
+												{
+													<tr>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td>@Html.DisplayFor(modelDispo => dispo.Nombre)</td>
+														<td>@Html.DisplayFor(modelDispo => dispo.Numero)</td>
+													</tr>
+												}
+											}
+										}
+
+									}
+								}
+							}
+						</tbody>
+					</table>
+				</div>
 
 			</div>
+
 		</div>
+	</div>
 
-		<!-- Bootstrap core JavaScript
-		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-		<script src="~/Scripts/popper.min.js"></script>
-		<script src="~/Scripts/bootstrap.min.js"></script>
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
 
-		<!-- Icons -->
-		<script src="https://unpkg.com/feather-icons"></script>
-		<script>
-			feather.replace()
-		</script>
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+		feather.replace()
+	</script>
 
-		<!-- Graphs -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-		<script>
-			var ctx = document.getElementById("myChart");
-			var myChart = new Chart(ctx, {
-				type: 'line',
-				data: {
-					labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],					
-					datasets: [{
-						data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-						lineTension: 0,
-						backgroundColor: 'transparent',
-						borderColor: '#007bff',
-						borderWidth: 4,
-						pointBackgroundColor: '#007bff'
-					}]
-				},
-				options: {
-					scales: {
-						yAxes: [{
-							ticks: {
-								beginAtZero: false
-							}
-						}]
-					},
-					legend: {
-						display: false,
-					}
-				}
-			});
-		</script>
-	
+	<script type="text/javascript">
+		var i = @Html.Raw(Json.Encode(periododata.Consumo));
+		function increment() {
+			i += @Html.Raw(Json.Encode((consumoactual/3600)*10));
+			document.getElementById('number').innerHTML = i.toFixed(3).replace('.',',');
+		}
+		setInterval('increment()', 10000);
+	</script>
+
 </main>
 
 
