@@ -30,15 +30,36 @@ namespace tp_integrador.Controllers
             return View("GestionarDispositivos",user);
         }
 
-		public ActionResult ConsumoPorPeriodo()
+		public ActionResult ConsumoPorPeriodo()// anio actuak
 		{
 			if (!SessionStateOK()) return View("Index");
 			if ((Boolean)Session["Admin"]) return PermisoDenegado();
 			Cliente user = (Cliente)Session["Usuario"];
-
-			return View(user);
+            DateTime localDate = DateTime.Now;
+            Session["anio"] = localDate.Year;
+            return View(user);
 		}
-		        
+
+        public ActionResult ConsumoPorPeriodoAnterior()// anio anterior
+        {
+            if (!SessionStateOK()) return View("Index");
+            if ((Boolean)Session["Admin"]) return PermisoDenegado();
+            Cliente user = (Cliente)Session["Usuario"];
+            Int32 var = (Int32)Session["anio"];
+            Session["anio"] = (var - 1);
+            return View("ConsumoPorPeriodo", user);
+        }
+
+        public ActionResult ConsumoPorPeriodoProximo() // anio siguiente
+        {
+            if (!SessionStateOK()) return View("Index");
+            if ((Boolean)Session["Admin"]) return PermisoDenegado();
+            Cliente user = (Cliente)Session["Usuario"];
+           Int32 var = (Int32)Session["anio"];
+            Session["anio"] = (var + 1);
+            return View("ConsumoPorPeriodo", user);
+        }
+
         public ActionResult Simplex()
         {
 			if (!SessionStateOK()) return View("Index");
