@@ -72,15 +72,21 @@
 					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 						<h1 class="h2">Consumos Mensuales</h1>
                         <div class="btn-toolbar mb-2 mb-md-0">
+                            <script>
+                                function clearcache()
+                                {
+                                    sessionStorage.removeItem('json');
+                                    getObjet(1);
+                                }
+                            </script>
 
-
-
-                            <button type="button" class="btn btn-sm btn-outline-secondary"><a href="@Url.Action("ConsumoPorPeriodoAnterior", "Cliente")"> Anterior</a></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()" href="@Url.Action("ConsumoPorPeriodoAnterior", "Cliente")"> Anterior</a></button>
 
                             <button class="btn btn-sm btn-outline-secondary">
-                                                            
-                                <a href="@Url.Action("ConsumoPorPeriodo", "Cliente")"><span data-feather="calendar"></span> @Session["anio"] </a> </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary"><a href="@Url.Action("ConsumoPorPeriodoProximo", "Cliente")">Proximo</a></button>
+
+                                <a href="@Url.Action("ConsumoPorPeriodo", "Cliente")"><span data-feather="calendar"></span> @Session["anio"] </a>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()" href="@Url.Action("ConsumoPorPeriodoProximo", "Cliente")">Proximo</a></button>
 
                         </div>
 					</div>
@@ -112,8 +118,9 @@
 	<script>
 
         var getObjet = function (idclietne) {
-
+            
             anio =  @Session["anio"];
+
             return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '","anio":"'+anio+'"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
                 "credentials": "omit", "headers":
                     {
@@ -137,10 +144,12 @@
             }
         }
         
-
-        getObjet(1);
+        
+        //getObjet(@Model.idUsuario);
+         getObjet(1);
         var json = sessionStorage.getItem('json');
         var obj = JSON.parse(json);
+        sessionStorage.removeItem('json');
         var consumo = [findkey('Enero', obj), findkey('Febrero', obj), findkey('Marzo', obj), findkey('Abril', obj), findkey('Mayo', obj), findkey('Junio', obj), findkey('Julio', obj), findkey('Agosto', obj), findkey('Septiembre', obj), findkey('Octubre', obj), findkey('Noviembre', obj), findkey('Diciembre', obj)];
         var etiqueta = [       "Enero",               "Febrero",               "Marzo",               "Abril",               "Mayo",               "Junio",               "Julio",               "Agosto",               "Septiembre",               "Octubre",               "Noviembre",                "Diciembre"]
         var dato = 1 ;

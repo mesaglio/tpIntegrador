@@ -5,6 +5,7 @@ using tp_integrador.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web.Services;
 
 namespace tp_integrador.Controllers
 {
@@ -49,6 +50,7 @@ namespace tp_integrador.Controllers
             Session["anio"] = (var - 1);
             return View("ConsumoPorPeriodo", user);
         }
+
 
         public ActionResult ConsumoPorPeriodoProximo() // anio siguiente
         {
