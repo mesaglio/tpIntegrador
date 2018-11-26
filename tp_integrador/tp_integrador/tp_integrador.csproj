@@ -191,7 +191,7 @@
     <Compile Include="Models\Reporte.cs" />
     <Compile Include="Models\ReporteUser.cs" />
     <Compile Include="Models\ReporteDispo.cs" />
-    <Compile Include="Models\ReporteTransf.cs" />
+    <Compile Include="Models\RepoTransf.cs" />
     <Compile Include="Models\DAOSensores.cs" />
     <Compile Include="Models\DAOzona.cs" />
     <Compile Include="Models\DAOTemplates.cs" />
