@@ -14,6 +14,8 @@ namespace tp_integrador.Models
 		public int Magnitud { get; private set; }
 		public List<Regla> Observadores { get; set; }
 
+		public Sensor() { }
+
 		public Sensor(int id, string detalle, int cliente, int magnitud, List<Regla> observadores)
 		{
 			idSensor = id;
@@ -38,6 +40,4 @@ namespace tp_integrador.Models
             foreach (Regla elem in Observadores) { elem.Cambio(mag: Magnitud);}
         }
     }
-
-
 }

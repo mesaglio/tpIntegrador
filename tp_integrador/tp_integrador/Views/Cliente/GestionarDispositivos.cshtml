@@ -68,7 +68,7 @@
 				<hr/>
 				<!-- COMBOBOX AGREGAR DISPOSITIVO -->
 				<h4 for="country" class="mb-3" style="margin-top:30px;">Agregar un Dispositivo</h4>
-				<div class="container" style="margin-bottom:40px;">
+				<div class="container" style="margin-bottom:40px; width:515px;">
 
 					@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post, new { @class = "row" }))
 					{
@@ -79,7 +79,7 @@
 								{
 									<option value=@item.ID>@item.getNombreEntero()</option>
 								}
-							</select>						
+							</select>
 						</fieldset>
 						<button type="submit" class="btn btn-lg btn-block btn-primary" style="width:100px; height:30px;margin-left: 10px;align-self: center; font: 12px arial;">Agregar</button>						
 					}

@@ -87,14 +87,7 @@ namespace tp_integrador.Models
             DateTime fechaObjetivo = fechaAhora.Subtract(new TimeSpan(horas,0,0));
 
             return ConsumoDesdeHasta(fechaObjetivo, fechaAhora);           
-        }
-
-		internal double ConsumoEnElMes()
-		{
-			var ahora = DateTime.Now;
-			var desde = new DateTime(ahora.Year, ahora.Month, 1);
-			return ConsumoDesdeHasta(desde, ahora);
-		}
+        }			
 
 		public void Apagar()
         {

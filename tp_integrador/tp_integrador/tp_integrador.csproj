@@ -222,6 +222,7 @@
     <Content Include="App_Data\SistemaDeGestionEnergetica_log.ldf">
       <DependentUpon>SistemaDeGestionEnergetica.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\Assets\error-emoji.svg" />
     <Content Include="Content\Assets\sge-logo3.svg" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -230,10 +231,12 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\cardbox.css" />
+    <Content Include="Content\chosen.css" />
     <Content Include="Content\dashboard.css" />
     <Content Include="Content\ErrorStyle.css" />
     <Content Include="Content\signin.css" />
     <Content Include="Content\sticky-footer-navbar.css" />
+    <Content Include="Content\switch.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -325,6 +328,8 @@
     <Content Include="Views\Cliente\ConsumoPorPeriodo.cshtml" />
     <Content Include="Views\Cliente\GestionarSensores.cshtml" />
     <Content Include="Views\Cliente\RespuestaSimplex.cshtml" />
+    <Content Include="Views\Cliente\AltaRegla.cshtml" />
+    <Content Include="Views\Cliente\AltaSensor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

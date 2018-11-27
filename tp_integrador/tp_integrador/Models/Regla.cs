@@ -59,5 +59,10 @@ namespace tp_integrador.Models
 				default: return;
 			}
 		}
+
+		public string GetExpresion()
+		{
+			return Detalle + " " + Operador + " " + Valor + " => " + Accion;
+		}
     }
 }

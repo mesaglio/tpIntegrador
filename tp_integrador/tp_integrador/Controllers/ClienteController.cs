@@ -96,32 +96,35 @@ namespace tp_integrador.Controllers
 			if (!SessionStateOK()) return View("Index");
 			if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            if (user_file == null) return CargarArchivoDispositivos();
+			if (user_file == null) return CargarArchivoDispositivos();
 
-            Cliente unclietne = (Cliente)Session["Usuario"];
-            // INTELIGENTE = 1
-            unclietne.CargarDispositivos(user_file,1);
-			
-			TempData["Message"] = "Dispositivos Inteligentes Cargados :D";
+			Cliente unclietne = (Cliente)Session["Usuario"];
+			// INTELIGENTE = 1
+			unclietne.CargarDispositivos(user_file, 1);
+
+			TempData["Alerta"] = "Dispositivos Inteligentes";
+			TempData["Mensaje"] = "Cargados Correctamente :D";
 
 			return View("CargarArchivoDispositivos", model: true);
-        }
+		}
+
         [HttpPost]
         public ActionResult LoadDispositivoJsone(HttpPostedFileBase user_file)
         {
 			if (!SessionStateOK()) return View("Index");
 			if ((bool)Session["Admin"]) return PermisoDenegado();
 
-            if (user_file == null) return CargarArchivoDispositivos();
+			if (user_file == null) return CargarArchivoDispositivos();
 
-            Cliente unclietne = (Cliente)Session["Usuario"];
-            // ESTANDAR = 0
-            unclietne.CargarDispositivos(user_file,0);
-			
-			TempData["Message"] = "Dispositivos Estandar Cargados :D";
+			Cliente unclietne = (Cliente)Session["Usuario"];
+			// ESTANDAR = 0
+			unclietne.CargarDispositivos(user_file, 0);
+
+			TempData["Alerta"] = "Dispositivos Estandar";
+			TempData["Mensaje"] = "Cargados Correctamente :D";
 
 			return View("CargarArchivoDispositivos", model: true);
-        }
+		}
 
         [HttpPost]
         [AllowAnonymous]
@@ -143,6 +146,7 @@ namespace tp_integrador.Controllers
 		public ActionResult EstadoDispositivo(int idD, int idC, int numero)
 		{
 			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			uncliente.CambiarEstado(uncliente.BuscarDispositivo(idD, idC, numero));
@@ -152,6 +156,7 @@ namespace tp_integrador.Controllers
 		public ActionResult EditarEstandar(int idD, int idC, int numero)
 		{
 			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			var dispositivo = uncliente.BuscarDispositivo(idD, idC, numero);
@@ -162,6 +167,7 @@ namespace tp_integrador.Controllers
 		public ActionResult EditarEstandar(Estandar disp)
 		{
 			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			
@@ -173,6 +179,7 @@ namespace tp_integrador.Controllers
 		public ActionResult ConvertirEstandar(int idD, int idC, int numero)
 		{
 			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			uncliente.ConvertirAInteligente(uncliente.BuscarDispositivo(idD, idC, numero));
@@ -196,11 +203,48 @@ namespace tp_integrador.Controllers
 		public ActionResult AhorroAutomatico()
 		{
 			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
 
 			Cliente uncliente = (Cliente)Session["Usuario"];
 			uncliente.CambiarAutoSimplex();			
 			
 			return View("Simplex", model: uncliente);
+		}
+
+		public ActionResult AltaSensor()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+
+			return View("AltaSensor");
+		}
+
+		[HttpPost]
+		public ActionResult AltaSensor(Sensor sensor)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+
+			var cliente = (Cliente)Session["Usuario"];
+			if (!cliente.NuevoSensor(sensor))
+			{
+				TempData["Alerta"] = "Regla No Guardada.";
+				TempData["Mensaje"] = "El tipo de regla ya existe, intente con otro.";
+				return AltaSensor();
+			}
+
+			return View("GestionarSensores", model: cliente);
+		}
+
+		public ActionResult AltaRegla()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+
+			var cliente = (Cliente)Session["Usuario"];
+			ViewBag.SelectSensores = new SelectList(DAOSensores.Instancia.FindReglasCliente(cliente.idUsuario), "idSensor", "TipoSensor");
+
+			return View("AltaRegla");
 		}
 
 		public bool SessionStateOK()
