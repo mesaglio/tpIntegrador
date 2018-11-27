@@ -691,7 +691,7 @@ namespace tp_integrador.Models
 		private void ActualizarSensor(Sensor sensor)
 		{
 			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idSensor = '{0}'";
-			if (Query(String.Format(query, sensor.idSensor)).Tables[0].Rows.Count != 0) return;
+			if (Query(String.Format(query, sensor.idSensor)).Tables[0].Rows.Count == 0) return;
 
 			query = "UPDATE SGE.Sensor SET sensor_detalle = '{0}', sensor_magnitud = '{1}' WHERE sensor_idSensor = '{2}'";
 			Query(String.Format(query, sensor.TipoSensor, sensor.Magnitud, sensor.idSensor));
@@ -700,7 +700,7 @@ namespace tp_integrador.Models
 		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
-
+		
 		#region Regla
 
 		// ------------------------------------ SELECT ------------------------------------
@@ -964,13 +964,13 @@ namespace tp_integrador.Models
 		{
 			var lista = new List<EstadoSensor>();
 
-			var query = "SELECT * FROM SGE.EstadoSensor WHERE esensor_idSensor = '{0}'";
+			var query = "SELECT * FROM SGE.EstadoSensor WHERE esensor_idSensor = '{0} ORDER BY esensor_idEstadoSensor DESC'";
 			var data = Query(String.Format(query, idSensor)).Tables[0];
 			if (data.Rows.Count == 0) return lista;
 
 			foreach (DataRow row in data.Rows)
 			{
-				lista.Add(new EstadoSensor(idSensor, (Int32)row["esensor_magnitud"]));
+				lista.Add(new EstadoSensor((Int32)row["esensor_idEstadoSensor"], idSensor, (Int32)row["esensor_magnitud"]));
 			}
 
 			return lista;
@@ -1083,7 +1083,7 @@ namespace tp_integrador.Models
 			var dataAdapter = new SqlDataAdapter(q, conn);			
 			var commandBuilder = new SqlCommandBuilder(dataAdapter);
 			var ds = new DataSet();
-			dataAdapter.Fill(ds);			
+			dataAdapter.Fill(ds);
 			return ds;			
 		}
 

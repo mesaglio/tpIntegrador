@@ -22,6 +22,14 @@ namespace tp_integrador
 			DAODispositivo.Instancia.InitialLoad();
 			DAOSensores.Instancia.InitialLoad();
 			DAOUsuario.Instancia.IniciarAutoSimplex();
+			///*
+			var listanumeros = new List<int>() { 26, 27, 26, 27, 29, 30, 31, 32 };
+			var sensor = DAOSensores.Instancia.ListaSensores[0];
+			foreach (var num in listanumeros)
+			{
+				sensor.SetMagnitud(num);
+			}
+			//*/
 		}
     }
 

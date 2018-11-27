@@ -232,13 +232,14 @@ CREATE TABLE SGE.ActuadorPorRegla (
 GO
 
 -- -----------------------------------------------------
--- Table SGE.ActuadorPorRegla
+-- Table SGE.EstadoSensor
 -- -----------------------------------------------------
 
 CREATE TABLE SGE.EstadoSensor (
+  esensor_idEstadoSensor INT IDENTITY,
   esensor_idSensor INT NOT NULL,
   esensor_magnitud INT NOT NULL,
-  PRIMARY KEY (esensor_idSensor, esensor_magnitud),
+  PRIMARY KEY (esensor_idEstadoSensor, esensor_idSensor, esensor_magnitud),
   FOREIGN KEY (esensor_idSensor) REFERENCES SGE.Sensor (sensor_idSensor))
 GO
 
