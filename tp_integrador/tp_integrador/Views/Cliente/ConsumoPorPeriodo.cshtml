@@ -1,0 +1,198 @@
+﻿@model tp_integrador.Models.Usuarios
+
+@{
+	ViewBag.Title = "ConsumoPorPeriodo";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Bootstrap core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="~/Content/dashboard.css" rel="stylesheet" />
+
+<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
+	<div class="container-fluid">
+		<div class="row">
+
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar" style="height:auto">
+				<div class="sidebar-sticky">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a href="@Url.Action("Cliente", "Home")" class="nav-link">
+								<span data-feather="home"></span>
+								Estado del Hogar
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link active">
+								<span data-feather="activity"></span>
+								Consumo por Periodo <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Dispositivo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
+								<span data-feather="clock"></span>
+								Simplex
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="monitor"></span>
+								Gestionar Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
+								<span data-feather="wifi"></span>
+								Gestionar Sensores
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<div class="container" style="margin-left:20px; overflow:auto;">
+
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+					<h1 class="display-4">Consumo Por Periodo</h1>
+					<p class="lead">Consulte los consumos de periodos anteriores.</p>
+				</div>
+
+				<hr />
+				<!--DASHBOARD-->
+				<div class="container text-center">
+					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+						<h1 class="h2">Consumos Mensuales</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <script>
+                                function clearcache()
+                                {
+                                    sessionStorage.removeItem('json');
+                                    getObjet(1);
+                                }
+                            </script>
+
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()" href="@Url.Action("ConsumoPorPeriodoAnterior", "Cliente")"> Anterior</a></button>
+
+                            <button class="btn btn-sm btn-outline-secondary">
+
+                                <a href="@Url.Action("ConsumoPorPeriodo", "Cliente")"><span data-feather="calendar"></span> @Session["anio"] </a>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()" href="@Url.Action("ConsumoPorPeriodoProximo", "Cliente")">Proximo</a></button>
+
+                        </div>
+					</div>
+
+					<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+		feather.replace()
+	</script>
+
+	<!-- Graphs -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+	<script>
+
+        var getObjet = function (idclietne) {
+            
+            anio =  @Session["anio"];
+
+            return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '","anio":"'+anio+'"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
+                "credentials": "omit", "headers":
+                    {
+                        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                        "accept-language": "es-ES,es;q=0.9",
+                        "cache-control": "max-age=0",
+                        "upgrade-insecure-requests": "1"
+                    },
+                "referrerPolicy": "no-referrer-when-downgrade", "body": null, "method": "GET", "mode": "cors"
+            }).then(res => res.text()).then(body => sessionStorage.setItem('json', body));
+
+        }
+        function findkey(key, array)
+        {
+      
+       
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].Mes === key) {
+                        return array[i].ConsumoTotal;
+                    }
+                }
+       
+
+        }
+        
+        
+        //getObjet(@Model.idUsuario);
+         getObjet(1);
+        var json = sessionStorage.getItem('json');
+        var obj = JSON.parse(json);
+        sessionStorage.removeItem('json');
+        if (obj == null)
+        {
+            var consumo = [, , , , , , , , , , ,];
+            alert("No hay reportes para esas fechas");
+
+        }
+        else
+        {
+            var consumo = [findkey('Enero', obj), findkey('Febrero', obj), findkey('Marzo', obj), findkey('Abril', obj), findkey('Mayo', obj), findkey('Junio', obj), findkey('Julio', obj), findkey('Agosto', obj), findkey('Septiembre', obj), findkey('Octubre', obj), findkey('Noviembre', obj), findkey('Diciembre', obj)];
+        }
+        var etiqueta = [       "Enero",               "Febrero",               "Marzo",               "Abril",               "Mayo",               "Junio",               "Julio",               "Agosto",               "Septiembre",               "Octubre",               "Noviembre",                "Diciembre"]
+        var dato = 1 ;
+
+		var ctx = document.getElementById("myChart");
+		var myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+                labels: etiqueta,
+                datasets: [{
+                    data: consumo ,
+					lineTension: 0,
+					backgroundColor: 'transparent',
+					borderColor: '#007bff',
+					borderWidth: 4,
+					pointBackgroundColor: '#007bff'
+				}]
+			},
+			options: {
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: false
+						}
+					}]
+				},
+				legend: {
+					display: false,
+				}
+			}
+		});
+	</script>
+
+</main>
+

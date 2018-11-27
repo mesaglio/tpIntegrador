@@ -8,19 +8,11 @@ using Newtonsoft.Json;
 namespace tp_integrador.Models
 {
     public class CargarJson
-    {
-        public DAOUsuario DaoUser;
-        public DAODispositivo DaoDis;
-        public DAOzona DaoZona;
-
+    {        
 
         public CargarJson()
-        {
-			//TODO: Cambiar por singletons
-            DaoUser = MvcApplication.Daobjeto;
-            DaoZona = MvcApplication.GlobalZonas;
+        {			         
         }
-
 
         public void LoadJson<T>(Stream path)
         {
@@ -39,23 +31,21 @@ namespace tp_integrador.Models
 			{
 				foreach (var usuario in djson)
 				{
-					DaoUser.CargarUsuario(usuario);
+					DAOUsuario.Instancia.CargarUsuarioDeJson(usuario);					
 				}
 			}
 			else if (type == typeof(Inteligente) || type == typeof(Estandar))
 			{
 				foreach (var dispositivo in djson)
 				{
-					DaoUser.BuscarCliente(dispositivo.IdCliente).AgregarDispositivo(dispositivo);
-					DAODispositivo.Instancia.CargarDispositivo(dispositivo);
-					ORM.Instancia.Insert(dispositivo);
+					DAOUsuario.Instancia.BuscarCliente(dispositivo.IdCliente).AgregarDispositivoDesdeJson(dispositivo);
 				}
 			}
 			else if (type == typeof(Transformador))
 			{
 				foreach (var t in djson)
 				{
-					DaoZona.AgregarTransformadorAZona(t);
+					DAOzona.Instancia.AgregarTransformadorAZona(t);
 				}
 			}		
             

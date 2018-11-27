@@ -38,7 +38,7 @@ namespace tp_integrador.Models
 			if (type == typeof(Actuador)) GuardarActuador(unaClase);
 			if (type == typeof(Regla)) GuardarRegla(unaClase);
 			if (type == typeof(EstadoDispositivo)) GuardarEstado(unaClase);
-			if (type == typeof(TemplateDispositivo)) GuardarTemplate(unaClase);
+			if (type == typeof(DispositivoGenerico)) GuardarTemplate(unaClase);
 			if (type == typeof(EstadoSensor)) GuardarEstadoSensor(unaClase);
 		}
 
@@ -52,7 +52,7 @@ namespace tp_integrador.Models
 			if (type == typeof(Sensor)) ActualizarSensor(unaClase);
 			if (type == typeof(Actuador)) ActualizarActuador(unaClase);
 			if (type == typeof(Regla)) ActualizarRegla(unaClase);			
-			if (type == typeof(TemplateDispositivo)) ActualizarTemplate(unaClase);
+			if (type == typeof(DispositivoGenerico)) ActualizarTemplate(unaClase);
 		}
 
 		public void Delete(dynamic unaClase)
@@ -243,8 +243,8 @@ namespace tp_integrador.Models
 			var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.password, cliente.idUsuario));
 
-			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = '{1}', clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}', clie_autoSimplex = '{10}' WHERE clie_idUsuario = '{9}'";
-			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio, cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario, cliente.AutoSimplex));
+			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = CONVERT(DATETIME,'{1}',121), clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}', clie_autoSimplex = '{10}' WHERE clie_idUsuario = '{9}'";
+			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario, cliente.AutoSimplex));
 		}
 
 		private void ActualizarAdministrador(Administrador admin)
@@ -254,8 +254,8 @@ namespace tp_integrador.Models
 			var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
 			Query(String.Format(query, admin.nombre, admin.apellido, admin.domicilio, admin.password, admin.idUsuario));
 
-			query = "UPDATE SGE.Administrador SET admin_fechaAlta = '{0}' WHERE usua_idUsuario = '{1}'";
-			Query(String.Format(query, admin.AltaSistema, admin.idUsuario));
+			query = "UPDATE SGE.Administrador SET admin_fechaAlta = CONVERT(DATETIME,'{0}',121) WHERE usua_idUsuario = '{1}'";
+			Query(String.Format(query, admin.AltaSistema.ToString("yyyy-MM-dd HH:mm:ss.mmm"), admin.idUsuario));
 		}
 
 		// ------------------------------------ DELETE ------------------------------------
@@ -401,9 +401,9 @@ namespace tp_integrador.Models
 		private void ActualizarInteligente(Inteligente disp)
 		{
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
-			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
+			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count == 0) return;
 
-			query = "UPDATE SGE.DispositivoPorCliente SET dpc_estado = '{0}', dpc_fechaEstado = '{1}', dpc_convertido = '{5}' WHERE dpc_idDispositivo = '{2}' AND dpc_idUsuario = '{3}' AND dpc_numero = '{4}'";
+			query = "UPDATE SGE.DispositivoPorCliente SET dpc_estado = '{0}', dpc_fechaEstado = CONVERT(DATETIME,'{1}',121), dpc_convertido = '{5}' WHERE dpc_idDispositivo = '{2}' AND dpc_idUsuario = '{3}' AND dpc_numero = '{4}'";
 			Query(String.Format(query, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), disp.IdDispositivo, disp.IdCliente, disp.Numero, disp.Convertido ? 1 : 0));
 
 		}
@@ -411,7 +411,7 @@ namespace tp_integrador.Models
 		private void ActualizarEstandar(Estandar disp)
 		{
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
-			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
+			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count == 0) return;
 
 			query = "UPDATE SGE.DispositivoPorCliente SET dpc_usoDiario = '{0}' WHERE dpc_idDispositivo = '{1}' AND dpc_idUsuario = '{2}' AND dpc_numero = '{3}'";
 			Query(String.Format(query, disp.usoDiario, disp.IdDispositivo, disp.IdCliente, disp.Numero));
@@ -619,16 +619,25 @@ namespace tp_integrador.Models
 		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
-		
+
 		#region Sensor
 
 		// ------------------------------------ SELECT ------------------------------------
 
+		public Sensor GetSensor(int idCliente, string detalle)
+		{
+			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idCliente = '{0}' AND sensor_detalle = '{1}'";
+			var data = Query(String.Format(query, idCliente, detalle));
+
+			if (data.Tables[0].Rows.Count != 1) return null;
+
+			return GetSensorFromData(data.Tables[0].Rows[0]);			
+		}
+
 		public List<Sensor> GetAllSensores()
 		{
 			var query = "SELECT * FROM SGE.Sensor";
-			var data = Query(query).Tables[0];
-			if (data.Rows.Count == 0) return null;
+			var data = Query(query).Tables[0];			
 
 			return GetSensoresFromData(data);
 		}
@@ -636,6 +645,7 @@ namespace tp_integrador.Models
 		private List<Sensor> GetSensoresFromData(DataTable data)
 		{
 			var lista = new List<Sensor>();
+			if (data.Rows.Count == 0) return lista;
 
 			foreach (DataRow row in data.Rows)
 			{
@@ -665,7 +675,7 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idCliente = '{0}' AND sensor_detalle = '{1}'";
 			if (Query(String.Format(query, sensor.idCliente, sensor.TipoSensor)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.Sensor VALUES ('{0}', '{0}', '{0}')";
+			query = "INSERT INTO SGE.Sensor VALUES ('{0}', '{1}', '{2}')";
 			Query(String.Format(query, sensor.idCliente, sensor.TipoSensor, sensor.Magnitud));
 
 			if (sensor.Observadores.Count == 0) return;
@@ -695,10 +705,10 @@ namespace tp_integrador.Models
 
 		// ------------------------------------ SELECT ------------------------------------
 
-		private int GetReglaID(int idSensor, string detalle)
+		private int GetReglaID(int idSensor, string detalle, int valor, string operador, string accion)
 		{
-			var query = "SELECT * FROM SGE.Regla WHERE regla_idSensor = '{0}' AND regla_detalle = '{1}'";
-			var data = Query(String.Format(query, idSensor, detalle)).Tables[0];
+			var query = "SELECT * FROM SGE.Regla WHERE regla_idSensor = '{0}' AND regla_detalle = '{1}' AND regla_valor = '{2}' AND regla_operador = '{3}' AND regla_accion = '{4}'";
+			var data = Query(String.Format(query, idSensor, detalle, valor, operador, accion)).Tables[0];
 			if (data.Rows.Count == 1) return (Int32)data.Rows[0]["regla_idRegla"];
 
 			return -1;
@@ -723,28 +733,29 @@ namespace tp_integrador.Models
 		private Regla GetReglaFromData(DataRow row)
 		{
 			int id, sensor, valor;
-			string detalle, operador;
+			string detalle, operador, accion;
 
 			detalle = row["regla_detalle"].ToString();
 			operador = row["regla_operador"].ToString();
+			accion = row["regla_accion"].ToString();
 			id = (Int32)row["regla_idRegla"];
 			sensor = (Int32)row["regla_idSensor"];
 			valor = (Int32)row["regla_valor"];
 			
 
-			return new Regla(id, sensor, detalle, operador, valor, GetActuadores(id));
+			return new Regla(id, sensor, detalle, operador, valor, accion, GetActuadores(id));
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------
 
 		private void GuardarRegla(Regla regla)
 		{
-			if (GetReglaID(regla.idSensor, regla.Detalle) != -1) return;
+			if (GetReglaID(regla.idSensor, regla.Detalle, regla.Valor, regla.Operador, regla.Accion) != -1) return;
 
-			var query = "INSERT INTO SGE.Regla VALUES ('{0}', '{1}', '{2}', '{3}')";
-			Query(String.Format(query, regla.idSensor, regla.Detalle, regla.Valor, regla.Operador));
+			var query = "INSERT INTO SGE.Regla VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
+			Query(String.Format(query, regla.idSensor, regla.Detalle, regla.Valor, regla.Operador, regla.Accion));
 
-			regla.idRegla = GetReglaID(regla.idSensor, regla.Detalle);
+			regla.idRegla = GetReglaID(regla.idSensor, regla.Detalle, regla.Valor, regla.Operador, regla.Accion);
 
 			foreach (Actuador a in regla.Actuadores)
 			{
@@ -756,10 +767,10 @@ namespace tp_integrador.Models
 
 		private void ActualizarRegla(Regla regla)
 		{
-			if (GetReglaID(regla.idSensor, regla.Detalle) == -1) return;
+			if (GetReglaID(regla.idSensor, regla.Detalle, regla.Valor, regla.Operador, regla.Accion) == -1) return;
 
-			var query = "UPDATE SGE.Regla SET regla_detalle = '{0}', regla_valor = '{1}' WHERE regla_idRegla = '{2}'";
-			Query(String.Format(query, regla.Detalle, regla.Valor, regla.idRegla));
+			var query = "UPDATE SGE.Regla SET regla_detalle = '{0}', regla_valor = '{1}', regla_operador = '{2}', regla_accion = '{3}' WHERE regla_idRegla = '{4}'";
+			Query(String.Format(query, regla.Detalle, regla.Valor, regla.Operador, regla.Accion, regla.idRegla));
 		}
 
 		// ------------------------------------ DELETE ------------------------------------
@@ -983,9 +994,9 @@ namespace tp_integrador.Models
 
 		// ------------------------------------ SELECT ------------------------------------
 
-		public List<TemplateDispositivo> GetAllTemplates()
+		public List<DispositivoGenerico> GetAllTemplates()
 		{
-			var lista = new List<TemplateDispositivo>();
+			var lista = new List<DispositivoGenerico>();
 
 			var query = "SELECT * FROM SGE.DispositivoGenerico";
 			var data = Query(query).Tables[0];
@@ -999,7 +1010,7 @@ namespace tp_integrador.Models
 			return lista;
 		}
 
-		private TemplateDispositivo GetTemplateFromData(DataRow row)
+		private DispositivoGenerico GetTemplateFromData(DataRow row)
 		{
 			int id = (Int32)row["disp_idDispositivo"];
 
@@ -1013,12 +1024,12 @@ namespace tp_integrador.Models
 			bajoconsumo = (Boolean)row["disp_bajoConsumo"];
 			consumo = Double.Parse(row["disp_consumo"].ToString());
 
-			return new TemplateDispositivo(id, nombre, concreto, inteligente, bajoconsumo, consumo);
+			return new DispositivoGenerico(id, nombre, concreto, inteligente, bajoconsumo, consumo);
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------
 
-		private void GuardarTemplate(TemplateDispositivo tdisp)
+		private void GuardarTemplate(DispositivoGenerico tdisp)
 		{
 			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_dispositivo = '{0}' AND disp_concreto = '{1}' AND disp_inteligente = '{2}'";
 			if (Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0)).Tables[0].Rows.Count != 0) return;
@@ -1029,7 +1040,7 @@ namespace tp_integrador.Models
 
 		// ------------------------------------ UPDATES ------------------------------------
 
-		private void ActualizarTemplate(TemplateDispositivo tdisp)
+		private void ActualizarTemplate(DispositivoGenerico tdisp)
 		{
 			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_idDispositivo = '{0}'";
 			if (Query(String.Format(query, tdisp.ID)).Tables[0].Rows.Count != 0) return;
@@ -1042,7 +1053,6 @@ namespace tp_integrador.Models
 
 		#endregion
 		
-
 		public int GetIDUsuarioIfExists(string username, string password)
 		{			
 			using (SqlConnection connection = new SqlConnection(connectionString))

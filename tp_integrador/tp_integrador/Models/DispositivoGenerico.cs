@@ -5,7 +5,7 @@ using System.Web;
 
 namespace tp_integrador.Models
 {
-	public class TemplateDispositivo
+	public class DispositivoGenerico
 	{
 		public int ID { get; set; }
 		public string Dispositivo { get; set; }
@@ -14,7 +14,7 @@ namespace tp_integrador.Models
 		public bool Bajoconsumo { get; set; }
 		public double Consumo { get; set; }
 				
-		public TemplateDispositivo(int ID, string dispositivo, string concreto, bool inteligente, bool bajoconsumo, double consumo)
+		public DispositivoGenerico(int ID, string dispositivo, string concreto, bool inteligente, bool bajoconsumo, double consumo)
 		{
 			Dispositivo = dispositivo;
 			this.ID = ID;
@@ -24,6 +24,6 @@ namespace tp_integrador.Models
 			this.Consumo = consumo;
 		}
 
-		public string getNombreEntero() => Dispositivo + " " + Concreto;
+		public string getNombreEntero() => (Inteligente ? "[Inteligente]" : "[Estandar]") + " " + Dispositivo + " " + Concreto;
 	}
 }

@@ -45,12 +45,21 @@ namespace tp_integrador.Models
             return valor;
         }
 
+		public double ConsumoEnEstadoActual()
+		{
+			if (Estado == 1) return Consumo;
+			else if (Estado == 2) return Consumo / 2;
+			else return 0;
+		}
+
         private void CambiarAEstado(byte nuevoEstado)
         {
             DateTime nuevaFecha = DateTime.Now;
             daoEstado.CargarEstado(Estado, fechaEstado, nuevaFecha);
             Estado = nuevoEstado;
             fechaEstado = nuevaFecha;
+
+			ORM.Instancia.Update(this);
         }
 		
         public bool Encendido()
@@ -58,17 +67,18 @@ namespace tp_integrador.Models
             return (Estado != 0);
         }
 
-        public double ConsumoDesdeHasta(DateTime desde, DateTime hasta)
-        {
+		public double ConsumoDesdeHasta(DateTime desde, DateTime hasta)
+		{
 			List<EstadoDispositivo> estadosEnPeriodo = daoEstado.GetEstados(desde, hasta);
 
-            double valor = 0;
-            foreach (EstadoDispositivo guardado in estadosEnPeriodo)
-            {
-                valor += ConsumoEnPor(guardado.Estado, guardado.GetHoras());
-            }
+			double valor = 0;
+			foreach (EstadoDispositivo guardado in estadosEnPeriodo)
+			{
+				valor += ConsumoEnPor(guardado.Estado, guardado.GetHoras());
+			}
 
-            return valor;
+			if (fechaEstado < hasta) valor += ConsumoEnPor(Estado, hasta.Subtract(fechaEstado).TotalHours);
+			return valor;
         }
                
         public double ConsumoUltimasHoras(int horas)
@@ -76,11 +86,10 @@ namespace tp_integrador.Models
             DateTime fechaAhora = DateTime.Now;
             DateTime fechaObjetivo = fechaAhora.Subtract(new TimeSpan(horas,0,0));
 
-            double valor = ConsumoDesdeHasta(fechaObjetivo, fechaAhora);
-            return valor += ConsumoEnPor(Estado, fechaAhora.Subtract(fechaEstado).TotalHours);
-        }
-                
-        public void Apagar()
+            return ConsumoDesdeHasta(fechaObjetivo, fechaAhora);           
+        }			
+
+		public void Apagar()
         {
             if (!Encendido()) return;
 
@@ -101,12 +110,26 @@ namespace tp_integrador.Models
             CambiarAEstado(2);
         }
 
-		public override double ConsumoEnElMes()
+		public double ConsumoEnElPeriodo(PeriodoData periodoData)
 		{
-			var ahora = DateTime.Now;
-			var desde = new DateTime(ahora.Year, ahora.Month, 1);
-			int horas = (Int32)ahora.Subtract(desde).TotalHours;
-			return ConsumoUltimasHoras(horas);
+			if (!periodoData.EsElActual()) return 0; //Traer Datos de Mongo
+			else return ConsumoDesdeHasta(periodoData.FechaInicio, periodoData.FechaFin);
+		}
+		
+		public void BajarTemperatura()
+		{			
+		}
+
+		public void SubirTemperatura()
+		{
+		}
+
+		public void BajarIntensidad()
+		{
+		}
+
+		public void SubirIntensidad()
+		{
 		}
 	}
 }

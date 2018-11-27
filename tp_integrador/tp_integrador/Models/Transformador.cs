@@ -34,5 +34,10 @@ namespace tp_integrador.Models
 		{
 			return ClientesID.Contains(idCliente);
 		}
+
+		public void AgregarCliente(Cliente unCliente)
+		{
+			ClientesID.Add(unCliente.idUsuario);				
+		}
     }
 }

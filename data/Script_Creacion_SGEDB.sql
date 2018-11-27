@@ -62,8 +62,8 @@ GO
 
 CREATE TABLE SGE.Zona (
   zona_idZona INT IDENTITY,
-  zona_latitud DECIMAL(9,7) NOT NULL,
-  zona_longitud DECIMAL(10,7) NOT NULL,
+  zona_latitud DECIMAL(9,7) NOT NULL,  
+  zona_longitud DECIMAL(10,7) NOT NULL,  
   zona_radio INT NOT NULL,
   PRIMARY KEY (zona_idZona))
 GO
@@ -102,7 +102,7 @@ GO
 CREATE TABLE SGE.Cliente (
   clie_idUsuario INT NOT NULL,
   clie_latitud DECIMAL(9,7) NOT NULL,
-  clie_longitud DECIMAL(10,7) NOT NULL,
+  clie_longitud DECIMAL(10,7) NOT NULL,  
   clie_telefono VARCHAR(15) NOT NULL,
   clie_fechaAlta DATETIME NOT NULL,
   clie_doc_numero VARCHAR(255) NOT NULL,
@@ -140,6 +140,7 @@ CREATE TABLE SGE.Regla (
   regla_detalle VARCHAR(45),
   regla_valor INT,
   regla_operador VARCHAR(2),
+  regla_accion VARCHAR(16),
   PRIMARY KEY (regla_idRegla),
   FOREIGN KEY (regla_idSensor) REFERENCES SGE.Sensor (sensor_idSensor))
 GO
@@ -281,8 +282,14 @@ INSERT INTO SGE.DispositivoGenerico VALUES('PC', 'de escritorio', 1, 1, 0.04)
 INSERT INTO SGE.DispositivoGenerico VALUES('Microondas', 'convencional', 0, 1, 0.64)
 INSERT INTO SGE.DispositivoGenerico VALUES('Plancha', 'a vapor', 0, 1, 0.75)
 
-INSERT INTO SGE.Zona VALUES (34.604048, -58.381673,10000)
-INSERT INTO SGE.Transformador VALUES (1,34.604048, -58.381673,1)
+INSERT INTO SGE.Zona VALUES (-34.550503, -58.479966, 5000)
+INSERT INTO SGE.Zona VALUES (-34.631230, -58.499324, 5000)
+INSERT INTO SGE.Zona VALUES (-34.597430, -58.412424, 5000)
+INSERT INTO SGE.Zona VALUES (-34.671469, -58.416247, 5000)
+INSERT INTO SGE.Zona VALUES (-39.691680, -66.840570, 5000)
+INSERT INTO SGE.Transformador VALUES (3, -34.604048, -58.381673, 1)
+INSERT INTO SGE.Transformador VALUES (1, -34.553750, -58.468923, 1)
+INSERT INTO SGE.Transformador VALUES (4, -34.661431, -58.410289, 1)
 
 INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8') 
 -- username: pepe 
@@ -292,14 +299,22 @@ INSERT INTO SGE.Administrador VALUES (1, CONVERT(datetime, '2018-9-15 18:20:23:0
 INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8')
 -- username: popo
 -- password: pepe123
-INSERT INTO SGE.Cliente VALUES (2, 34.604048, 58.381673, '9999999999', GETDATE(), '88888888', 'DNI', 'R1', 2, 1, 0)
+INSERT INTO SGE.Cliente VALUES (2, -34.604048, -58.381673, '9999999999', GETDATE(), '88888888', 'DNI', 'R1', 2, 1, 0)
 
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3, 0)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 1, 1, 0, CONVERT(datetime,'2018-11-17 10:12:53:242',121), NULL, 0)
 
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-12 20:12:53:242',121), CONVERT(datetime,'2018-03-13 06:02:13:345',121), 0)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 06:02:13:346',121), CONVERT(datetime,'2018-03-13 14:08:23:545',121), 1)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 14:08:23:546',121), CONVERT(datetime,'2018-03-15 06:07:55:125',121), 0)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 06:07:55:126',121), CONVERT(datetime,'2018-03-15 23:04:35:234',121), 1)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 23:04:35:235',121), CONVERT(datetime,'2018-03-17 05:06:42:332',121), 0)
+
+INSERT INTO SGE.Sensor VALUES (2, 'Sensor Temperatura', 20)
+INSERT INTO SGE.Regla VALUES (1, 'Temperatura', 30, '>', 'Encender')
+INSERT INTO SGE.Actuador VALUES (2, 'Actuardor-Temperatura')
+INSERT INTO SGE.ActuadorPorRegla VALUES (1, 1)
+INSERT INTO SGE.DispositivoPorActuador VALUES (1, 2, 1, 1)
+INSERT INTO SGE.DispositivoPorActuador VALUES (1, 2, 8, 1)

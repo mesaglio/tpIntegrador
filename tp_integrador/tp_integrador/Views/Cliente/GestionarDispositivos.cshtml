@@ -1,71 +1,14 @@
 ﻿@model tp_integrador.Models.Cliente
 
 @{
-	ViewBag.Title = "Dashboard";
+	ViewBag.Title = "GestionarDispositivos";
 }
-@*
-	<div>
-				@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post))
-				{
-					<fieldset>
-						Seleccione un Dispositivo <select name="disp">
-
-							<option selected="selected" value=0></option>
-
-							@foreach (var item in Model.GetTemplateDisp())
-							{
-								<option value=@item.ID>@item.getNombreEntero()</option>
-							}
-
-						</select>
-						<button type="submit">Agregar</button>
-
-					</fieldset>
-				}
-			</div>
-
-			<div>
-				<span class="label label-default">Dispositivos Encendidos: @Model.CantEncendidos()</span><br />
-
-				<span class="label label-default">Dispositivos Apagados: @Model.CantApagados()</span><br />
-
-				<span class="label label-default">Dispositivos:</span><br />
-				@foreach (var item in Model.dispositivos)
-				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Nombre)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Consumo)
-						</td>
-						<td>
-							@if (item.EsInteligente)
-							{
-
-								<div class="btn-group">
-									@using (Html.BeginForm("EncenderDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-									{
-										<input type="hidden" name="postdispositivo" value="@item.Nombre" /><button type="submit">Encender</button>}
-
-									@using (Html.BeginForm("ApagarDispositivo", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-									{<input type="hidden" name="postdispositivo" value="@item.Nombre" /> <button type="submit">Apagar</button>}
-								</div>
-							}
-						</td>
-					</tr>
-					<br />
-				}
-			</div>
-*@
 
 <!-- Bootstrap core CSS -->
 <link href="~/Content/bootstrap.min.css" rel="stylesheet"/>
 
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet"/>
-
-<link href="~/Content/cardbox.css"/>
 
 <main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
@@ -82,31 +25,31 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
 								<span data-feather="activity"></span>
 								Consumo por Periodo
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("CargarDispositivo", "Cliente")" class="nav-link">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link">
 								<span data-feather="file"></span>
 								Cargar Archivo de Dispositivo
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionDeDispositivos", "Cliente")" class="nav-link">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
 								<span data-feather="clock"></span>
 								Simplex
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Dashboard", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link active">
 								<span data-feather="monitor"></span>
 								Gestionar Dispositivos <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
 								<span data-feather="wifi"></span>
 								Gestionar Sensores
 							</a>
@@ -117,9 +60,15 @@
 
 			<div class="container" style="margin-left:20px; overflow:auto;">
 
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+					<h1 class="display-4">Gestión de Dispositivos</h1>
+					<p class="lead">Agregue o Modifique sus Dispositivos</p>
+				</div>
+
+				<hr/>
 				<!-- COMBOBOX AGREGAR DISPOSITIVO -->
 				<h4 for="country" class="mb-3" style="margin-top:30px;">Agregar un Dispositivo</h4>
-				<div class="container" style="margin-bottom:40px;">
+				<div class="container" style="margin-bottom:40px; width:515px;">
 
 					@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post, new { @class = "row" }))
 					{
@@ -130,11 +79,13 @@
 								{
 									<option value=@item.ID>@item.getNombreEntero()</option>
 								}
-							</select>						
+							</select>
 						</fieldset>
 						<button type="submit" class="btn btn-lg btn-block btn-primary" style="width:100px; height:30px;margin-left: 10px;align-self: center; font: 12px arial;">Agregar</button>						
 					}
 				</div>
+
+				<hr />
 
 				<!-- DISPLAYS -->
 				<div class="container" style="width:460px;">
@@ -166,6 +117,8 @@
 
 					</div>
 				</div>
+
+				<hr />
 
 				<!-- LISTADO DISPOSITIVOS -->
 				<h4 for="country" class="mb-3">Mis Dispositivos</h4>
@@ -215,7 +168,10 @@
 										}
 										else
 										{
-											<td></td>}
+											<td style="width:200px; height:15px;">
+												@Html.ActionLink("Editar", "EditarEstandar", "Cliente", new { idD = item.IdDispositivo, idC = item.IdCliente, numero = item.Numero }, new { @style = "font: 12px arial; background-color:crimson;", @class = "btn btn-lg btn-block btn-primary" })
+											</td>
+										}
 									</tr>
 								}
 							}

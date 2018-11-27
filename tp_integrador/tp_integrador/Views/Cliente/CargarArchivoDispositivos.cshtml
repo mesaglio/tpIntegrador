@@ -1,37 +1,5 @@
 ﻿@model Boolean
-@*
-	<h2>Dispositivo Inteligente</h2>
 
-	@using (Html.BeginForm("LoadDispositivoJson", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-	{
-		<input type="file" name="file" />
-		<button type="submit">Subir archivo</button>
-	}
-	<h2>Dispositivo Estandar</h2>
-	@using (Html.BeginForm("LoadDispositivoJsone", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
-	{
-		<input type="file" name="file" />
-		<button type="submit">Subir archivo</button>
-	}
-
-	@using (Html.BeginForm("SelecTemplate_dis", "Cliente", FormMethod.Post))
-	{
-		<fieldset>
-			Seleccione un Dispositivo <select name="disp">
-
-				<option selected="selected" value=0></option>
-
-				@foreach (var item in Model.templateDisps)
-				{
-					<option value=@item.ID>@item.getNombreEntero()</option>
-				}
-
-			</select>
-			<button type="submit">Agregar</button>
-
-		</fieldset>
-	}
-*@
 @{
 	ViewBag.Title = "Login";	
 }
@@ -41,8 +9,6 @@
 
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet">
-
-<link href="~/Content/cardbox.css">
 
 <main role="main" class="container" style="float:right;">
 	<div class="container-fluid">
@@ -54,35 +20,35 @@
 						<li class="nav-item">
 							<a href="@Url.Action("Cliente", "Home")" class="nav-link">
 								<span data-feather="home"></span>
-								Estado del Hogar 
+								Estado del Hogar
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
 								<span data-feather="activity"></span>
 								Consumo por Periodo
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("CargarDispositivo", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link active">
 								<span data-feather="file"></span>
 								Cargar Archivo de Dispositivo <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionDeDispositivos", "Cliente")" class="nav-link">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
 								<span data-feather="clock"></span>
 								Simplex
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Dashboard", "Cliente")" class="nav-link">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link">
 								<span data-feather="monitor"></span>
 								Gestionar Dispositivos
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
 								<span data-feather="wifi"></span>
 								Gestionar Sensores
 							</a>
@@ -144,8 +110,10 @@
 
 			@if (Model)
 			{
-				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-					<p class="lead" style="color:green"><b>@TempData["Message"]</b></p>
+				<div class="container" style="width:700px;">
+					<div class="alert alert-success" role="alert">
+						<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
+					</div>
 				</div>
 			}
 

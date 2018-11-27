@@ -21,10 +21,40 @@ namespace tp_integrador.Models
 			IdCliente = cliente;
 			Dispositivos = disp;
 		}
+		
+		public void Apagar()
+		{
+			Dispositivos.ForEach(x => x.Apagar());
+		}
 
-        // TODO: hacer la logica para mandar acciones al dispositivo
-        public void Actuar()
-        {
-        }				
-    }
+		public void Encender()
+		{
+			Dispositivos.ForEach(x => x.Encender());
+		}
+
+		public void ModoAhorro()
+		{
+			Dispositivos.ForEach(x => x.ModoAhorro());
+		}
+
+		public void BajarTemperatura()
+		{
+			Dispositivos.ForEach(x => x.BajarTemperatura());
+		}
+
+		public void SubirTemperatura()
+		{
+			Dispositivos.ForEach(x => x.SubirTemperatura());
+		}
+
+		public void BajarIntensidad()
+		{
+			Dispositivos.ForEach(x => x.BajarIntensidad());
+		}
+
+		public void SubirIntensidad()
+		{
+			Dispositivos.ForEach(x => x.SubirIntensidad());
+		}
+	}
 }

@@ -1,0 +1,146 @@
+﻿@model tp_integrador.Models.Sensor
+
+@{
+	ViewBag.Title = "AltaSensor";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Bootstrap core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="~/Content/dashboard.css" rel="stylesheet" />
+
+<link type="text/css" rel="stylesheet" href="~/Content/chosen.css" />
+
+<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
+	<div class="container-fluid">
+		<div class="row">
+
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar" style="height:auto">
+				<div class="sidebar-sticky">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a href="@Url.Action("Cliente", "Home")" class="nav-link">
+								<span data-feather="home"></span>
+								Estado del Hogar
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("ConsumoPorPeriodo", "Cliente")" class="nav-link">
+								<span data-feather="activity"></span>
+								Consumo por Periodo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarArchivoDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Dispositivo
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
+								<span data-feather="clock"></span>
+								Simplex
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link">
+								<span data-feather="monitor"></span>
+								Gestionar Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link active">
+								<span data-feather="wifi"></span>
+								Gestionar Sensores <span class="sr-only">(current)</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<div class="container" style="margin-left:20px; margin-top:30px; overflow:auto;">
+
+				<div class="container" style="width:500px;">
+					<div class="card-deck mb-3 text-center">
+
+						<!-- Alta Sensor -->
+						<div class="card mb-4 shadow-sm" style="max-width:500px;">
+							<div class="card-header">
+								<h4 class="mb3">Nuevo Sensor</h4>
+							</div>
+							<div class="card-body">
+								<div class="file-field">
+									@using (Html.BeginForm())
+									{
+										@Html.AntiForgeryToken()
+
+										<div class="form-horizontal">
+
+											@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+											@Html.HiddenFor(model => model.idSensor)
+
+											<div class="row" style="text-align:left">
+												<label class="control-label col-md-2" style="word-wrap:normal">Sensor Tipo:</label>
+												<div class="col-md-10">
+													@Html.EditorFor(model => model.TipoSensor, new { htmlAttributes = new { @class = "form-control", required = true } })
+													@Html.ValidationMessageFor(model => model.TipoSensor, "", new { @class = "text-danger" })
+												</div>
+											</div>
+
+											@Html.HiddenFor(model => model.idCliente)
+											@Html.HiddenFor(model => model.Magnitud)
+
+											<hr />
+											<div class="container" style="width:200px;">
+												<div>
+													<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+												</div>
+											</div>
+										</div>
+									}
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				@if (TempData["Mensaje"] != null)
+				{
+					<div class="container" style="width:700px;">
+						<div class="alert alert-danger" role="alert">
+							<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
+						</div>
+					</div>
+				}
+
+				<hr />
+				<div class="row">
+					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "GestionarSensores", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
+				</div>
+
+
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+		feather.replace()
+	</script>
+
+</main>
+
