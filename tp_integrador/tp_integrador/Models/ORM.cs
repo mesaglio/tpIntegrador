@@ -619,16 +619,25 @@ namespace tp_integrador.Models
 		// ------------------------------------ DELETE ------------------------------------
 
 		#endregion
-		
+
 		#region Sensor
 
 		// ------------------------------------ SELECT ------------------------------------
 
+		public Sensor GetSensor(int idCliente, string detalle)
+		{
+			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idCliente = '{0}' AND sensor_detalle = '{1}'";
+			var data = Query(String.Format(query, idCliente, detalle));
+
+			if (data.Tables[0].Rows.Count != 1) return null;
+
+			return GetSensorFromData(data.Tables[0].Rows[0]);			
+		}
+
 		public List<Sensor> GetAllSensores()
 		{
 			var query = "SELECT * FROM SGE.Sensor";
-			var data = Query(query).Tables[0];
-			if (data.Rows.Count == 0) return null;
+			var data = Query(query).Tables[0];			
 
 			return GetSensoresFromData(data);
 		}
@@ -636,6 +645,7 @@ namespace tp_integrador.Models
 		private List<Sensor> GetSensoresFromData(DataTable data)
 		{
 			var lista = new List<Sensor>();
+			if (data.Rows.Count == 0) return lista;
 
 			foreach (DataRow row in data.Rows)
 			{
@@ -665,7 +675,7 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idCliente = '{0}' AND sensor_detalle = '{1}'";
 			if (Query(String.Format(query, sensor.idCliente, sensor.TipoSensor)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.Sensor VALUES ('{0}', '{0}', '{0}')";
+			query = "INSERT INTO SGE.Sensor VALUES ('{0}', '{1}', '{2}')";
 			Query(String.Format(query, sensor.idCliente, sensor.TipoSensor, sensor.Magnitud));
 
 			if (sensor.Observadores.Count == 0) return;

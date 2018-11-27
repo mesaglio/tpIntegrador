@@ -43,5 +43,26 @@ namespace tp_integrador.Models
 
 			return lista;
 		}
+
+		public List<Regla> FindReglasCliente(int idCliente)
+		{
+			var lista = new List<Regla>();
+
+			var sensores = FindAllFromCliente(idCliente);
+			foreach (var sensor in sensores)
+			{
+				lista.AddRange(sensor.Observadores.FindAll(x => !lista.Contains(x)));
+			}
+
+			return lista;
+		}
+
+		public Regla GetRegla(int idRegla)
+		{
+			var sensor = ListaSensores.Find(x => x.Observadores.Exists(z => z.idRegla == idRegla));
+			var regla = sensor.Observadores.Find(x => x.idRegla == idRegla);
+
+			return regla;
+		}
 	}
 }

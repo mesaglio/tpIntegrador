@@ -89,6 +89,8 @@ namespace tp_integrador.Models
 			int total;
 			double consumoMes;
 			double consumoRespuesta;
+			var periodo = new PeriodoData();
+			periodo.PeriodoActual();
 
 			foreach (Cliente c in clientes)
 			{
@@ -98,9 +100,9 @@ namespace tp_integrador.Models
 				respuesta = simplex.Consulta(new List<Dispositivo>(listaDisp));
 				foreach(var dispo in listaDisp)
 				{
-					consumoMes = dispo.ConsumoEnElMes();
+					consumoMes = dispo.ConsumoEnElPeriodo(periodo);
 					consumoRespuesta = Double.Parse(respuesta.Valores.Find(x => x.Nombre == dispo.Nombre && x.Numero == dispo.Numero).Consumo);
-					if (consumoMes > consumoRespuesta)
+					if (consumoMes >= consumoRespuesta)
 					{
 						dispo.Apagar();
 						ORM.Instancia.Update(dispo);

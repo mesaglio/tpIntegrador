@@ -1,7 +1,7 @@
-﻿@model tp_integrador.Models.Estandar
+﻿@model tp_integrador.Models.Sensor
 
 @{
-	ViewBag.Title = "EditarEstandar";
+	ViewBag.Title = "AltaSensor";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,6 +10,8 @@
 
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet" />
+
+<link type="text/css" rel="stylesheet" href="~/Content/chosen.css" />
 
 <main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
@@ -44,15 +46,15 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("GestionarDispositivos", "Cliente")" class="nav-link">
 								<span data-feather="monitor"></span>
-								Gestionar Dispositivos <span class="sr-only">(current)</span>
+								Gestionar Dispositivos
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link active">
 								<span data-feather="wifi"></span>
-								Gestionar Sensores
+								Gestionar Sensores <span class="sr-only">(current)</span>
 							</a>
 						</li>
 					</ul>
@@ -60,74 +62,66 @@
 			</nav>
 
 			<div class="container" style="margin-left:20px; margin-top:30px; overflow:auto;">
-								
+
 				<div class="container" style="width:500px;">
 					<div class="card-deck mb-3 text-center">
 
-						<!-- Display Estandar -->
+						<!-- Alta Sensor -->
 						<div class="card mb-4 shadow-sm" style="max-width:500px;">
 							<div class="card-header">
-								<h4 class="mb3">@Html.DisplayFor(model => model.Nombre)</h4>
+								<h4 class="mb3">Nuevo Sensor</h4>
 							</div>
 							<div class="card-body">
 								<div class="file-field">
-
 									@using (Html.BeginForm())
 									{
 										@Html.AntiForgeryToken()
 
 										<div class="form-horizontal">
-											<h4>Dispositivo Estandar</h4>
-											<hr />
+
 											@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-											@Html.HiddenFor(model => model.IdDispositivo)
-											@Html.HiddenFor(model => model.IdCliente)
-											@Html.HiddenFor(model => model.BajoConsumo)
-											@Html.HiddenFor(model => model.Nombre)
+											@Html.HiddenFor(model => model.idSensor)
 
 											<div class="row" style="text-align:left">
-												<label class="control-label col-md-2" style="word-wrap:normal">Numero:</label>
-												<div class="col-md-10" style="font-weight:bold">
-													@Html.DisplayFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control" } })
-												</div>
-											</div>
-											<hr />
-											<div class="row" style="text-align:left">
-												<label class="control-label col-md-2" style="word-wrap:normal">Consumo:</label>
-												<div class="col-md-10" style="font-weight:bold">
-													@Html.DisplayFor(model => model.Consumo, new { htmlAttributes = new { @class = "form-control" } })
-												</div>
-											</div>
-											<hr />
-											<div class="row" style="text-align:left">
-												<label class="control-label col-md-2" style="word-wrap:normal">Uso Diario:</label>
+												<label class="control-label col-md-2" style="word-wrap:normal">Sensor Tipo:</label>
 												<div class="col-md-10">
-													@Html.TextBoxFor(model => model.usoDiario, new { @class = "form-control", required = true })
-													@Html.ValidationMessageFor(model => model.usoDiario, "", new { @class = "text-danger" })
+													@Html.EditorFor(model => model.TipoSensor, new { htmlAttributes = new { @class = "form-control", required = true } })
+													@Html.ValidationMessageFor(model => model.TipoSensor, "", new { @class = "text-danger" })
 												</div>
 											</div>
+
+											@Html.HiddenFor(model => model.idCliente)
+											@Html.HiddenFor(model => model.Magnitud)
+
 											<hr />
 											<div class="container" style="width:200px;">
 												<div>
-													<input type="submit" value="Guardar" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+													<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
 												</div>
 											</div>
 										</div>
 									}
-
 								</div>
 							</div>
 						</div>
 
 					</div>
 				</div>
-				
+
+				@if (TempData["Mensaje"] != null)
+				{
+					<div class="container" style="width:700px;">
+						<div class="alert alert-danger" role="alert">
+							<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
+						</div>
+					</div>
+				}
+
+				<hr />
 				<div class="row">
-					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "GestionarDispositivos", null, new { @class = "btn btn-lg btn-block btn-primary col"})</div>
-					<div class="col-sm-6"></div>
-					<div class="col-sm-3">@Html.ActionLink("Convertir a Inteligente", "ConvertirEstandar", new { idD = Model.IdDispositivo, idC = Model.IdCliente, numero = Model.Numero}, new { @class = "btn btn-lg btn-block btn-primary col", @style="background-color:crimson"})</div>
+					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "GestionarSensores", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
 				</div>
+
 
 			</div>
 
@@ -146,27 +140,6 @@
 	<script src="https://unpkg.com/feather-icons"></script>
 	<script>
 		feather.replace()
-	</script>
-
-	<!-- Numeric TextBox -->
-	<script>
-		$(document).ready(function () {
-			$("#usoDiario").keydown(function (e) {
-				// Allow: backspace, delete, tab, escape, enter and .
-				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-					// Allow: Ctrl+A
-					(e.keyCode == 65 && e.ctrlKey === true) ||
-					// Allow: home, end, left, right
-					(e.keyCode >= 35 && e.keyCode <= 39)) {
-					// let it happen, don't do anything
-					return;
-				}
-				// Ensure that it is a number and stop the keypress
-				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-					e.preventDefault();
-				}
-			});
-		});
 	</script>
 
 </main>

@@ -101,7 +101,7 @@
 									<h4 class="my-0 font-weight-normal">Consumidos</h4>
 								</div>
 								<div class="card-body" ">
-									<h1 class="card-title pricing-card-title"><span id="number">@String.Format("{0:0.000}", periododata.Consumo)</span><small class="text-muted">kw</small></h1>
+									<h1 class="card-title pricing-card-title"><span id="number">@String.Format("{0:0.0000}", periododata.Consumo)</span><small class="text-muted">kw</small></h1>
 									<ul class="list-unstyled mt-3 mb-4">
 										<li>Desde el: @periododata.FechaInicio</li>
 										<li>Hasta el: @periododata.FechaFin</li>
@@ -165,7 +165,7 @@
 										@if (item.EsInteligente)
 										{
 											var i = (tp_integrador.Models.Inteligente)item;
-											<td>@String.Format("{0:0.000}", i.ConsumoEnElPeriodo(periodo))</td>
+											<td>@String.Format("{0:0.0000}", i.ConsumoEnElPeriodo(periodo))</td>
 										}
 										else
 										{
@@ -194,9 +194,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							@{
+							@{								 
 								foreach (var item in Model.MisSensores())
-								{
+								{									
 									foreach (var regla in item.Observadores)
 									{
 										<tr>
@@ -256,7 +256,7 @@
 		var i = @Html.Raw(Json.Encode(periododata.Consumo));
 		function increment() {
 			i += @Html.Raw(Json.Encode((consumoactual/3600)*10));
-			document.getElementById('number').innerHTML = i.toFixed(3).replace('.',',');
+			document.getElementById('number').innerHTML = i.toFixed(4).replace('.',',');
 		}
 		setInterval('increment()', 10000);
 	</script>

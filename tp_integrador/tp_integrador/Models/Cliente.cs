@@ -194,6 +194,19 @@ namespace tp_integrador.Models
 			return DAOSensores.Instancia.FindAllFromCliente(idUsuario);
 		}
 
+		public bool NuevoSensor(Sensor nuevo)
+		{			
+			var dbSensor = ORM.Instancia.GetSensor(idUsuario, nuevo.TipoSensor);
+			if (dbSensor != null) return false;
+
+			var sensor = new Sensor(0, nuevo.TipoSensor, idUsuario, 0, new List<Regla>());
+			ORM.Instancia.Insert(sensor);
+			
+			dbSensor = ORM.Instancia.GetSensor(idUsuario, nuevo.TipoSensor);
+			DAOSensores.Instancia.CargarSensor(dbSensor);
+			return true;
+		}
+
         #region INTERFAZ CONTROLLER
         public SimplexResult RunSimplex()
         {
