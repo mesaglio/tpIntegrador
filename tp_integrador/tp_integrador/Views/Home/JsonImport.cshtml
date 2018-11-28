@@ -1,13 +1,171 @@
 ﻿
 @{
-    ViewBag.Title = "JsonImport";
+	ViewBag.Title = "JsonImport";
 }
-<main role="main" class="container" style="float:right;">
-	<h2>JsonImport</h2>
 
-	@using (Html.BeginForm("CargarArchivo", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-	{
-		<input type="file" name="file" />
-		<button type="submit">Subir archivo</button>
-	}
+<!-- Bootstrap core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="~/Content/dashboard.css" rel="stylesheet" />
+
+<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
+	<div class="container-fluid">
+		<div class="row">
+
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+				<div class="sidebar-sticky">
+
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="home"></span>
+								Consumo Hogares
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="monitor"></span>
+								Alta Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("JsonImport", "Home")" class="nav-link active">
+								<span data-feather="user-plus"></span>
+								Alta de Usuarios <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Transformadores
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Listar", "Home")" class="nav-link">
+								<span data-feather="edit"></span>
+								Mis Datos
+							</a>
+						</li>
+					</ul>
+
+					<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+						<span>Reportes</span>
+					</h6>
+					<ul class="nav flex-column mb-2">
+						<li class="nav-item">
+							<a href="@Url.Action("Reporte", "Home")" class="nav-link">
+								<span data-feather="file-text"></span>
+								- Nombre Reporte 1 -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="file-text"></span>
+								- Nombre Reporte 2 -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								<span data-feather="file-text"></span>
+								- Nombre Reporte 3 -
+							</a>
+						</li>
+					</ul>
+
+				</div>
+			</nav>
+			<!-- Fin Sidebar -->
+
+			<div class="container" style="margin-left:20px; overflow:auto;">
+
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+					<h1 class="display-4">Alta de Usuarios</h1>
+					<p class="lead">Alta de Usuario Individual o Por Archivo JSON.</p>
+				</div>
+
+				<hr />
+				<div class="container">
+					<div class="row text-center">
+						<div class="col-sm-6">@Html.ActionLink("Nuevo Cliente", "AltaCliente", null, new { @class = "btn btn-lg btn-block btn-primary col", style = "width:300px; float:right;" })</div>
+						<div class="col-sm-6">@Html.ActionLink("Nuevo Administrador", "AltaAdmin", null, new { @class = "btn btn-lg btn-block btn-primary col", style = "width:300px; float:left;" })</div>
+					</div>
+				</div>
+
+				<hr />
+				<div class="container" style="width:760px;">
+					<div class="card-deck mb-3 text-center">
+
+						<!-- Clientes -->
+						<div class="card mb-4 shadow-sm" style="max-width:350px;">
+							<div class="card-header">
+								<h4 class="my-0 font-weight-normal">Cargar Clientes</h4>
+							</div>
+							<div class="card-body">
+								<div class="file-field">
+									@using (Html.BeginForm("CargarArchivoClientes", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+									{
+										<label for="upload" class="btn btn-sm btn-primary">Buscar..</label>
+										<input type="file" class="text-center form-control-file custom_file" id="upload" name="user_file" style="display:none" accept=".json">
+										<label for="file_default">No se ha seleccionado ningun archivo. </label>
+										<label for="file_name"><b></b></label>
+
+										<button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>
+									}
+								</div>
+							</div>
+						</div>
+
+						<!-- Adminsitradores -->
+						<div class="card mb-4 shadow-sm" style="max-width:350px;">
+							<div class="card-header">
+								<h4 class="my-0 font-weight-normal">Cargar Administradores</h4>
+							</div>
+							<div class="card-body">
+								<div class="file-field">
+									@using (Html.BeginForm("CargarArchivoAdmins", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+									{
+										<label for="upload_est" class="btn btn-sm btn-primary">Buscar..</label>
+										<input type="file" class="text-center form-control-file custom_file" id="upload_est" name="user_file" style="display:none" accept=".json">
+										<label for="file_default_est">No se ha seleccionado ningun archivo. </label>
+										<label for="file_name_est"><b></b></label>
+
+										<button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>
+									}
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				@if (Model)
+				{
+					<div class="container" style="width:700px;">
+						<div class="alert alert-success" role="alert">
+							<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
+						</div>
+					</div>
+				}
+
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+		feather.replace()
+	</script>
+
 </main>

@@ -181,7 +181,7 @@ namespace tp_integrador.Tests
             foreach (Cliente cliente in asd)
             {
                 //cada cliente
-                PeriodoData perr = cliente.consumoDelPeriodo(marzoI, marzoF);
+                PeriodoData perr = cliente.ConsumoDelPeriodo(marzoI, marzoF);
                 ReporteUser repoo = new ReporteUser(cliente.idUsuario.ToString(), perr.FechaInicio.Year.ToString(), perr.FechaInicio.Month.ToString(), perr.Consumo.ToString());
                 ts.Add(repoo);
 
@@ -194,7 +194,7 @@ namespace tp_integrador.Tests
             //idTransf,anio,mes,consumo             FALTA EL METODO DEL TRANSF QUE CALCULA EL CONSUMO
         }
         [TestMethod]
-        public void testeMauro()
+        public void TestMauro()
         {
             DateTime marzoI = new DateTime(2018, 03, 01);
             DateTime marzoF = new DateTime(2018, 03, 31);
@@ -203,14 +203,14 @@ namespace tp_integrador.Tests
             DAOzona.Instancia.InitialLoad();
             DAODispositivo.Instancia.InitialLoad();
             PeriodoData asdd;
-            List<Cliente> asd = ORM.Instancia.GetClientesAutoSimplex();
+            List<Cliente> asd = ORM.Instancia.GetAllClientes();
             List<ReporteUser> reportes = new List<ReporteUser>();
             foreach(var cliente in asd)
             {
-                asdd = cliente.consumoDelPeriodo(marzoI, marzoF);
+                asdd = cliente.ConsumoDelPeriodo(marzoI, marzoF);
                 ReporteUser reporte = new ReporteUser(cliente.idUsuario.ToString(),asdd.FechaInicio.Year.ToString(),asdd.FechaInicio.Month.ToString(),asdd.Consumo.ToString());
                 reportes.Add(reporte);
-                asdd = cliente.consumoDelPeriodo(mayoI, mayoF);
+                asdd = cliente.ConsumoDelPeriodo(mayoI, mayoF);
                 ReporteUser reportee = new ReporteUser(cliente.idUsuario.ToString(), asdd.FechaInicio.Year.ToString(), asdd.FechaInicio.Month.ToString(), asdd.Consumo.ToString());
                 reportes.Add(reportee);
             }

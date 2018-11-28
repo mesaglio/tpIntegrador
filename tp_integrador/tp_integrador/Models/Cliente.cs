@@ -188,10 +188,12 @@ namespace tp_integrador.Models
 			periodo.Consumo = total;
 			return periodo;
 		}
-        public PeriodoData consumoDelPeriodo(DateTime desde, DateTime hasta)
+
+        public PeriodoData ConsumoDelPeriodo(DateTime desde, DateTime hasta)
         {
             var periodo = new PeriodoData();
             periodo.Periodo((byte)desde.Month, desde.Year);
+
             double total = 0;
             
             foreach (var disp in dispositivos.OfType<Inteligente>())

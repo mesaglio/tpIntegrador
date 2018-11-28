@@ -15,6 +15,8 @@ namespace tp_integrador.Models
 		public int Valor { get; set; }
         public List<Actuador> Actuadores { get; set; }
 
+		public Regla() { }
+
 		public Regla(int regla, int sensor, string detalle, string operador, int valor, string accion, List<Actuador> actuadores)
 		{
 			idRegla = regla;

@@ -144,13 +144,12 @@ namespace tp_integrador.Models
 			}
 
 			return lista;
-		}
+		}				
 
-		public List<Cliente> GetClientesAutoSimplex()
+		private List<Cliente> GetClientes(string query)
 		{
 			var lista = new List<Cliente>();
-
-			var query = "SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) WHERE clie_autoSimplex = 1";
+						
 			var data = Query(query).Tables[0];
 			if (data.Rows.Count == 0) return lista;
 
@@ -188,6 +187,16 @@ namespace tp_integrador.Models
 			}
 
 			return lista;
+		}
+
+		public List<Cliente> GetAllClientes()
+		{
+			return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario)");
+		}
+
+		public List<Cliente> GetClientesAutoSimplex()
+		{
+			return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) WHERE clie_autoSimplex = 1");			
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------

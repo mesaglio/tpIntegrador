@@ -106,17 +106,30 @@ namespace tp_integrador.Controllers
         }
 
         [HttpPost]
-        public ActionResult CargarArchivo(HttpPostedFileBase file)
+        public ActionResult CargarArchivoAdmins(HttpPostedFileBase user_file)
         {
 			if (!SessionStateOK()) return View("Index");
 			if (!(bool)Session["Admin"]) return PermisoDenegado();
-            if (file == null) return View("JsonImport");
+            if (user_file == null) return View("JsonImport");
 
             Administrador adm = (Administrador)Session["Usuario"];
-            adm.CargarClienter(file);
+            adm.CargarAdmins(user_file);
 
-            return View();
+			return View("JsonImport");
         }
+
+		[HttpPost]
+		public ActionResult CargarArchivoClientes(HttpPostedFileBase user_file)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+			if (user_file == null) return View("JsonImport");
+
+			Administrador adm = (Administrador)Session["Usuario"];
+			adm.CargarClientes(user_file);
+
+			return View("JsonImport");
+		}
 
 		public ActionResult Maps()
 		{

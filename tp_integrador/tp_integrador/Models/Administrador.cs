@@ -23,16 +23,21 @@ namespace tp_integrador.Models
             cargar.LoadJson<Transformador>(file.InputStream);
         }
 
-        public void CargarClienter(HttpPostedFileBase file)
+        public void CargarClientes(HttpPostedFileBase file)
         {
-
             CargarJson cargar = new CargarJson();
             cargar.LoadJson<Cliente>(file.InputStream);
         }
 
-        #endregion
+		public void CargarAdmins(HttpPostedFileBase file)
+		{
+			CargarJson cargar = new CargarJson();
+			cargar.LoadJson<Administrador>(file.InputStream);
+		}
 
-        public Administrador(string v1, string v2)
+		#endregion
+
+		public Administrador(string v1, string v2)
         {
             usuario = v1;
             password = v2;
