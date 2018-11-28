@@ -188,8 +188,21 @@ namespace tp_integrador.Models
 			periodo.Consumo = total;
 			return periodo;
 		}
+        public PeriodoData consumoDelPeriodo(DateTime desde, DateTime hasta)
+        {
+            var periodo = new PeriodoData(desde,hasta);
+            double total = 0;
+            
+            foreach (var disp in dispositivos.OfType<Inteligente>())
+            {
+                total += disp.ConsumoEnElPeriodo(periodo);
+            }
 
-		public List<Sensor> MisSensores()
+            periodo.Consumo = total;
+            return periodo;
+        }
+
+        public List<Sensor> MisSensores()
 		{
 			return DAOSensores.Instancia.FindAllFromCliente(idUsuario);
 		}

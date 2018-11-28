@@ -115,7 +115,7 @@ namespace tp_integrador.Tests
         }
         [TestMethod]
         public void TestMongo()
-        {
+        {/*
             ODM odm = new ODM();
             odm.mapeo();
             IMongoDatabase ba = odm.conection();
@@ -123,7 +123,7 @@ namespace tp_integrador.Tests
             Reporte repo = new Reporte("1", "2018", "Enero", "2000");
             odm.agregarReporte(ba, "2","2018","Febrero","300");
             odm.agregarReporte(ba, "5", "2018", "Febrero", "300");
-
+            */
 
 
         }
@@ -143,6 +143,78 @@ namespace tp_integrador.Tests
             var reporte = new repoNico("user","1",20,fecha1,fecha1);
             reportes.InsertOne(reporte);
 
+        }
+        [TestMethod]
+        public void TestRepo()
+        {
+            //toda la informacion arranca del 01/01/2018
+            DAOzona.Instancia.InitialLoad();
+            DAODispositivo.Instancia.InitialLoad();
+            List<Cliente> asd = ORM.Instancia.GetClientesAutoSimplex();
+            
+            DateTime eneroI = new DateTime(2018, 01, 01);
+            DateTime eneroF = new DateTime(2018, 01, 31);
+            DateTime febreroI = new DateTime(2018, 02, 01);
+            DateTime febreroF = new DateTime(2018, 02, 28);
+            DateTime marzoI = new DateTime(2018, 03, 01);
+            DateTime marzoF = new DateTime(2018, 03, 31);
+            DateTime abrilI = new DateTime(2018, 04, 01);
+            DateTime abrilF = new DateTime(2018, 04, 30);
+            DateTime mayoI = new DateTime(2018, 05, 01);
+            DateTime mayoF = new DateTime(2018, 05, 31);
+            DateTime junioI = new DateTime(2018, 06, 01);
+            DateTime junioF = new DateTime(2018, 06, 30);
+            DateTime julioI = new DateTime(2018, 07, 01);
+            DateTime julioF = new DateTime(2018, 07, 31);
+            DateTime agostoI = new DateTime(2018, 08, 01);
+            DateTime agostoF = new DateTime(2018, 08, 31);
+            DateTime septiembreI = new DateTime(2018, 09, 01);
+            DateTime septiembreF = new DateTime(2018, 09, 30);
+            DateTime octubreI = new DateTime(2018, 10, 01);
+            DateTime octubreF = new DateTime(2018, 10, 31);
+            DateTime noviembreI = new DateTime(2018, 11, 01);
+            DateTime noviembreF = new DateTime(2018, 11, 30);
+            DateTime diciembreI = new DateTime(2018, 12, 01);
+            DateTime diciembreF = new DateTime(2018, 12, 01);
+            
+            List<ReporteUser> ts = new List<ReporteUser>();
+            foreach (Cliente cliente in asd)
+            {
+                //cada cliente
+                PeriodoData perr = cliente.consumoDelPeriodo(marzoI, marzoF);
+                ReporteUser repoo = new ReporteUser(cliente.idUsuario.ToString(), perr.FechaInicio.Year.ToString(), perr.FechaInicio.Month.ToString(), perr.Consumo.ToString());
+                ts.Add(repoo);
+
+            }
+            
+            //reporte de dispositivos Estandar/Inteligente
+            //idDispo,anio,mes,consumo
+
+            //reporte de Transformador
+            //idTransf,anio,mes,consumo             FALTA EL METODO DEL TRANSF QUE CALCULA EL CONSUMO
+        }
+        [TestMethod]
+        public void testeMauro()
+        {
+            DateTime marzoI = new DateTime(2018, 03, 01);
+            DateTime marzoF = new DateTime(2018, 03, 31);
+            DateTime mayoI = new DateTime(2018, 05, 01);
+            DateTime mayoF = new DateTime(2018, 05, 31);
+            DAOzona.Instancia.InitialLoad();
+            DAODispositivo.Instancia.InitialLoad();
+            PeriodoData asdd;
+            List<Cliente> asd = ORM.Instancia.GetClientesAutoSimplex();
+            List<ReporteUser> reportes = new List<ReporteUser>();
+            foreach(var cliente in asd)
+            {
+                asdd = cliente.consumoDelPeriodo(marzoI, marzoF);
+                ReporteUser reporte = new ReporteUser(cliente.idUsuario.ToString(),asdd.FechaInicio.Year.ToString(),asdd.FechaInicio.Month.ToString(),asdd.Consumo.ToString());
+                reportes.Add(reporte);
+                asdd = cliente.consumoDelPeriodo(mayoI, mayoF);
+                ReporteUser reportee = new ReporteUser(cliente.idUsuario.ToString(), asdd.FechaInicio.Year.ToString(), asdd.FechaInicio.Month.ToString(), asdd.Consumo.ToString());
+                reportes.Add(reportee);
+            }
+            
         }
     }
 }
