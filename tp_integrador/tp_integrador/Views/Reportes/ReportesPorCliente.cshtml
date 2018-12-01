@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Reportes por Inteligente vs Estandar";
+    ViewBag.Title = "Reportes por cliente";
 }
 
 
@@ -55,7 +55,7 @@
                     </h6>
                     <ul class="nav flex-column mb-2">
                         <li class="nav-item">
-                            <a href="@Url.Action("ReportesPorCliente", "Home")" class="nav-link">
+                            <a  href="@Url.Action("ReportesPorCliente", "Home")" class="nav-link">
                                 <span data-feather="file-text"></span>
                                 - Reportes por cliente -
                             </a>
@@ -83,12 +83,12 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
 
-                    <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-                </div>
-
+                <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
             </div>
 
         </div>
+
+    </div>
     </div>
 
 
@@ -143,4 +143,3 @@
 
     </script>
 </main>
-

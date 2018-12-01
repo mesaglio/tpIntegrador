@@ -26,67 +26,67 @@
 
 			<!-- SIDEBAR -->
 			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
-				<div class="sidebar-sticky">
+                <div class="sidebar-sticky">
 
-					<ul class="nav flex-column">
-						<li class="nav-item">
-							<a class="nav-link active" href="#">
-								<span data-feather="home"></span>
-								Consumo Hogares <span class="sr-only">(current)</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">
-								<span data-feather="monitor"></span>
-								Alta Dispositivos
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="@Url.Action("JsonImport", "Home")" class="nav-link">
-								<span data-feather="user-plus"></span>
-								Alta de Usuarios
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
-								<span data-feather="file"></span>
-								Cargar Archivo de Transformadores
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="@Url.Action("Listar", "Home")" class="nav-link">
-								<span data-feather="edit"></span>
-								Mis Datos
-							</a>
-						</li>
-					</ul>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <span data-feather="home"></span>
+                                Consumo Hogares <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="monitor"></span>
+                                Alta Dispositivos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("JsonImport", "Home")" class="nav-link">
+                                <span data-feather="user-plus"></span>
+                                Alta de Usuarios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
+                                <span data-feather="file"></span>
+                                Cargar Archivo de Transformadores
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Listar", "Home")" class="nav-link">
+                                <span data-feather="edit"></span>
+                                Mis Datos
+                            </a>
+                        </li>
+                    </ul>
 
-					<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-						<span>Reportes</span>						
-					</h6>
-					<ul class="nav flex-column mb-2">
-						<li class="nav-item">
-							<a href="@Url.Action("Reporte", "Home")" class="nav-link">
-								<span data-feather="file-text"></span>
-								- Reportes por cliente -
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="@Url.Action("Reporte", "Home")">
-								<span data-feather="file-text"></span>
-								- Reporte por transformador -
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="@Url.Action("Reporte", "Home")">
-								<span data-feather="file-text"></span>
-								- Reporte Inteligente vs Estandar -
-							</a>
-						</li>						
-					</ul>
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Reportes</span>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a href="@Url.Action("ReportesPorCliente", "Home" )" class="nav-link">
+                                <span data-feather="file-text"></span>
+                                - Reportes por cliente -
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home" )">
+                                <span data-feather="file-text"></span>
+                                - Reporte por transformador -
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Reportes", "Home" )">
+                                <span data-feather="file-text"></span>
+                                - Reporte Inteligente vs Estandar -
+                            </a>
+                        </li>
+                    </ul>
 
 
-				</div>
+                </div>
 			</nav>
 			<!-- Fin Sidebar -->
 

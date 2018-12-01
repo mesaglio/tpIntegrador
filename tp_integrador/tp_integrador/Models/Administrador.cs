@@ -71,6 +71,22 @@ namespace tp_integrador.Models
 			DAOUsuario.Instancia.QuitarUsuario(id);
         }
 
-        
+        #region Reportes
+        public List<Transformador> GetTransformadors()
+        {
+            List<Transformador> transformadors = new List<Transformador>();
+            foreach (Zona zona in ORM.Instancia.GetAllZonas())
+            {
+                foreach (Transformador tr in ORM.Instancia.GetTransformadores(zona.idZona))
+                {
+                    transformadors.Add(tr);
+                }
+            }
+            return transformadors;
+        }
+
+
+
+        #endregion
     }
 }

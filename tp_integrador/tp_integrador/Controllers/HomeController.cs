@@ -144,12 +144,34 @@ namespace tp_integrador.Controllers
 			return Json(transformadores, JsonRequestBehavior.AllowGet);
 		}
 
-		public ActionResult Reporte()
-        {
+		public ActionResult Reportes()
+        { // inteligente vs estandar
 			if (!SessionStateOK()) return View("Index");
 			if (!(bool)Session["Admin"]) return PermisoDenegado();
-			
+            Administrador adm = (Administrador)Session["Usuario"];
+
+            
             return View("../Reportes/Reportes");
+        }
+
+        public ActionResult ReportePorTransformador()
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            Administrador adm = (Administrador)Session["Usuario"];
+            List<Transformador>  Lista = adm.GetTransformadors();
+            Session["Transformadores"] = Lista;
+            return View("../Reportes/ReportePorTransformador");
+        }
+
+        public ActionResult ReportesPorCliente()
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            Administrador adm = (Administrador)Session["Usuario"];
+
+
+            return View("../Reportes/ReportesPorCliente");
         }
 
         public ActionResult CargarTransformadores()
