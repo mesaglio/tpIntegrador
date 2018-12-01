@@ -149,8 +149,9 @@ namespace tp_integrador.Controllers
 			if (!SessionStateOK()) return View("Index");
 			if (!(bool)Session["Admin"]) return PermisoDenegado();
             Administrador adm = (Administrador)Session["Usuario"];
+            Session["ive"] = adm.GetInteligenteVsEstandar();
+           
 
-            
             return View("../Reportes/Reportes");
         }
 
@@ -159,8 +160,8 @@ namespace tp_integrador.Controllers
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             Administrador adm = (Administrador)Session["Usuario"];
-            List<Transformador>  Lista = adm.GetTransformadors();
-            Session["Transformadores"] = Lista;
+            Session["Transformadores"] = adm.GetTransformadors();
+
             return View("../Reportes/ReportePorTransformador");
         }
 
@@ -169,7 +170,8 @@ namespace tp_integrador.Controllers
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             Administrador adm = (Administrador)Session["Usuario"];
-
+            Session["clientes"] = adm.GetClientes();
+            
 
             return View("../Reportes/ReportesPorCliente");
         }
