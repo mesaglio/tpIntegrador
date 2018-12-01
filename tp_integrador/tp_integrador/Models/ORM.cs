@@ -194,7 +194,12 @@ namespace tp_integrador.Models
 			return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario)");
 		}
 
-		public List<Cliente> GetClientesAutoSimplex()
+        public List<Cliente> GetAllMyClientes( string idtrafo)
+        {
+            return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) Where clie_transformador ="+ idtrafo);
+        }
+
+        public List<Cliente> GetClientesAutoSimplex()
 		{
 			return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) WHERE clie_autoSimplex = 1");			
 		}

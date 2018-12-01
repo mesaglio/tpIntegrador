@@ -24,10 +24,15 @@ namespace tp_integrador.Models
 			ClientesID = idClientes;
         }
 
-		public int CantidadEnergia()
+		public double CantidadEnergia()
 		{
-			//Hacer
-			return 0;
+            double consumo = 0;
+            //TODO hacer query con mas performance para miles de usuarios
+            foreach (Cliente cl in ORM.Instancia.GetAllMyClientes(this.id.ToString()))
+            {
+               consumo = consumo + cl.ConsumoActual();
+            }
+			return consumo;
 		}
 
 		public bool TenesCliente(int idCliente)
