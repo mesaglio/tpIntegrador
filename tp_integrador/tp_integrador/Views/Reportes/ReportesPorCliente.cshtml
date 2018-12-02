@@ -82,9 +82,12 @@
             <div class="container text-center">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
+                    @model List<tp_integrador.Models.Cliente>
 
-                <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-            </div>
+                    @foreach (var x in Model)
+                    {<p>Cliente @x.usuario  CONSUMO @x.ConsumoDelPeriodoActual().Consumo.ToString()</p>}
+                    <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>   -->
+                </div>
 
         </div>
 

@@ -173,10 +173,10 @@ namespace tp_integrador.Controllers
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             Administrador adm = (Administrador)Session["Usuario"];
-            Session["clientes"] = adm.GetClientes();
-            
+            List<Cliente> clientes = adm.GetClientes();
+            Session["clientes"] = clientes;
 
-            return View("../Reportes/ReportesPorCliente");
+            return View("../Reportes/ReportesPorCliente", clientes);
         }
 
         public ActionResult CargarTransformadores()
