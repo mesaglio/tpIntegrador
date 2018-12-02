@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using tp_integrador.Models;
 using System.IO;
 
+
 namespace tp_integrador.Controllers
 {
     public class HomeController : Controller
@@ -161,9 +162,10 @@ namespace tp_integrador.Controllers
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             Administrador adm = (Administrador)Session["Usuario"];
-            Session["Transformadores"] = adm.GetTransformadors();
+            List<Transformador> list = adm.GetTransformadors();
+            Session["Transformadores"] = list;
 
-            return View("../Reportes/ReportePorTransformador");
+            return View("../Reportes/ReportePorTransformador", list);
         }
 
         public ActionResult ReportesPorCliente()
