@@ -332,6 +332,9 @@
     <Content Include="Views\Cliente\AltaSensor.cshtml" />
     <Content Include="Views\Reportes\ReportePorTransformador.cshtml" />
     <Content Include="Views\Reportes\Reportes.cshtml" />
+    <Content Include="Views\Home\NuevoUsuario.cshtml" />
+    <Content Include="Views\Home\AltaAdmin.cshtml" />
+    <Content Include="Views\Home\AltaCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

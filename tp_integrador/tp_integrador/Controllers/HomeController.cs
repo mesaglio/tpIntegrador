@@ -106,6 +106,42 @@ namespace tp_integrador.Controllers
             return View();
         }
 
+        public ActionResult AltaAdmin()
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            
+            return View();
+        }
+
+        public ActionResult AltaCliente()
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult NuevoUsuario(Administrador administrador)
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            Administrador adm = (Administrador)Session["Usuario"];
+            //crear el administrador
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult NuevoUsuario(Cliente cliente)
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            Administrador adm = (Administrador)Session["Usuario"]; 
+            // crear el cliente
+            return View();
+        }
+
         [HttpPost]
         public ActionResult CargarArchivoAdmins(HttpPostedFileBase user_file)
         {
