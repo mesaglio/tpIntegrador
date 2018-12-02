@@ -155,8 +155,14 @@ namespace tp_integrador.Controllers
         {
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
-            Administrador adm = (Administrador)Session["Usuario"]; 
-            // crear el cliente
+            cliente.AltaServicio = DateTime.Now;
+            cliente.idUsuario = 3;  // hacer q sea unico desql
+            cliente.Coordenadas = new Gmap.net.Location(); // calcular con la direccion
+            Administrador adm = (Administrador)Session["Usuario"];
+            adm.NuevoCliente(cliente.idUsuario,cliente.nombre,cliente.apellido,cliente.domicilio,cliente.Coordenadas,cliente.Telefono,
+                                                cliente.usuario,cliente.password,
+                                                cliente.AltaServicio,cliente.Categoria,
+                                                cliente.Documento_tipo,cliente.Documento_numero);
             return View();
         }
 
