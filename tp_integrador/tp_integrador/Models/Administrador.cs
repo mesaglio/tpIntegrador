@@ -104,6 +104,16 @@ namespace tp_integrador.Models
             vs.Add(esta);
             return vs;
             }
+
+        public void UpdateMyData(Administrador admUpdate)
+        {
+            this.apellido = admUpdate.apellido;
+            this.nombre = admUpdate.nombre;
+            this.domicilio = admUpdate.domicilio;
+            
+            ORM.Instancia.Update(this);
+            
+        }
         #endregion
     }
 }

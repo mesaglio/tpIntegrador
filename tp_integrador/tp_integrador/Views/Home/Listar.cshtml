@@ -89,17 +89,10 @@
                             <div class="file-field">
 
                                 @model tp_integrador.Models.Administrador 
-                                @using (Html.BeginForm("NuevoUsuario", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                @using (Html.BeginForm("UpdateDatos", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
 
-                                    <div class="top-row">
-                                        <div class="field-wrap">
-                                            <label>
-                                                Usuario <span class="req">*</span>
-                                            </label>
-                                            @Html.TextBoxFor(m => m.usuario)
-                                        </div>
-                                    </div>
+                             
                                     <div class="top-row">
                                         <div class="field-wrap">
                                             <label>
@@ -123,12 +116,7 @@
                                         @Html.TextBoxFor(m => m.domicilio })
                                     </div>
 
-                                    <div class="field-wrap">
-                                        <label>
-                                            Password <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(m => m.password, new {placeholder = "Password", @type = "password" })
-                                    </div>
+                                    
 
 
                                     <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>

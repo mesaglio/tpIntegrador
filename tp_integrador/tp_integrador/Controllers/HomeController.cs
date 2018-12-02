@@ -111,7 +111,7 @@ namespace tp_integrador.Controllers
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             Administrador adm = (Administrador)Session["Usuario"];
-            // hacer q admUpdate actualice los datos de adm
+            adm.UpdateMyData(admUpdate);
             return View("Listar");
         }
 
