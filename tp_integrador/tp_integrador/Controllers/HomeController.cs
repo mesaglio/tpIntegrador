@@ -149,8 +149,9 @@ namespace tp_integrador.Controllers
 			if (!SessionStateOK()) return View("Index");
 			if (!(bool)Session["Admin"]) return PermisoDenegado();
             Administrador adm = (Administrador)Session["Usuario"];
-            Session["ive"] = adm.GetInteligenteVsEstandar();
-           
+            Session["inteligente"] = adm.GetInteligenteVsEstandar()[0];
+            Session["estandar"] = adm.GetInteligenteVsEstandar()[1];
+
 
             return View("../Reportes/Reportes");
         }
