@@ -86,12 +86,7 @@
 				</div>
 
 				<hr />
-				<div class="container">
-					<div class="row text-center">
-						<div class="col-sm-6">@Html.ActionLink("Nuevo Cliente", "AltaCliente", null, new { @class = "btn btn-lg btn-block btn-primary col", style = "width:300px; float:right;" })</div>
-						<div class="col-sm-6">@Html.ActionLink("Nuevo Administrador", "AltaAdmin", null, new { @class = "btn btn-lg btn-block btn-primary col", style = "width:300px; float:left;" })</div>
-					</div>
-				</div>
+
 
 				<hr />
 				<div class="container" style="width:760px;">
@@ -140,14 +135,13 @@
 					</div>
 				</div>
 
-				@if (Model)
-				{
+			
 					<div class="container" style="width:700px;">
 						<div class="alert alert-success" role="alert">
 							<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
 						</div>
 					</div>
-				}
+				
 
 			</div>
 
