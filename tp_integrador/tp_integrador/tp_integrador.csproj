@@ -335,6 +335,7 @@
     <Content Include="Views\Home\NuevoUsuario.cshtml" />
     <Content Include="Views\Home\AltaAdmin.cshtml" />
     <Content Include="Views\Home\AltaCliente.cshtml" />
+    <Content Include="Views\Home\Listar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

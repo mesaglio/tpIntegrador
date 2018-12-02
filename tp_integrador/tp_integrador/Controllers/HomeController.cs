@@ -97,6 +97,24 @@ namespace tp_integrador.Controllers
         }
 
         // ADMINISTRADOR
+        public ActionResult Listar()
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            Administrador adm = (Administrador)Session["Usuario"];
+
+            return View(adm);
+        }
+
+        public ActionResult UpdateDatos(Administrador admUpdate)
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            Administrador adm = (Administrador)Session["Usuario"];
+            // hacer q admUpdate actualice los datos de adm
+            return View("Listar");
+        }
+
         public ActionResult JsonImport()
         {
 			if (!SessionStateOK()) return View("Index");
