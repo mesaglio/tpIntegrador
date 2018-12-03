@@ -125,6 +125,9 @@
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -185,6 +188,8 @@
     </Compile>
     <Compile Include="Models\Actuador.cs" />
     <Compile Include="Models\Administrador.cs" />
+    <Compile Include="Models\AMActuadorModel.cs" />
+    <Compile Include="Models\AMReglaModel.cs" />
     <Compile Include="Models\CargarJson.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\ODM.cs" />
@@ -336,6 +341,10 @@
     <Content Include="Views\Home\AltaAdmin.cshtml" />
     <Content Include="Views\Home\AltaCliente.cshtml" />
     <Content Include="Views\Home\Listar.cshtml" />
+    <Content Include="Views\Cliente\EditarSensor.cshtml" />
+    <Content Include="Views\Cliente\EditarRegla.cshtml" />
+    <Content Include="Views\Cliente\EditarActuador.cshtml" />
+    <Content Include="Views\Cliente\AltaActuador.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

@@ -210,6 +210,16 @@ namespace tp_integrador.Models
 			return DAOSensores.Instancia.FindAllFromCliente(idUsuario);
 		}
 
+		public List<Regla> MisReglas()
+		{
+			return DAOSensores.Instancia.FindReglasCliente(idUsuario);
+		}
+
+		public List<Actuador> MisActuadores()
+		{
+			return DAOSensores.Instancia.FindActuadoresCliente(idUsuario);
+		}
+
 		public bool NuevoSensor(Sensor nuevo)
 		{			
 			var dbSensor = ORM.Instancia.GetSensor(idUsuario, nuevo.TipoSensor);
@@ -221,6 +231,71 @@ namespace tp_integrador.Models
 			dbSensor = ORM.Instancia.GetSensor(idUsuario, nuevo.TipoSensor);
 			DAOSensores.Instancia.CargarSensor(dbSensor);
 			return true;
+		}
+
+		public bool NuevaRegla(Regla nueva)
+		{
+			var idRegla = ORM.Instancia.GetReglaID(nueva.idSensor, nueva.Detalle, nueva.Valor, nueva.Operador, nueva.Accion);
+			if (idRegla != -1) return false;
+
+			var regla = new Regla(0,nueva.idSensor, nueva.Detalle, nueva.Operador, nueva.Valor, nueva.Accion, nueva.Actuadores);
+			DAOSensores.Instancia.CargarNuevaRegla(regla);
+
+			return true;
+		}
+
+		public bool NuevoActuador(Actuador nuevo)
+		{
+			var idActuador = ORM.Instancia.GetActuadorID(idUsuario, nuevo.ActuadorTipo);
+			if (idActuador != -1) return false;
+
+			var actuador = new Actuador(0, nuevo.ActuadorTipo, nuevo.Reglas, idUsuario, nuevo.Dispositivos);
+			DAOSensores.Instancia.CargarNuevoActuador(actuador);
+
+			return true;
+		}
+
+		public bool ModificarSensor(Sensor modificado)
+		{
+			var dbSensor = ORM.Instancia.GetSensor(idUsuario, modificado.TipoSensor);
+			if (dbSensor != null) return false;
+
+			DAOSensores.Instancia.ModificarSensor(modificado);
+			return true;
+		}
+
+		public bool ModificarRegla(Regla modificada)
+		{
+			var idRegla = ORM.Instancia.GetReglaID(modificada.idSensor, modificada.Detalle, modificada.Valor, modificada.Operador, modificada.Accion);
+			if (idRegla != -1 && idRegla != modificada.idRegla) return false;
+			
+			return DAOSensores.Instancia.ModificarRegla(modificada);			
+		}
+
+		public bool ModificarActuador(Actuador modificado)
+		{
+			var idActuador = ORM.Instancia.GetActuadorID(idUsuario, modificado.ActuadorTipo);
+			if (idActuador != -1 && idActuador != modificado.IdActuador) return false;
+
+			if (modificado.Reglas.Count == 0) return false;
+
+			DAOSensores.Instancia.ModificarActuador(modificado);
+			return true;
+		}
+
+		public void EliminarActuador(Actuador actuador)
+		{
+			DAOSensores.Instancia.EliminarActuador(actuador);
+		}
+
+		public void EliminarRegla(Regla regla)
+		{
+			DAOSensores.Instancia.EliminarRegla(regla);
+		}
+
+		public void EliminarSensor(Sensor sensor)
+		{
+			DAOSensores.Instancia.EliminarSensor(sensor);
 		}
 
         #region INTERFAZ CONTROLLER

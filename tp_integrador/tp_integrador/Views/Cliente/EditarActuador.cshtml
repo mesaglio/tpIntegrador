@@ -1,7 +1,7 @@
-﻿@model tp_integrador.Models.Sensor
+﻿@model tp_integrador.Models.AMActuadorModel
 
 @{
-	ViewBag.Title = "AltaSensor";
+	ViewBag.Title = "EditarActuador";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,7 +13,7 @@
 
 <link type="text/css" rel="stylesheet" href="~/Content/chosen.css" />
 
-<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
+<main role="main" class="container" style="float:right; :calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
 		<div class="row">
 
@@ -61,7 +61,7 @@
 				</div>
 			</nav>
 
-			<div class="container" style="margin-left:20px; margin-top:30px; overflow:auto;">
+			<div class="container" style="margin-left:20px; margin-top:10px; overflow:auto;">
 
 				<div class="container" style="width:500px;">
 					<div class="card-deck mb-3 text-center">
@@ -69,7 +69,7 @@
 						<!-- Alta Sensor -->
 						<div class="card mb-4 shadow-sm" style="max-width:500px;">
 							<div class="card-header">
-								<h4 class="mb3">Nuevo Sensor</h4>
+								<h4 class="mb3">Nuevo Actuador</h4>
 							</div>
 							<div class="card-body">
 								<div class="file-field">
@@ -79,21 +79,27 @@
 
 										<div class="form-horizontal">
 
-											@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-											@Html.HiddenFor(model => model.idSensor)
+
+											@Html.HiddenFor(model => model.Actuador.IdActuador)
+											@Html.HiddenFor(model => model.Actuador.IdCliente)
 
 											<div>
-												@Html.EditorFor(model => model.TipoSensor, new { htmlAttributes = new { @class = "form-control", placeholder = "Tipo del Sensor..", required = true } })
-												@Html.ValidationMessageFor(model => model.TipoSensor, "", new { @class = "text-danger" })												
+												@Html.EditorFor(model => model.Actuador.ActuadorTipo, new { htmlAttributes = new { @class = "form-control", placeholder = "Tipo de Actuador..", required = true } })
+												@Html.ValidationMessageFor(model => model.Actuador.ActuadorTipo, "", new { @class = "text-danger" })
 											</div>
-
-											@Html.HiddenFor(model => model.idCliente)
-											@Html.HiddenFor(model => model.Magnitud)
+											&nbsp;
+											<div>
+												@Html.ListBoxFor(model => model.Actuador.Reglas, Model.ReglasCliente, new { @class = "chosen-select", data_placeholder = "(Opcional) Seleccione Dispositivos...", style = "width:428px;", required = true })
+											</div>
+											&nbsp;
+											<div>
+												@Html.ListBoxFor(model => model.DispositivosID, Model.DispositivosCliente, new { @class = "chosen-select", data_placeholder = "(Opcional) Seleccione Dispositivos...", style = "width:428px;" })
+											</div>
 
 											<hr />
 											<div class="container" style="width:200px;">
 												<div>
-													<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+													<input type="submit" value="Guardar" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
 												</div>
 											</div>
 										</div>
@@ -137,6 +143,20 @@
 	<script src="https://unpkg.com/feather-icons"></script>
 	<script>
 		feather.replace()
+	</script>
+
+	<script src="~/Scripts/chosen.jquery.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var config = {
+			'.chosen-select': {},
+			'.chosen-select-deselect': { allow_single_deselect: true },
+			'.chosen-select-no-single': { disable_search_threshold: 10 },
+			'.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+			'.chosen-select-width': { width: "95%" }
+		}
+		for (var selector in config) {
+			$(selector).chosen(config[selector]);
+		}
 	</script>
 
 </main>

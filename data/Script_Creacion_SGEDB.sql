@@ -126,6 +126,7 @@ CREATE TABLE SGE.Sensor (
   sensor_idCliente INT NOT NULL,
   sensor_detalle VARCHAR(45),
   sensor_magnitud INT,
+  sensor_eliminado DATETIME,
   PRIMARY KEY (sensor_idSensor),
   FOREIGN KEY (sensor_idCliente) REFERENCES SGE.Cliente (clie_idUsuario))
 GO
@@ -313,7 +314,7 @@ INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 06:07:55:126',121), CONVERT(datetime,'2018-03-15 23:04:35:234',121), 1)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 23:04:35:235',121), CONVERT(datetime,'2018-03-17 05:06:42:332',121), 0)
 
-INSERT INTO SGE.Sensor VALUES (2, 'Sensor Temperatura', 20)
+INSERT INTO SGE.Sensor VALUES (2, 'Sensor Temperatura', 20, NULL)
 INSERT INTO SGE.Regla VALUES (1, 'Temperatura', 30, '>', 'Encender')
 INSERT INTO SGE.Actuador VALUES (2, 'Actuardor-Temperatura')
 INSERT INTO SGE.ActuadorPorRegla VALUES (1, 1)

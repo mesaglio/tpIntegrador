@@ -70,7 +70,7 @@
 					<div class="card-deck mb-3 text-center">
 
 						<!-- ULTIMAS MEDICIONES -->
-						<div class="container" style="width:330px;">
+						<div class="container" style="width:300px;">
 							<!-- CONSUMO ACTUAL -->
 							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:335px;">
 								<div class="card-header">
@@ -133,44 +133,57 @@
 						</thead>
 						<tbody>
 							@{
-								foreach (var item in Model.dispositivos)
+								if (Model.dispositivos.Count != 0)
 								{
-									var periodo = Model.PeriodoActual();
-									<tr>
-										<td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-										<td>@Html.DisplayFor(modelItem => item.Numero)</td>
-										@if (item.EsInteligente)
-										{
-											<td>Inteligente</td>}
-										else
-										{
-											<td>Estandar   </td>}
-										@if (item.EsInteligente)
-										{
-											var i = (tp_integrador.Models.Inteligente)item;
-											if (i.Estado == 0)
+									foreach (var item in Model.dispositivos)
+									{
+										var periodo = Model.PeriodoActual();
+										<tr>
+											<td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+											<td>@Html.DisplayFor(modelItem => item.Numero)</td>
+											@if (item.EsInteligente)
 											{
-												<td>Apagado    </td>}
-											else if (i.Estado == 1)
-											{
-												<td>Encendido  </td>}
+												<td>Inteligente</td>}
 											else
 											{
-												<td>Modo Ahorro</td>}
-										}
-										else
-										{
-											<td>N/A</td>
-										}
-										@if (item.EsInteligente)
-										{
-											var i = (tp_integrador.Models.Inteligente)item;
-											<td>@String.Format("{0:0.0000}", i.ConsumoEnElPeriodo(periodo))</td>
-										}
-										else
-										{
-											<td>N/A</td>
-										}
+												<td>Estandar   </td>}
+											@if (item.EsInteligente)
+											{
+												var i = (tp_integrador.Models.Inteligente)item;
+												if (i.Estado == 0)
+												{
+													<td>Apagado    </td>}
+												else if (i.Estado == 1)
+												{
+													<td>Encendido  </td>}
+												else
+												{
+													<td>Modo Ahorro</td>}
+											}
+											else
+											{
+												<td>N/A</td>
+											}
+											@if (item.EsInteligente)
+											{
+												var i = (tp_integrador.Models.Inteligente)item;
+												<td>@String.Format("{0:0.0000}", i.ConsumoEnElPeriodo(periodo))</td>
+											}
+											else
+											{
+												<td>N/A</td>
+											}
+										</tr>
+									}
+								}
+								else
+								{
+									<tr>
+										<td>[Sin Dispositivos]</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
 									</tr>
 								}
 							}
@@ -194,39 +207,68 @@
 							</tr>
 						</thead>
 						<tbody>
-							@{								 
-								foreach (var item in Model.MisSensores())
-								{									
-									foreach (var regla in item.Observadores)
+							@{
+								var sensores = Model.MisSensores();
+								if (sensores.Count != 0)
+								{
+									foreach (var item in Model.MisSensores())
 									{
-										<tr>
-											<td>@Html.DisplayFor(modelRegla => regla.Detalle)</td>
-											<td>@Html.DisplayFor(modelRegla => regla.Operador)</td>
-											<td>@Html.DisplayFor(modelRegla => regla.Valor)</td>
-											<td>@Html.DisplayFor(modelRegla => regla.Accion)</td>
-											<td>@Html.DisplayFor(modelRegla => regla.Actuadores[0].Dispositivos[0].Nombre)</td>
-											<td>@Html.DisplayFor(modelRegla => regla.Actuadores[0].Dispositivos[0].Numero)</td>
-										</tr>
-										foreach (var actua in regla.Actuadores)
+										if (item.Observadores.Count != 0)
 										{
-
-											foreach (var dispo in actua.Dispositivos)
+											foreach (var regla in item.Observadores)
 											{
-												if (dispo != null && !dispo.Equals(actua.Dispositivos[0]))
+												<tr>
+													<td>@Html.DisplayFor(modelRegla => regla.Detalle)</td>
+													<td>@Html.DisplayFor(modelRegla => regla.Operador)</td>
+													<td>@Html.DisplayFor(modelRegla => regla.Valor)</td>
+													<td>@Html.DisplayFor(modelRegla => regla.Accion)</td>
+													@if (regla.Actuadores.Count != 0)
+													{
+														<td>@Html.DisplayFor(modelRegla => regla.Actuadores[0].Dispositivos[0].Nombre)</td>
+														<td>@Html.DisplayFor(modelRegla => regla.Actuadores[0].Dispositivos[0].Numero)</td>
+													}
+													else
+													{
+														<td>[Regla Sin Dispositivos]</td>
+														<td></td>
+													}
+												</tr>
+												if (regla.Actuadores.Count != 0)
 												{
-													<tr>
-														<td></td>
-														<td></td>
-														<td></td>
-														<td></td>
-														<td>@Html.DisplayFor(modelDispo => dispo.Nombre)</td>
-														<td>@Html.DisplayFor(modelDispo => dispo.Numero)</td>
-													</tr>
+													foreach (var actua in regla.Actuadores)
+													{
+
+														foreach (var dispo in actua.Dispositivos)
+														{
+															if (dispo != null && !dispo.Equals(actua.Dispositivos[0]))
+															{
+																<tr>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td></td>
+																	<td>@Html.DisplayFor(modelDispo => dispo.Nombre)</td>
+																	<td>@Html.DisplayFor(modelDispo => dispo.Numero)</td>
+																</tr>
+															}
+														}
+													}
 												}
 											}
 										}
 
 									}
+								}
+								else
+								{
+									<tr>
+										<td>[Sin Sensores]</td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
 								}
 							}
 						</tbody>
