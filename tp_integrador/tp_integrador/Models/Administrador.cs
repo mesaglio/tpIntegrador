@@ -54,6 +54,10 @@ namespace tp_integrador.Models
             AltaSistema = alta;
             esadmin = true;
         }
+        public void NuevoAdministrador(Administrador administrador)
+        {
+            ORM.Instancia.Insert(administrador);
+        }
 
         public void NuevoCliente(int id, string name, string lastname, string home, Location coords, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n)
         {

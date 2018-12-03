@@ -141,13 +141,15 @@ namespace tp_integrador.Controllers
         }
 
         [HttpPost]
-        public ActionResult NuevoUsuario(Administrador administrador)
+        public ActionResult NuevoUsuarioA(Administrador administrador)
         {
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             Administrador adm = (Administrador)Session["Usuario"];
-            //crear el administrador
-            return View();
+            administrador.AltaSistema = DateTime.Now;
+            adm.NuevoAdministrador(administrador);
+
+            return View("NuevoUsuario");
         }
 
         [HttpPost]
