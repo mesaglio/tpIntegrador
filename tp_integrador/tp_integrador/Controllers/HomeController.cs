@@ -156,7 +156,7 @@ namespace tp_integrador.Controllers
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
             cliente.AltaServicio = DateTime.Now;
-            cliente.idUsuario = 3;  // hacer q sea unico desql
+            cliente.idUsuario = 0; 
             cliente.Coordenadas = new Gmap.net.Location(); // calcular con la direccion
             Administrador adm = (Administrador)Session["Usuario"];
             adm.NuevoCliente(cliente.idUsuario,cliente.nombre,cliente.apellido,cliente.domicilio,cliente.Coordenadas,cliente.Telefono,
