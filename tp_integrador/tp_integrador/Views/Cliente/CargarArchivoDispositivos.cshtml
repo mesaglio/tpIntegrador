@@ -111,7 +111,7 @@
 			@if (Model)
 			{
 				<div class="container" style="width:700px;">
-					<div class="alert alert-success" role="alert">
+					<div class="alert @TempData["MsgState"]" role="alert">
 						<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
 					</div>
 				</div>

@@ -15,66 +15,66 @@
 
 			<!-- SIDEBAR -->
 			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
+				<div class="sidebar-sticky">
 
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
-                                <span data-feather="home"></span>
-                                Consumo Hogares
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("AltaDispositivo", "Home")">
-                                <span data-feather="monitor"></span>
-                                Alta Dispositivos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("JsonImport", "Home")" class="nav-link active">
-                                <span data-feather="user-plus"></span>
-                                Alta de Usuarios <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
-                                <span data-feather="file"></span>
-                                Cargar Archivo de Transformadores
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Listar", "Home")" class="nav-link">
-                                <span data-feather="edit"></span>
-                                Mis Datos
-                            </a>
-                        </li>
-                    </ul>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
+								<span data-feather="home"></span>
+								Consumo Hogares
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("AltaDispositivo", "Home")">
+								<span data-feather="monitor"></span>
+								Alta Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("JsonImport", "Home")" class="nav-link active">
+								<span data-feather="user-plus"></span>
+								Alta de Usuarios <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Transformadores
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Listar", "Home")" class="nav-link">
+								<span data-feather="edit"></span>
+								Mis Datos
+							</a>
+						</li>
+					</ul>
 
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Reportes</span>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a href="@Url.Action("ReportesPorCliente", "Home")" class="nav-link">
-                                <span data-feather="file-text"></span>
-                                - Reportes por cliente -
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home")">
-                                <span data-feather="file-text"></span>
-                                - Reporte por transformador -
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Reportes", "Home")">
-                                <span data-feather="file-text"></span>
-                                - Reporte Inteligente vs Estandar -
-                            </a>
-                        </li>
-                    </ul>
+					<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+						<span>Reportes</span>
+					</h6>
+					<ul class="nav flex-column mb-2">
+						<li class="nav-item">
+							<a href="@Url.Action("ReportesPorCliente", "Home")" class="nav-link">
+								<span data-feather="file-text"></span>
+								- Reportes por cliente -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home")">
+								<span data-feather="file-text"></span>
+								- Reporte por transformador -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("Reportes", "Home")">
+								<span data-feather="file-text"></span>
+								- Reporte Inteligente vs Estandar -
+							</a>
+						</li>
+					</ul>
 
-                </div>
+				</div>
 			</nav>
 			<!-- Fin Sidebar -->
 
@@ -107,7 +107,7 @@
 									@using (Html.BeginForm("CargarArchivoClientes", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 									{
 										<label for="upload" class="btn btn-sm btn-primary">Buscar..</label>
-										<input type="file" class="text-center form-control-file custom_file" id="upload" name="user_file" style="display:none" accept=".json">
+										<input type="file" class="text-center form-control-file custom_file" id="upload-clie" name="user_file" style="display:none" accept=".json">
 										<label for="file_default">No se ha seleccionado ningun archivo. </label>
 										<label for="file_name"><b></b></label>
 
@@ -127,7 +127,7 @@
 									@using (Html.BeginForm("CargarArchivoAdmins", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 									{
 										<label for="upload_est" class="btn btn-sm btn-primary">Buscar..</label>
-										<input type="file" class="text-center form-control-file custom_file" id="upload_est" name="user_file" style="display:none" accept=".json">
+										<input type="file" class="text-center form-control-file custom_file" id="upload-admin" name="user_file" style="display:none" accept=".json">
 										<label for="file_default_est">No se ha seleccionado ningun archivo. </label>
 										<label for="file_name_est"><b></b></label>
 
@@ -143,7 +143,7 @@
 				@if (TempData["Mensaje"] != null)
 				{
 					<div class="container" style="width:700px;">
-						<div class="alert alert-success" role="alert">
+						<div class="alert @TempData["MsgState"]" role="alert">
 							<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
 						</div>
 					</div>
@@ -166,6 +166,33 @@
 	<script src="https://unpkg.com/feather-icons"></script>
 	<script>
 		feather.replace()
+	</script>
+
+	<script>
+		$('#upload').change(function () {
+			var filename = $('#upload-clie').val();
+			if (filename.substring(3, 11) == 'fakepath') {
+				filename = filename.substring(12);
+			} // For Remove fakepath
+			$("label[for='file_name'] b").html(filename);
+			$("label[for='file_default']").text('Selected File: ');
+			if (filename == "") {
+				$("label[for='file_default']").text('No File Choosen');
+			}
+		});
+	</script>
+	<script>
+		$('#upload').change(function () {
+			var filename = $('#upload-admin').val();
+			if (filename.substring(3, 11) == 'fakepath') {
+				filename = filename.substring(12);
+			} // For Remove fakepath
+			$("label[for='file_name'] b").html(filename);
+			$("label[for='file_default']").text('Selected File: ');
+			if (filename == "") {
+				$("label[for='file_default']").text('No File Choosen');
+			}
+		});
 	</script>
 
 </main>

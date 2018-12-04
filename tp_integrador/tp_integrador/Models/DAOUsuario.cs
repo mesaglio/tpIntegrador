@@ -110,6 +110,11 @@ namespace tp_integrador.Models
 				}
 			}
 		}
+
+		public Cliente GetClienteFromDB(int idCliente)
+		{
+			return ORM.Instancia.GetUsuario(idCliente);
+		}
 	}
 
 }

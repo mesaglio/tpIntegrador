@@ -325,7 +325,6 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\CargarTransformadores.cshtml" />
-    <Content Include="Views\Home\LoadTransformadoresJson.cshtml" />
     <Content Include="Views\Home\Administrador.cshtml" />
     <Content Include="Views\Cliente\Cliente.cshtml" />
     <Content Include="Views\Reportes\ReportesPorCliente.cshtml" />
@@ -347,6 +346,7 @@
     <Content Include="Views\Cliente\AltaActuador.cshtml" />
     <Content Include="Views\Home\AltaDispositivo.cshtml" />
     <Content Include="Views\Home\ConsumoHogar.cshtml" />
+    <Content Include="Views\Home\ConsultaConsumoHogar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

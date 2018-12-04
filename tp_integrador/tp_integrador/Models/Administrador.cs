@@ -18,7 +18,6 @@ namespace tp_integrador.Models
         #region Carga de datos
         public void CargarTransformador(HttpPostedFileBase file)
         {
-
             CargarJson cargar = new CargarJson();
             cargar.LoadJson<Transformador>(file.InputStream);
         }
@@ -88,6 +87,11 @@ namespace tp_integrador.Models
             DAOUsuario.Instancia.QuitarUsuario(id);
         }
 
+		public Dictionary<string, int> GetClientesIDUsername()
+		{
+			return ORM.Instancia.GetClientesIDUsername();
+		}
+		
         #region Reportes
         public List<Transformador> GetTransformadors()
         {
@@ -122,9 +126,12 @@ namespace tp_integrador.Models
             return vs;
             }
 
-        public void NuevoTemplateDisp(DispositivoGenerico dispositivo)
+        public bool NuevoTemplateDisp(DispositivoGenerico dispositivo)
         {
+			if (ORM.Instancia.ExisteTemplate(dispositivo)) return false;
+
             ORM.Instancia.Insert(dispositivo);
+			return true;
         }
 
         public void UpdateMyData(Administrador admUpdate)

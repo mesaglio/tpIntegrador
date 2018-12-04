@@ -13,7 +13,9 @@ namespace tp_integrador.Models
 		public bool Inteligente { get; set; }
 		public bool Bajoconsumo { get; set; }
 		public double Consumo { get; set; }
-				
+		
+		public DispositivoGenerico() { }
+
 		public DispositivoGenerico(int ID, string dispositivo, string concreto, bool inteligente, bool bajoconsumo, double consumo)
 		{
 			Dispositivo = dispositivo;

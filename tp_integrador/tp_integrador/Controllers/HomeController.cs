@@ -142,6 +142,7 @@ namespace tp_integrador.Controllers
 
 			if (!admin.NuevoAdministrador(administrador))
 			{
+				TempData["MsgState"] = "alert-danger";
 				TempData["Alerta"] = "Administrador No Guardado.";
 				TempData["Mensaje"] = "El Username ya existe, intente con otro.";
 
@@ -149,6 +150,7 @@ namespace tp_integrador.Controllers
 			}
 			else
 			{
+				TempData["MsgState"] = "alert-success";
 				TempData["Alerta"] = "Administrador";
 				TempData["Mensaje"] = "Creado Correctamente :D";
 			}
@@ -174,6 +176,7 @@ namespace tp_integrador.Controllers
 
 			if (!admin.NuevoCliente(cliente))
 			{
+				TempData["MsgState"] = "alert-danger";
 				TempData["Alerta"] = "Cliente No Guardado.";
 				TempData["Mensaje"] = "El Username ya existe, intente con otro.";
 				
@@ -181,10 +184,11 @@ namespace tp_integrador.Controllers
 			}
 			else
 			{
+				TempData["MsgState"] = "alert-success";
 				TempData["Alerta"] = "Cliente";
 				TempData["Mensaje"] = "Creado Correctamente :D";
 			}
-
+			
 			return View("JsonImport");
         }
 
@@ -196,7 +200,21 @@ namespace tp_integrador.Controllers
             if (user_file == null) return View("JsonImport");
 
             Administrador adm = (Administrador)Session["Usuario"];
-            adm.CargarAdmins(user_file);
+            
+			try
+			{
+				adm.CargarAdmins(user_file);
+
+				TempData["MsgState"] = "alert-success";
+				TempData["Alerta"] = "Administradores";
+				TempData["Mensaje"] = "Cargados Correctamente :D";
+			}
+			catch (Exception ex)
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Administradores No Guardados";
+				TempData["Mensaje"] = "Error al cargar el archivo, revise que el archivo o su contenido sean correctos.";
+			}
 
 			return View("JsonImport");
         }
@@ -209,7 +227,21 @@ namespace tp_integrador.Controllers
 			if (user_file == null) return View("JsonImport");
 
 			Administrador adm = (Administrador)Session["Usuario"];
-			adm.CargarClientes(user_file);
+			
+			try
+			{
+				adm.CargarClientes(user_file);
+
+				TempData["MsgState"] = "alert-success";
+				TempData["Alerta"] = "Clientes";
+				TempData["Mensaje"] = "Cargados Correctamente :D";
+			}
+			catch (Exception ex)
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Clientes No Guardados";
+				TempData["Mensaje"] = "Error al cargar el archivo, revise que el archivo o su contenido sean correctos.";
+			}
 
 			return View("JsonImport");
 		}
@@ -278,14 +310,30 @@ namespace tp_integrador.Controllers
         }
 
         [HttpPost]
-        public ActionResult NuevoTemplateDispositivo(DispositivoGenerico dispositivo)
+        public ActionResult AltaDispositivo(DispositivoGenerico dispositivoGenerico)
         {
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
+			
             Administrador adm = (Administrador)Session["Usuario"];
-            adm.NuevoTemplateDisp(dispositivo);
+			
+			if (!adm.NuevoTemplateDisp(dispositivoGenerico))
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Dispositivo No Guardado.";
+				TempData["Mensaje"] = "El Dispositivo ya Existe.";
 
-            return View("LoadTransformadoresJson");
+				return View("AltaDispositivo", dispositivoGenerico);
+			}
+			else
+			{
+				TempData["MsgState"] = "alert-success";
+				TempData["Alerta"] = "Dispositivo Generico";
+				TempData["Mensaje"] = "Creado Correctamente :D";
+			}
+
+
+			return View("AltaDispositivo");
         }
 
         public ActionResult ConsumoHogar()
@@ -293,22 +341,49 @@ namespace tp_integrador.Controllers
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
 
-            return View();
+			Administrador adm = (Administrador)Session["Usuario"];
+
+			return View("ConsumoHogar", adm);
         }
 
         [HttpPost]
-        public ActionResult LoadTransformadoresJson(HttpPostedFileBase file)
+        public ActionResult LoadTransformadoresJson(HttpPostedFileBase user_file)
         {
 			if (!SessionStateOK()) return View("Index");
 			if (!(bool)Session["Admin"]) return PermisoDenegado();
 
-            if (file == null) return CargarTransformadores();
+            if (user_file == null) return CargarTransformadores();
 
             Administrador adm = (Administrador)Session["Usuario"];
-            adm.CargarTransformador(file);
 
-            return View();
+			try
+			{
+				adm.CargarTransformador(user_file);
+
+				TempData["MsgState"] = "alert-success";
+				TempData["Alerta"] = "Transformadores";
+				TempData["Mensaje"] = "Cargados Correctamente :D";
+			}
+			catch (Exception ex)
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Transformadores No Guardados";
+				TempData["Mensaje"] = "Error al cargar el archivo, revise que el archivo o su contenido sean correctos.";
+			}
+			
+			return View("CargarTransformadores");
         }
+
+		[HttpPost]
+		public ActionResult ConsultarConsumo(int idCliente)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			var cliente = DAOUsuario.Instancia.GetClienteFromDB(idCliente);
+
+			return View("ConsultaConsumoHogar", cliente);
+		}
 
 		public bool SessionStateOK()
 		{

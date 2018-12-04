@@ -100,11 +100,21 @@ namespace tp_integrador.Controllers
 			if (user_file == null) return CargarArchivoDispositivos();
 
 			Cliente unclietne = (Cliente)Session["Usuario"];
-			// INTELIGENTE = 1
-			unclietne.CargarDispositivos(user_file, 1);
+			
+			try
+			{				
+				unclietne.CargarDispositivos(user_file, 1); // INTELIGENTE = 1
 
-			TempData["Alerta"] = "Dispositivos Inteligentes";
-			TempData["Mensaje"] = "Cargados Correctamente :D";
+				TempData["MsgState"] = "alert-success";
+				TempData["Alerta"] = "Dispositivos Inteligentes";
+				TempData["Mensaje"] = "Cargados Correctamente :D";				
+			}
+			catch (Exception ex)
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Dispositivos Inteligentes No Guardados";
+				TempData["Mensaje"] = "Error al cargar el archivo, revise que el archivo o su contenido sean correctos.";
+			}
 
 			return View("CargarArchivoDispositivos", model: true);
 		}
@@ -118,11 +128,21 @@ namespace tp_integrador.Controllers
 			if (user_file == null) return CargarArchivoDispositivos();
 
 			Cliente unclietne = (Cliente)Session["Usuario"];
-			// ESTANDAR = 0
-			unclietne.CargarDispositivos(user_file, 0);
+			
+			try
+			{
+				unclietne.CargarDispositivos(user_file, 0); // ESTANDAR = 0
 
-			TempData["Alerta"] = "Dispositivos Estandar";
-			TempData["Mensaje"] = "Cargados Correctamente :D";
+				TempData["MsgState"] = "alert-success";
+				TempData["Alerta"] = "Dispositivos Estandar";
+				TempData["Mensaje"] = "Cargados Correctamente :D";
+			}
+			catch (Exception ex)
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Dispositivos Estandar No Guardados";
+				TempData["Mensaje"] = "Error al cargar el archivo, revise que el archivo o su contenido sean correctos.";
+			}
 
 			return View("CargarArchivoDispositivos", model: true);
 		}

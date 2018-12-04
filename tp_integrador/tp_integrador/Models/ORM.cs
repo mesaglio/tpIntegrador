@@ -40,6 +40,7 @@ namespace tp_integrador.Models
 			if (type == typeof(EstadoDispositivo)) GuardarEstado(unaClase);
 			if (type == typeof(DispositivoGenerico)) GuardarTemplate(unaClase);
 			if (type == typeof(EstadoSensor)) GuardarEstadoSensor(unaClase);
+			if (type == typeof(Transformador)) GuardarTransformador(unaClase);
 		}
 
 		public void Update(dynamic unaClase)
@@ -148,7 +149,7 @@ namespace tp_integrador.Models
 			}
 
 			return lista;
-		}				
+		}
 
 		private List<Cliente> GetClientes(string query)
 		{
@@ -206,6 +207,23 @@ namespace tp_integrador.Models
         public List<Cliente> GetClientesAutoSimplex()
 		{
 			return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) WHERE clie_autoSimplex = 1");			
+		}
+
+
+		public Dictionary<string, int> GetClientesIDUsername()
+		{
+			var lista = new Dictionary<string, int>();
+
+			var query = "SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario)";
+			var data = Query(query).Tables[0];
+			if (data.Rows.Count == 0) return lista;
+
+			foreach (DataRow row in data.Rows)
+			{
+				lista.Add(row["usua_username"].ToString(), (Int32)row["clie_idUsuario"]);
+			}
+
+			return lista;
 		}
 
 		// ------------------------------------ INSERTS ------------------------------------
@@ -1144,10 +1162,16 @@ namespace tp_integrador.Models
 
 		// ------------------------------------ INSERTS ------------------------------------
 
+		public bool ExisteTemplate(DispositivoGenerico tdisp)
+		{
+			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_dispositivo = '{0}' AND disp_concreto = '{1}' AND disp_inteligente = '{2}' AND disp_bajoConsumo = '{3}'";
+			return (Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0, tdisp.Bajoconsumo ? 1 : 0)).Tables[0].Rows.Count != 0);			
+		}
+
 		private void GuardarTemplate(DispositivoGenerico tdisp)
 		{
-			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_dispositivo = '{0}' AND disp_concreto = '{1}' AND disp_inteligente = '{2}'";
-			if (Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0)).Tables[0].Rows.Count != 0) return;
+			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_dispositivo = '{0}' AND disp_concreto = '{1}' AND disp_inteligente = '{2}' AND disp_bajoConsumo = '{3}'";
+			if (Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0, tdisp.Bajoconsumo ? 1 : 0)).Tables[0].Rows.Count != 0) return;
 
 			query = "INSERT INTO SGE.DispositivoGenerico VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
 			Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0, tdisp.Bajoconsumo ? 1 : 0, tdisp.Consumo));
