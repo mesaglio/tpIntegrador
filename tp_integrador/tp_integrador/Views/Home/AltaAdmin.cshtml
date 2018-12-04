@@ -19,13 +19,13 @@
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
                                 <span data-feather="home"></span>
                                 Consumo Hogares
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="@Url.Action("AltaDispositivo", "Home")">
                                 <span data-feather="monitor"></span>
                                 Alta Dispositivos
                             </a>
@@ -89,7 +89,7 @@
                             <div class="file-field">
 
 @model tp_integrador.Models.Administrador
-                                @using (Html.BeginForm("NuevoUsuario", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                @using (Html.BeginForm("NuevoUsuarioA", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
                                     
                                     <div class="top-row">

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Nuevo Cliente";
+    ViewBag.Title = "Consumo Hogar";
 }
 
 <!-- Bootstrap core CSS -->
@@ -80,22 +80,23 @@
 
             <div class="container" style="margin-left:20px; overflow:auto;">
 
- 
-                
 
                 <hr />
                 <div class="container" style="width:760px;">
                     <div class="card-deck mb-3 text-center">
 
+                        <div class="card-body">
+                            <div class="file-field">
 
-                                <div class="file-field">
-                                    CARGADO CORRECTAMENTE
-                                </div>
+                                @model tp_integrador.Models.Administrador
+                                @using (Html.BeginForm("NuevoUsuarioA", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
 
-                        </div>
-
+                                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>
+                                }
                             </div>
                         </div>
+
 
                     </div>
                 </div>
@@ -106,7 +107,7 @@
                         <strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
                     </div>
                 </div>
-                
+
 
             </div>
 
@@ -128,3 +129,4 @@
     </script>
 
 </main>
+

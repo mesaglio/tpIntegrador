@@ -19,13 +19,13 @@
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
                                 <span data-feather="home"></span>
                                 Consumo Hogares
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="@Url.Action("AltaDispositivo", "Home")">
                                 <span data-feather="monitor"></span>
                                 Alta Dispositivos
                             </a>
@@ -113,7 +113,7 @@
                                         <label>
                                             Direccion <span class="req">*</span>
                                         </label>
-                                        @Html.TextBoxFor(m => m.domicilio })
+                                        @Html.TextBoxFor(m => m.domicilio )
                                     </div>
 
                                     
@@ -128,12 +128,6 @@
                     </div>
                 </div>
 
-
-                <div class="container" style="width:700px;">
-                    <div class="alert alert-success" role="alert">
-                        <strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
-                    </div>
-                </div>
 
 
             </div>

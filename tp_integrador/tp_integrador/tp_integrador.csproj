@@ -345,6 +345,8 @@
     <Content Include="Views\Cliente\EditarRegla.cshtml" />
     <Content Include="Views\Cliente\EditarActuador.cshtml" />
     <Content Include="Views\Cliente\AltaActuador.cshtml" />
+    <Content Include="Views\Home\AltaDispositivo.cshtml" />
+    <Content Include="Views\Home\ConsumoHogar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />
