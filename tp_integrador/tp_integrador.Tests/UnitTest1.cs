@@ -214,6 +214,18 @@ namespace tp_integrador.Tests
                 ReporteUser reportee = new ReporteUser(cliente.idUsuario.ToString(), asdd.FechaInicio.Year.ToString(), asdd.FechaInicio.Month.ToString(), asdd.Consumo.ToString());
                 reportes.Add(reportee);
             }
+        }
+        [TestMethod]
+        public void fechas()
+        {
+            DateTime hoy = DateTime.Today;
+            DAOzona.Instancia.InitialLoad();
+            DAODispositivo.Instancia.InitialLoad();
+            ODM.Instancia.generarTodosLosReportes();
+            //dom.generarTodosLosReportes();
+            //dom.generarReporteTransformadores(hoy);
+            DateTime dia = new DateTime(2018, 04, 01);
+            //bool res = dom.noHayReportes(dia);
             
         }
     }
