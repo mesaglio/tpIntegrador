@@ -23,7 +23,9 @@ namespace tp_integrador.Models
 
         public List<Dispositivo> DispositivosInteligentes => dispositivos.FindAll(i => i.EsInteligente);
         public List<Dispositivo> DispositivosEstandar => dispositivos.FindAll(i => !i.EsInteligente);
-        //TODO: verificar si funciona estandar
+		//TODO: verificar si funciona estandar
+
+		public Cliente() { }
 
         public Cliente(int id, string name, string lastname, string home, Location coords, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n, bool simplex, List<Dispositivo> disp = null) : base(id, name, lastname, home, user, clave)
         {

@@ -89,12 +89,9 @@
 											&nbsp;
 											@Html.DropDownListFor(model => model.Regla.Operador, Model.Operadores, "Elija un Operador...", new { @class = "custom-select d-block w-100", required = true })
 											&nbsp;
-											<div class="row" style="text-align:left">
-												<label class="control-label col-md-2" style="word-wrap:normal">Valor:</label>
-												<div class="col-md-10">
-													@Html.TextBoxFor(model => model.Regla.Valor, new { htmlAttributes = new { @class = "form-control", required = true } })
-													@Html.ValidationMessageFor(model => model.Regla.Valor, "", new { @class = "text-danger" })
-												</div>
+											<div>												
+												@Html.TextBoxFor(model => model.Regla.Valor, new { @class = "form-control", placeholder = "Valor de Control", @id = "valor", required = true })
+												@Html.ValidationMessageFor(model => model.Regla.Valor, "", new { @class = "text-danger" })												
 											</div>
 											&nbsp;
 											@Html.DropDownListFor(model => model.Regla.Accion, Model.Acciones, "Elija una Accion...", new { @class = "custom-select d-block w-100", required = true })
@@ -171,7 +168,7 @@
 	<!-- Numeric TextBox -->
 	<script>
 		$(document).ready(function () {
-			$("#Item1_Valor").keydown(function (e) {
+			$("#valor").keydown(function (e) {
 				// Allow: backspace, delete, tab, escape, enter and .
 				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
 					// Allow: Ctrl+A

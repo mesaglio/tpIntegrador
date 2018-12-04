@@ -132,40 +132,60 @@ namespace tp_integrador.Controllers
             return View();
         }
 
-        public ActionResult AltaCliente()
+		[HttpPost]
+		public ActionResult AltaAdmin(Administrador administrador)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			Administrador admin = (Administrador)Session["Usuario"];
+
+			if (!admin.NuevoAdministrador(administrador))
+			{
+				TempData["Alerta"] = "Administrador No Guardado.";
+				TempData["Mensaje"] = "El Username ya existe, intente con otro.";
+
+				return View("AltaAdmin", administrador);
+			}
+			else
+			{
+				TempData["Alerta"] = "Administrador";
+				TempData["Mensaje"] = "Creado Correctamente :D";
+			}
+
+			return View("JsonImport");
+		}
+
+		public ActionResult AltaCliente()
         {
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
 
-            return View();
-        }
+			return View();
+        }		       
 
         [HttpPost]
-        public ActionResult NuevoUsuarioA(Administrador administrador)
+        public ActionResult AltaCliente(Cliente cliente)
         {
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
-            Administrador adm = (Administrador)Session["Usuario"];
-            administrador.AltaSistema = DateTime.Now;
-            adm.NuevoAdministrador(administrador);
+          
+            Administrador admin = (Administrador)Session["Usuario"];
 
-            return View("NuevoUsuario");
-        }
+			if (!admin.NuevoCliente(cliente))
+			{
+				TempData["Alerta"] = "Cliente No Guardado.";
+				TempData["Mensaje"] = "El Username ya existe, intente con otro.";
+				
+				return View("AltaCliente", cliente);
+			}
+			else
+			{
+				TempData["Alerta"] = "Cliente";
+				TempData["Mensaje"] = "Creado Correctamente :D";
+			}
 
-        [HttpPost]
-        public ActionResult NuevoUsuario(Cliente cliente)
-        {
-            if (!SessionStateOK()) return View("Index");
-            if (!(bool)Session["Admin"]) return PermisoDenegado();
-            cliente.AltaServicio = DateTime.Now;
-            cliente.idUsuario = 0; 
-            cliente.Coordenadas = new Gmap.net.Location(); // calcular con la direccion
-            Administrador adm = (Administrador)Session["Usuario"];
-            adm.NuevoCliente(cliente.idUsuario,cliente.nombre,cliente.apellido,cliente.domicilio,cliente.Coordenadas,cliente.Telefono,
-                                                cliente.usuario,cliente.password,
-                                                cliente.AltaServicio,cliente.Categoria,
-                                                cliente.Documento_tipo,cliente.Documento_numero);
-            return View();
+			return View("JsonImport");
         }
 
         [HttpPost]

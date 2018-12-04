@@ -54,16 +54,29 @@ namespace tp_integrador.Models
             AltaSistema = alta;
             esadmin = true;
         }
-        public void NuevoAdministrador(Administrador administrador)
+        public bool NuevoAdministrador(Administrador administrador)
         {
-            ORM.Instancia.Insert(administrador);
+			var contrasenia = HashThis.Instancia.GetHash(administrador.password);
+			if(ORM.Instancia.GetIDUsuarioIfExists(administrador.usuario, contrasenia) != -1) return false;
+
+			var nuevoAdmin = new Administrador(0, administrador.nombre, administrador.apellido, administrador.domicilio, administrador.usuario, contrasenia, DateTime.Now);
+
+            ORM.Instancia.Insert(nuevoAdmin);
+			return true;
         }
 
-        public void NuevoCliente(int id, string name, string lastname, string home, Location coords, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n)
-        {
-            Cliente unCliente = new Cliente(id, name, lastname, home, coords, user, clave, phone, alta, categ, doc_t, doc_n, false);
-            ORM.Instancia.Insert(unCliente);
-        }
+		public bool NuevoCliente(Cliente cliente)
+		{
+			var contrasenia = HashThis.Instancia.GetHash(cliente.password);
+			if (ORM.Instancia.GetIDUsuarioIfExists(cliente.usuario, contrasenia) != -1) return false;
+						
+			var coordenadas = new Location(-34.553750, -58.468923);
+			//TODO: Buscar como conseguir Goolge API Key Gratis o alguna forma alternativa de obtener las coordenadas reales
+			var nuevoCliente = new Cliente(0, cliente.nombre, cliente.apellido, cliente.domicilio, coordenadas, cliente.usuario, contrasenia, cliente.Telefono, DateTime.Now, ORM.Instancia.GetCategoria("R1"), cliente.Documento_tipo, cliente.Documento_numero, false);
+
+			ORM.Instancia.Insert(nuevoCliente);
+			return true;
+		}				
 
         public Cliente BuscarCliente(int id)
         {

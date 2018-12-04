@@ -1,6 +1,12 @@
-﻿
+﻿@model tp_integrador.Models.Cliente
 @{
-    ViewBag.Title = "Nuevo Cliente";
+	ViewBag.Title = "Nuevo Cliente";
+	ViewBag.SelectDNI = new List<SelectListItem>
+				{
+				new SelectListItem { Value = "DNI", Text = "DNI"},
+				new SelectListItem { Value = "PASAPORTE", Text = "PASAPORTE"},
+				new SelectListItem { Value = "CARNET EXT.", Text = "CARNET EXT."}
+				};
 }
 
 <!-- Bootstrap core CSS -->
@@ -10,178 +16,224 @@
 <link href="~/Content/dashboard.css" rel="stylesheet" />
 
 <main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
-    <div class="container-fluid">
-        <div class="row">
+	<div class="container-fluid">
+		<div class="row">
 
-            <!-- SIDEBAR -->
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
+			<!-- SIDEBAR -->
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+				<div class="sidebar-sticky">
 
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
-                                <span data-feather="home"></span>
-                                Consumo Hogares
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("AltaDispositivo", "Home")">
-                                <span data-feather="monitor"></span>
-                                Alta Dispositivos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("JsonImport", "Home")" class="nav-link active">
-                                <span data-feather="user-plus"></span>
-                                Alta de Usuarios <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
-                                <span data-feather="file"></span>
-                                Cargar Archivo de Transformadores
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Listar", "Home")" class="nav-link">
-                                <span data-feather="edit"></span>
-                                Mis Datos
-                            </a>
-                        </li>
-                    </ul>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
+								<span data-feather="home"></span>
+								Consumo Hogares
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("AltaDispositivo", "Home")">
+								<span data-feather="monitor"></span>
+								Alta Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("JsonImport", "Home")" class="nav-link active">
+								<span data-feather="user-plus"></span>
+								Alta de Usuarios <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Transformadores
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("Listar", "Home")" class="nav-link">
+								<span data-feather="edit"></span>
+								Mis Datos
+							</a>
+						</li>
+					</ul>
 
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Reportes</span>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a href="@Url.Action("ReportesPorCliente", "Home")" class="nav-link">
-                                <span data-feather="file-text"></span>
-                                - Reportes por cliente -
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home")">
-                                <span data-feather="file-text"></span>
-                                - Reporte por transformador -
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Reportes", "Home")">
-                                <span data-feather="file-text"></span>
-                                - Reporte Inteligente vs Estandar -
-                            </a>
-                        </li>
-                    </ul>
+					<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+						<span>Reportes</span>
+					</h6>
+					<ul class="nav flex-column mb-2">
+						<li class="nav-item">
+							<a href="@Url.Action("ReportesPorCliente", "Home")" class="nav-link">
+								<span data-feather="file-text"></span>
+								- Reportes por cliente -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home")">
+								<span data-feather="file-text"></span>
+								- Reporte por transformador -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("Reportes", "Home")">
+								<span data-feather="file-text"></span>
+								- Reporte Inteligente vs Estandar -
+							</a>
+						</li>
+					</ul>
 
-                </div>
-            </nav>
-            <!-- Fin Sidebar -->
+				</div>
+			</nav>
+			<!-- Fin Sidebar -->
+						
+			<div class="container" style="margin-top:10px; overflow:auto;">
 
-            <div class="container" style="margin-left:20px; overflow:auto;">
+				<div class="container" style="width:600px;">
+					<div class="card-deck mb-3 text-center">
 
+						<!-- Alta Admin -->
+						<div class="card mb-4 shadow-sm" style="max-width:600px;">
+							<div class="card-header">
+								<h4 class="mb3">Nuevo Cliente</h4>
+							</div>
+							<div class="card-body">
+								<div class="file-field">
 
-                <hr />
-                <div class="container" style="width:760px;">
-                    <div class="card-deck mb-3 text-center">
+									@using (Html.BeginForm())
+									{
+										@Html.AntiForgeryToken()
 
-                        <div class="card-body">
-                            <div class="file-field">
-@model tp_integrador.Models.Cliente
-                                @using (Html.BeginForm("NuevoUsuario", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                {
-                                    
-                                    <div class="top-row">
-                                        <div class="field-wrap">
-                                            <label>
-                                                Usuario <span class="req">*</span>
-                                            </label>
-                                            @Html.TextBoxFor(m => m.usuario)
-                                        </div>
-                                    </div>
-                                    <div class="top-row">
-                                        <div class="field-wrap">
-                                            <label>
-                                                Nombre <span class="req">*</span>
-                                            </label>
-                                            @Html.TextBoxFor(m => m.nombre)
-                                        </div>
-                                    </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Apellido <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(m => m.apellido)
-                                    </div>
+										<div class="form-horizontal">
 
+											@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                    <div class="field-wrap">
-                                        <label>
-                                            Direccion <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(m => m.domicilio)
-                                    </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Tipo Documento <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(m => m.Documento_tipo)
-                                    </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Numero Documento <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(m => m.Documento_numero)
-                                    </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Telefono <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(m => m.Telefono)
-                                    </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Password <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(m => m.password, new { placeholder = "Password", @type = "password" })
-                                    </div>
+											@Html.HiddenFor(model => model.idUsuario)
+											@Html.HiddenFor(model => model.AltaServicio)
+											@Html.HiddenFor(model => model.Puntos)
+											&nbsp;
+											<div>
+												@Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre", required = true } })
+												@Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<div>
+												@Html.EditorFor(model => model.apellido, new { htmlAttributes = new { @class = "form-control", placeholder = "Apellido", required = true } })
+												@Html.ValidationMessageFor(model => model.apellido, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<div>
+												@Html.EditorFor(model => model.domicilio, new { htmlAttributes = new { @class = "form-control", placeholder = "Domicilio", required = true } })
+												@Html.ValidationMessageFor(model => model.domicilio, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<div>
+												@Html.DropDownListFor(model => model.Documento_tipo, (List<SelectListItem>)ViewBag.SelectDNI, "Elija una Tipo de Documento...", new { @class = "custom-select d-block w-100", required = true })
+												@Html.ValidationMessageFor(model => model.Documento_tipo, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<div>												
+												@Html.TextBoxFor(model => model.Documento_numero, new { @class = "form-control", placeholder = "Numero de Documento", @id="docnum", required = true })
+												@Html.ValidationMessageFor(model => model.Documento_numero, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;											
+											<div>
+												@Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", placeholder = "Telefono", @id = "telefono", required = true })
+												@Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<div>
+												@Html.EditorFor(model => model.usuario, new { htmlAttributes = new { @class = "form-control", placeholder = "Username", required = true } })
+												@Html.ValidationMessageFor(model => model.usuario, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<div>
+												@Html.PasswordFor(model => model.password, new { @type = "password", @id = "inputPassword", @class = "form-control", @placeholder = "Password", @required = true })
+												@Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<hr />
+											<div class="container" style="width:200px;">
+												<div>
+													<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+												</div>
+											</div>
+										</div>
 
+									}
 
-                                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>
-                                }
-                            </div>
-                        </div>
+								</div>
+							</div>
+						</div>
 
+					</div>
+				</div>
 
-                    </div>
-                </div>
+				@if (TempData["Mensaje"] != null)
+				{
+					<div class="container" style="width:700px;">
+						<div class="alert alert-danger" role="alert">
+							<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
+						</div>
+					</div>
+				}
 
+				<hr />
+				<div class="row">
+					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "JsonImport", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
+				</div>
 
-                <div class="container" style="width:700px;">
-                    <div class="alert alert-success" role="alert">
-                        <strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
-                    </div>
-                </div>
+			</div>
 
+		</div>
+	</div>
 
-            </div>
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+	<script src="~/Scripts/bootstrap.min.js"></script>
 
-        </div>
-    </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="~/Scripts/popper.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-
-    <!-- Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script>
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
 		feather.replace()
-    </script>
+	</script>
+
+	<!-- Numeric TextBox -->
+	<script>
+		$(document).ready(function () {
+			$("#docnum").keydown(function (e) {
+				// Allow: backspace, delete, tab, escape, enter and .
+				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+					// Allow: Ctrl+A
+					(e.keyCode == 65 && e.ctrlKey === true) ||
+					// Allow: home, end, left, right
+					(e.keyCode >= 35 && e.keyCode <= 39)) {
+					// let it happen, don't do anything
+					return;
+				}
+				// Ensure that it is a number and stop the keypress
+				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+					e.preventDefault();
+				}
+			});
+			$("#telefono").keydown(function (e) {
+				// Allow: backspace, delete, tab, escape, enter and .
+				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+					// Allow: Ctrl+A
+					(e.keyCode == 65 && e.ctrlKey === true) ||
+					// Allow: home, end, left, right
+					(e.keyCode >= 35 && e.keyCode <= 39)) {
+					// let it happen, don't do anything
+					return;
+				}
+				// Ensure that it is a number and stop the keypress
+				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+					e.preventDefault();
+				}
+			});	
+		});		
+	</script>
 
 </main>
 
