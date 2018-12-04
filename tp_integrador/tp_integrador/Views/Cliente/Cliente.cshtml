@@ -211,18 +211,23 @@
 								var sensores = Model.MisSensores();
 								if (sensores.Count != 0)
 								{
-									foreach (var item in Model.MisSensores())
+									foreach (var item in sensores)
 									{
 										if (item.Observadores.Count != 0)
 										{
 											foreach (var regla in item.Observadores)
 											{
+												var dispositivos = new List<tp_integrador.Models.Dispositivo>();
+												foreach (var actua in regla.Actuadores)
+												{
+													dispositivos.AddRange(actua.Dispositivos.FindAll(x => !dispositivos.Contains(x)));
+												}
 												<tr>
 													<td>@Html.DisplayFor(modelRegla => regla.Detalle)</td>
 													<td>@Html.DisplayFor(modelRegla => regla.Operador)</td>
 													<td>@Html.DisplayFor(modelRegla => regla.Valor)</td>
 													<td>@Html.DisplayFor(modelRegla => regla.Accion)</td>
-													@if (regla.Actuadores.Count != 0)
+													@if (dispositivos.Count != 0)
 													{
 														<td>@Html.DisplayFor(modelRegla => regla.Actuadores[0].Dispositivos[0].Nombre)</td>
 														<td>@Html.DisplayFor(modelRegla => regla.Actuadores[0].Dispositivos[0].Numero)</td>
@@ -233,24 +238,20 @@
 														<td></td>
 													}
 												</tr>
-												if (regla.Actuadores.Count != 0)
+												if (dispositivos.Count != 0)
 												{
-													foreach (var actua in regla.Actuadores)
+													foreach (var dispo in dispositivos)
 													{
-
-														foreach (var dispo in actua.Dispositivos)
+														if (!dispo.Equals(dispositivos[0]))
 														{
-															if (dispo != null && !dispo.Equals(actua.Dispositivos[0]))
-															{
-																<tr>
-																	<td></td>
-																	<td></td>
-																	<td></td>
-																	<td></td>
-																	<td>@Html.DisplayFor(modelDispo => dispo.Nombre)</td>
-																	<td>@Html.DisplayFor(modelDispo => dispo.Numero)</td>
-																</tr>
-															}
+															<tr>
+																<td></td>
+																<td></td>
+																<td></td>
+																<td></td>
+																<td>@Html.DisplayFor(modelDispo => dispo.Nombre)</td>
+																<td>@Html.DisplayFor(modelDispo => dispo.Numero)</td>
+															</tr>
 														}
 													}
 												}

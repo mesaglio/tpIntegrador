@@ -480,6 +480,19 @@ namespace tp_integrador.Controllers
 			return View("GestionarSensores", model: cliente);
 		}
 
+		public ActionResult BajaDispositivo(int idD, int idC, int numero)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+
+			var cliente = (Cliente)Session["Usuario"];
+			if (cliente.idUsuario != idC) return PermisoDenegado();
+
+			cliente.EliminarDispositivo(idD, idC, numero);
+
+			return View("GestionarDispositivos", model: cliente);
+		}
+		
 		public bool SessionStateOK()
 		{
 			if (Session["Usuario"] == null) return false;

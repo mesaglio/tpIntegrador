@@ -58,7 +58,7 @@ namespace tp_integrador.Models
 		public void Delete(dynamic unaClase)
 		{
 			var type = unaClase.GetType();
-			//if (type == typeof(Inteligente) || type == typeof(Estandar)) EliminarDispositivo(unaClase);
+			if (type == typeof(Inteligente) || type == typeof(Estandar)) EliminarDispositivo(unaClase);
 			if (type == typeof(Sensor)) EliminarSensor(unaClase);
 			if (type == typeof(Actuador)) EliminarActuador(unaClase);
 			if (type == typeof(Regla)) EliminarRegla(unaClase);
@@ -295,9 +295,11 @@ namespace tp_integrador.Models
 
 		public List<Dispositivo> GetAllDispositivos()
 		{
-			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo)";
+			var lista = new List<Dispositivo>();
+
+			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) WHERE dpc_eliminado IS NULL";
 			var data = Query(query).Tables[0];
-			if (data.Rows.Count == 0) return null;
+			if (data.Rows.Count == 0) return lista;
 
 			return GetDispositivosFromData(data);
 		}
@@ -380,6 +382,18 @@ namespace tp_integrador.Models
 			return lista;
 		}
 
+		public List<Dispositivo> GetDispositivosEliminadosEn(PeriodoData periodo)
+		{
+			var lista = new List<Dispositivo>();
+
+			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) WHERE dpc_eliminado BETWEEN CONVERT(DATETIME,'{0}',121) AND CONVERT(DATETIME,'{1}',121)";
+			var data = Query(String.Format(query, periodo.FechaInicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), periodo.FechaFin.ToString("yyyy-MM-dd HH:mm:ss.mmm"))).Tables[0];
+			if (data.Rows.Count == 0) return lista;
+
+			return GetDispositivosFromData(data);
+		}
+
+
 		// ------------------------------------ INSERTS ------------------------------------
 
 		public void GuardarDispositivo(dynamic disp)
@@ -394,7 +408,7 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
 			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121), NULL, '{5}')";
+			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121), NULL, '{5}', NULL)";
 			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), disp.Convertido ? 1 : 0));
 		}
 
@@ -403,7 +417,7 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
 			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', NULL, NULL,'{3}', '{4}')";
+			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', NULL, NULL,'{3}', '{4}', NULL)";
 			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, disp.usoDiario, 0));
 		}
 
@@ -436,6 +450,34 @@ namespace tp_integrador.Models
 		}
 
 		// ------------------------------------ DELETE ------------------------------------
+
+		private void EliminarDispositivo(dynamic dispositivo)
+		{
+			var type = dispositivo.GetType();
+			if (type == typeof(Inteligente)) EliminarInteligente(dispositivo);
+			if (type == typeof(Estandar)) EliminarEstandar(dispositivo);
+		}
+
+		private void EliminarInteligente(Inteligente dispositivo)
+		{
+			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
+			if (Query(String.Format(query, dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero)).Tables[0].Rows.Count == 0) return;
+
+			query = "DELETE FROM SGE.DispositivoPorActuador WHERE dpa_dpc_idDispositivo = '{0}' AND dpa_dpc_idUsuario = '{1}' AND dpa_dpc_numero = '{2}'";
+			Query(String.Format(query, dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero));
+
+			query = "UPDATE SGE.DispositivoPorCliente SET dpc_eliminado = CONVERT(DATETIME,'{0}',121) WHERE dpc_idDispositivo = '{1}' AND dpc_idUsuario = '{2}' AND dpc_numero = '{3}'";
+			Query(String.Format(query, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.mmm"), dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero));
+		}
+
+		private void EliminarEstandar(Estandar dispositivo)
+		{
+			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
+			if (Query(String.Format(query, dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero)).Tables[0].Rows.Count == 0) return;
+
+			query = "UPDATE SGE.DispositivoPorCliente SET dpc_eliminado = CONVERT(DATETIME,'{0}',121) WHERE dpc_idDispositivo = '{1}' AND dpc_idUsuario = '{2}' AND dpc_numero = '{3}'";
+			Query(String.Format(query, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.mmm"), dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero));
+		}
 
 		#endregion
 

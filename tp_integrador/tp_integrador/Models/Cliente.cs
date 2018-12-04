@@ -185,6 +185,13 @@ namespace tp_integrador.Models
 				total += disp.ConsumoEnElPeriodo(periodo);
 			}
 
+			var eliminadosEnElPeriodo = ORM.Instancia.GetDispositivosEliminadosEn(periodo);
+
+			foreach (var disp in eliminadosEnElPeriodo.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnElPeriodo(periodo);
+			}
+
 			periodo.Consumo = total;
 			return periodo;
 		}
@@ -201,7 +208,14 @@ namespace tp_integrador.Models
                 total += disp.ConsumoEnElPeriodo(periodo);
             }
 
-            periodo.Consumo = total;
+			var eliminadosEnElPeriodo = ORM.Instancia.GetDispositivosEliminadosEn(periodo);
+
+			foreach (var disp in eliminadosEnElPeriodo.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnElPeriodo(periodo);
+			}
+
+			periodo.Consumo = total;
             return periodo;
         }
 
@@ -296,6 +310,15 @@ namespace tp_integrador.Models
 		public void EliminarSensor(Sensor sensor)
 		{
 			DAOSensores.Instancia.EliminarSensor(sensor);
+		}
+
+		public void EliminarDispositivo(int idDispositivo, int idCliente, int numero)
+		{
+			var dispositivo = BuscarDispositivo(idDispositivo, idCliente, numero);
+			if (dispositivo.EsInteligente) DAOSensores.Instancia.QuitarDispositivoDeActuadores(dispositivo);
+			
+			dispositivos.Remove(dispositivo);
+			ORM.Instancia.Delete(dispositivo);
 		}
 
         #region INTERFAZ CONTROLLER

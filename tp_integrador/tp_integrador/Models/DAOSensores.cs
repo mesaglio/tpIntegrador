@@ -217,5 +217,11 @@ namespace tp_integrador.Models
 
 			ORM.Instancia.Delete(sensor);
 		}
+
+		public void QuitarDispositivoDeActuadores(Inteligente dispositivo)
+		{
+			var actuadoresDispositivo = FindActuadoresCliente(dispositivo.IdCliente).FindAll(x => x.Dispositivos.Contains(dispositivo));
+			actuadoresDispositivo.ForEach(x => x.QuitarDispositivo(dispositivo));						
+		}
 	}
 }

@@ -24,6 +24,7 @@ namespace tp_integrador.Models
 			this.Consumo = consumo;
 		}
 
-		public string getNombreEntero() => (Inteligente ? "[Inteligente]" : "[Estandar]") + " " + Dispositivo + " " + Concreto;
+		public string getNombreEntero() => Dispositivo + " " + Concreto;
+		public string getNombreEnteroConEtiqueta() => (Inteligente ? "[Inteligente]" : "[Estandar]") + " " + Dispositivo + " " + Concreto;
 	}
 }

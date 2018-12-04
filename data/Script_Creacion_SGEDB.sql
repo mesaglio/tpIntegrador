@@ -184,6 +184,7 @@ CREATE TABLE SGE.DispositivoPorCliente (
   dpc_fechaEstado DATETIME,
   dpc_usoDiario TINYINT,
   dpc_convertido BIT NOT NULL,
+  dpc_eliminado DATETIME,
   PRIMARY KEY (dpc_idUsuario, dpc_idDispositivo, dpc_numero),
   FOREIGN KEY (dpc_idUsuario) REFERENCES SGE.Cliente (clie_idUsuario),
   FOREIGN KEY (dpc_idDispositivo) REFERENCES SGE.DispositivoGenerico (disp_idDispositivo))
@@ -303,10 +304,10 @@ INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974
 -- password: pepe123
 INSERT INTO SGE.Cliente VALUES (2, -34.604048, -58.381673, '9999999999', GETDATE(), '88888888', 'DNI', 'R1', 2, 1, 0)
 
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3, 0)
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 1, 1, 0, CONVERT(datetime,'2018-11-17 10:12:53:242',121), NULL, 0)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0, NULL)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0, NULL)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3, 0, NULL)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 1, 1, 0, CONVERT(datetime,'2018-11-17 10:12:53:242',121), NULL, 0, NULL)
 
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-12 20:12:53:242',121), CONVERT(datetime,'2018-03-13 06:02:13:345',121), 0)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 06:02:13:346',121), CONVERT(datetime,'2018-03-13 14:08:23:545',121), 1)
