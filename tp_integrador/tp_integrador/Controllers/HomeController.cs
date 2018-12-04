@@ -249,6 +249,33 @@ namespace tp_integrador.Controllers
             return View("CargarTransformadores");
         }
 
+        public ActionResult AltaDispositivo()
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult NuevoTemplateDispositivo(DispositivoGenerico dispositivo)
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+            Administrador adm = (Administrador)Session["Usuario"];
+            adm.NuevoTemplateDisp(dispositivo);
+
+            return View("LoadTransformadoresJson");
+        }
+
+        public ActionResult ConsumoHogar()
+        {
+            if (!SessionStateOK()) return View("Index");
+            if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+            return View();
+        }
+
         [HttpPost]
         public ActionResult LoadTransformadoresJson(HttpPostedFileBase file)
         {

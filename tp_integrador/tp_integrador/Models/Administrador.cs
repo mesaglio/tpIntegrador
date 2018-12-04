@@ -109,6 +109,11 @@ namespace tp_integrador.Models
             return vs;
             }
 
+        public void NuevoTemplateDisp(DispositivoGenerico dispositivo)
+        {
+            ORM.Instancia.Insert(dispositivo);
+        }
+
         public void UpdateMyData(Administrador admUpdate)
         {
             this.apellido = admUpdate.apellido;

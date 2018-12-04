@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Nuevo Cliente";
+    ViewBag.Title = "Alta Dispositivo";
 }
 
 <!-- Bootstrap core CSS -->
@@ -80,22 +80,62 @@
 
             <div class="container" style="margin-left:20px; overflow:auto;">
 
- 
-                
 
                 <hr />
                 <div class="container" style="width:760px;">
                     <div class="card-deck mb-3 text-center">
 
+                        <div class="card-body">
+                            <div class="file-field">
 
-                                <div class="file-field">
-                                    CARGADO CORRECTAMENTE
-                                </div>
+                                @model tp_integrador.Models.DispositivoGenerico
+                                @using (Html.BeginForm("NuevoTemplateDispositivo", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                         
+                                    <div class="top-row">
+                                        <div class="field-wrap">
+                                            <label>
+                                                Dispositivo <span class="req">*</span>
+                                            </label>
+                                            @Html.TextBoxFor(m => m.Dispositivo)
+                                        </div>
+                                    </div>
+                                    <div class="top-row">
+                                        <div class="field-wrap">
+                                            <label>
+                                                Descripcion <span class="req">*</span>
+                                            </label>
+                                            @Html.TextBoxFor(m => m.Concreto)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap">
+                                        <label>
+                                            Inteligente <span class="req">*</span>
+                                        </label>
+                                        @Html.CheckBoxFor(m => m.Inteligente)
+                                    </div>
 
-                        </div>
 
+                                    <div class="field-wrap">
+                                        <label>
+                                            Bajo Consumo <span class="req">*</span>
+                                        </label>
+                                        @Html.CheckBoxFor(m => m.Bajoconsumo)
+                                    </div>
+
+                                    <div class="field-wrap">
+                                        <label>
+                                            Consumo <span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(m => m.Consumo)
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>
+                                }
                             </div>
                         </div>
+
 
                     </div>
                 </div>
@@ -106,7 +146,7 @@
                         <strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
                     </div>
                 </div>
-                
+
 
             </div>
 
@@ -128,3 +168,4 @@
     </script>
 
 </main>
+
