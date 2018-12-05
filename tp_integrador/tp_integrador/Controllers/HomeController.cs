@@ -48,6 +48,7 @@ namespace tp_integrador.Controllers
 				{
 					DAOUsuario.Instancia.CargarUsuario((Cliente)Session["Usuario"]);
 					Session["Admin"] = false;
+                    ODM.Instancia.generarTodosLosReportes();
 					return Cliente();
 				}
 			}
