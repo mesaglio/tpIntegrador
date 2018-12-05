@@ -29,6 +29,15 @@ namespace tp_integrador.Models
             Radar.Point = new Location(latitude, longitude);
 			Transformadores = trans;
         }
+        public double consumoZona()
+        {
+            double consumo = 0;
+            foreach(Transformador trans in Transformadores)
+            {
+                consumo += trans.CantidadEnergia();
+            }
+            return consumo;
+        }
       
         public void AgregarNuevoTransformador(Transformador unTransformador)
         {

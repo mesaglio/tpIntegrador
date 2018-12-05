@@ -221,10 +221,15 @@ namespace tp_integrador.Tests
             DateTime hoy = DateTime.Today;
             DAOzona.Instancia.InitialLoad();
             DAODispositivo.Instancia.InitialLoad();
-            ODM.Instancia.generarTodosLosReportes();
+            //ODM.Instancia.generarTodosLosReportes();
+            double consumo = 0;
+            foreach (Zona zon in DAOzona.Instancia.zonas)
+            {
+                consumo += zon.consumoZona();
+            }
             //dom.generarTodosLosReportes();
             //dom.generarReporteTransformadores(hoy);
-            DateTime dia = new DateTime(2018, 04, 01);
+            //DateTime dia = new DateTime(2018, 04, 01);
             //bool res = dom.noHayReportes(dia);
             
         }
