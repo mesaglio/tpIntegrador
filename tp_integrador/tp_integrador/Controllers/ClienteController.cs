@@ -512,7 +512,49 @@ namespace tp_integrador.Controllers
 
 			return View("GestionarDispositivos", model: cliente);
 		}
-		
+
+		public ActionResult DatosCliente()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+
+			var cliente = (Cliente)Session["Usuario"];
+
+			return View(cliente);
+		}
+
+		public ActionResult EditPasswordCliente()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+
+			return View("EditPasswordCliente");
+		}
+
+		[HttpPost]
+		public ActionResult EditPasswordCliente(PasswordDataModel data)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if ((bool)Session["Admin"]) return PermisoDenegado();
+
+			var cliente = (Cliente)Session["Usuario"];
+
+			if (data.IsOK(cliente.password))
+			{
+				cliente.CambiarContrasenia(data.NewPasswordHash);
+
+				return DatosCliente();
+			}
+			else
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Contraseña No Modificada.";
+				TempData["Mensaje"] = "Contraseña incorrecta o las contraseñas ingresadas no coinciden.";
+			}
+
+			return View("EditPasswordCliente", data);
+		}
+
 		public bool SessionStateOK()
 		{
 			if (Session["Usuario"] == null) return false;

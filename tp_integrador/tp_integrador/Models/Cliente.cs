@@ -198,17 +198,14 @@ namespace tp_integrador.Models
 			return periodo;
 		}
 
-        public PeriodoData ConsumoDelPeriodo(DateTime desde, DateTime hasta)
-        {
-            var periodo = new PeriodoData();
-            periodo.Periodo((byte)desde.Month, desde.Year);
+		private PeriodoData ConsumoDelPeriodo(PeriodoData periodo)
+		{
+			double total = 0;
 
-            double total = 0;
-            
-            foreach (var disp in dispositivos.OfType<Inteligente>())
-            {
-                total += disp.ConsumoEnElPeriodo(periodo);
-            }
+			foreach (var disp in dispositivos.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnElPeriodo(periodo);
+			}
 
 			var eliminadosEnElPeriodo = ORM.Instancia.GetDispositivosEliminadosEn(periodo);
 
@@ -218,7 +215,23 @@ namespace tp_integrador.Models
 			}
 
 			periodo.Consumo = total;
-            return periodo;
+			return periodo;
+		}
+
+		public PeriodoData ConsumoDelPeriodo(int numero, int anio)
+		{
+			var periodo = new PeriodoData();
+			periodo.Periodo((Byte)numero, anio);
+
+			return ConsumoDelPeriodo(periodo);
+		}
+
+		public PeriodoData ConsumoDelPeriodo(DateTime desde, DateTime hasta)
+        {
+            var periodo = new PeriodoData();
+            periodo.Periodo((byte)desde.Month, desde.Year);
+
+			return ConsumoDelPeriodo(periodo);
         }
 
         public List<Sensor> MisSensores()
@@ -323,8 +336,20 @@ namespace tp_integrador.Models
 			ORM.Instancia.Delete(dispositivo);
 		}
 
-        #region INTERFAZ CONTROLLER
-        public SimplexResult RunSimplex()
+		public void UpdateMyData(Cliente modificado)
+		{
+			nombre = modificado.nombre;
+			apellido = modificado.apellido;
+			domicilio = modificado.domicilio;
+			Telefono = modificado.Telefono;
+			Documento_numero = modificado.Documento_numero;
+			Documento_tipo = modificado.Documento_tipo;
+
+			ORM.Instancia.Update(this);
+		}
+
+		#region INTERFAZ CONTROLLER
+		public SimplexResult RunSimplex()
         {
             SIMPLEX sim = new SIMPLEX();
 			

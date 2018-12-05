@@ -56,8 +56,11 @@ namespace tp_integrador.Controllers
 		public ActionResult Administrador()
 		{
 			if (!SessionStateOK()) return View("Index");
+			if(!(Boolean)Session["Admin"]) return PermisoDenegado();
 
-			return View("Administrador");
+			var admin = (Administrador)Session["Usuario"];
+
+			return View("Administrador", model: admin);
 		}
 
 		public ActionResult Cliente()
@@ -97,31 +100,90 @@ namespace tp_integrador.Controllers
         }
 
         // ADMINISTRADOR
-        public ActionResult Listar()
+        public ActionResult DatosAdministrador()
         {
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
+
             Administrador adm = (Administrador)Session["Usuario"];
 
             return View(adm);
         }
 
-        public ActionResult UpdateDatos(Administrador admUpdate)
+		public ActionResult EditarAdministrador()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			Administrador adm = (Administrador)Session["Usuario"];
+			
+			return View("EditarAdministrador", adm);
+		}
+
+		[HttpPost]
+        public ActionResult EditarAdministrador(Administrador modificado)
         {
             if (!SessionStateOK()) return View("Index");
             if (!(bool)Session["Admin"]) return PermisoDenegado();
+
             Administrador adm = (Administrador)Session["Usuario"];
-            adm.UpdateMyData(admUpdate);
-            return View("Listar");
+
+			try
+			{
+				adm.UpdateMyData(modificado);
+
+				return DatosAdministrador();
+			}
+			catch (Exception ex)
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Datos No Modificados.";
+				TempData["Mensaje"] = "Error al Modificar los datos, compruebe los datos ingresados.";
+			}
+
+			return View("EditarAdministrador", adm);            
         }
 
-        public ActionResult JsonImport()
+		public ActionResult EditPasswordAdmin()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			return View("EditPasswordAdmin");
+		}
+
+		[HttpPost]
+		public ActionResult EditPasswordAdmin(PasswordDataModel data)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			Administrador adm = (Administrador)Session["Usuario"];
+
+			if (data.IsOK(adm.password))
+			{
+				adm.CambiarContrasenia(data.NewPasswordHash);
+
+				return DatosAdministrador();
+			}
+			else
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Contraseña No Modificada.";
+				TempData["Mensaje"] = "Contraseña incorrecta o las contraseñas ingresadas no coinciden.";
+			}
+
+			return View("EditPasswordAdmin", data);
+		}
+
+		public ActionResult JsonImport()
         {
 			if (!SessionStateOK()) return View("Index");
 			if (!(bool)Session["Admin"]) return PermisoDenegado();
-            ViewBag.Message = "Your contact page.";
 
-            return View();
+			var admin = (Administrador)Session["Usuario"];
+
+            return View("JsonImport", admin);
         }
 
         public ActionResult AltaAdmin()
@@ -155,7 +217,7 @@ namespace tp_integrador.Controllers
 				TempData["Mensaje"] = "Creado Correctamente :D";
 			}
 
-			return View("JsonImport");
+			return JsonImport();
 		}
 
 		public ActionResult AltaCliente()
@@ -188,8 +250,8 @@ namespace tp_integrador.Controllers
 				TempData["Alerta"] = "Cliente";
 				TempData["Mensaje"] = "Creado Correctamente :D";
 			}
-			
-			return View("JsonImport");
+
+			return JsonImport();
         }
 
         [HttpPost]
@@ -197,9 +259,9 @@ namespace tp_integrador.Controllers
         {
 			if (!SessionStateOK()) return View("Index");
 			if (!(bool)Session["Admin"]) return PermisoDenegado();
-            if (user_file == null) return View("JsonImport");
+            if (user_file == null) return JsonImport();
 
-            Administrador adm = (Administrador)Session["Usuario"];
+			Administrador adm = (Administrador)Session["Usuario"];
             
 			try
 			{
@@ -216,15 +278,15 @@ namespace tp_integrador.Controllers
 				TempData["Mensaje"] = "Error al cargar el archivo, revise que el archivo o su contenido sean correctos.";
 			}
 
-			return View("JsonImport");
-        }
+			return JsonImport();
+		}
 
 		[HttpPost]
 		public ActionResult CargarArchivoClientes(HttpPostedFileBase user_file)
 		{
 			if (!SessionStateOK()) return View("Index");
 			if (!(bool)Session["Admin"]) return PermisoDenegado();
-			if (user_file == null) return View("JsonImport");
+			if (user_file == null) return JsonImport();
 
 			Administrador adm = (Administrador)Session["Usuario"];
 			
@@ -243,7 +305,7 @@ namespace tp_integrador.Controllers
 				TempData["Mensaje"] = "Error al cargar el archivo, revise que el archivo o su contenido sean correctos.";
 			}
 
-			return View("JsonImport");
+			return JsonImport();
 		}
 
 		public ActionResult Maps()
@@ -383,6 +445,59 @@ namespace tp_integrador.Controllers
 			var cliente = DAOUsuario.Instancia.GetClienteFromDB(idCliente);
 
 			return View("ConsultaConsumoHogar", cliente);
+		}
+
+		[HttpPost]
+		public ActionResult ModificarCliente(int idCliente)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			return EditarCliente(idCliente);
+		}
+
+		public ActionResult EditarCliente(int idCliente)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			var cliente = DAOUsuario.Instancia.GetClienteFromDB(idCliente);
+
+			return View("EditarCliente", cliente);
+		}
+
+		[HttpPost]
+		public ActionResult EditarCliente(Cliente modificado)
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			var cliente = DAOUsuario.Instancia.GetClienteFromDB(modificado.idUsuario);
+
+			try
+			{
+				cliente.UpdateMyData(modificado);
+
+				return JsonImport();
+			}
+			catch (Exception ex)
+			{
+				TempData["MsgState"] = "alert-danger";
+				TempData["Alerta"] = "Datos No Modificados.";
+				TempData["Mensaje"] = "Error al Modificar los datos, compruebe los datos ingresados.";
+			}
+
+			return View("EditarCliente", modificado);
+		}
+
+		public ActionResult ConsumoZonas()
+		{
+			if (!SessionStateOK()) return View("Index");
+			if (!(bool)Session["Admin"]) return PermisoDenegado();
+
+			var lista = DAOzona.Instancia.zonas;
+
+			return View("ConsumoZonas", lista);
 		}
 
 		public bool SessionStateOK()

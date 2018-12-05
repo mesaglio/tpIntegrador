@@ -11,13 +11,15 @@ namespace tp_integrador.Models
     public class DAOUsuario
     {
 		private static DAOUsuario _instancia;
-		private Timer timer;
+		private Timer timerSimplex;
+		private Timer timerPrimeroDeMes;
         public List<Usuarios> listusuarios;
 		       
         private DAOUsuario()
         {
 			listusuarios = new List<Usuarios>();
 			IniciarAutoSimplex();
+			IniciarPrimeroDeMes();
         }
 
 		public static DAOUsuario Instancia
@@ -70,14 +72,14 @@ namespace tp_integrador.Models
 		public void IniciarAutoSimplex()
 		{
 			var startTimeSpan = TimeSpan.Zero;
-			var periodTimeSpan = TimeSpan.FromDays(30);
+			var periodTimeSpan = TimeSpan.FromDays(15);
 
-			timer = new Timer((e) => {	AutoSimplex(); }, null, startTimeSpan, periodTimeSpan);
+			timerSimplex = new Timer((e) => {	AutoSimplex(); }, null, startTimeSpan, periodTimeSpan);
 		}
 
 		public void StopAutoSimplex()
 		{
-			timer.Dispose();
+			timerSimplex.Dispose();
 		}
 
 		private void AutoSimplex()
@@ -107,6 +109,51 @@ namespace tp_integrador.Models
 						dispo.Apagar();
 						ORM.Instancia.Update(dispo);
 					}					
+				}
+			}
+		}
+
+		private void IniciarPrimeroDeMes()
+		{
+			var startTimeSpan = TimeSpan.Zero;
+			var periodTimeSpan = TimeSpan.FromDays(1);
+
+			timerPrimeroDeMes = new Timer((e) => { PrimeroDeMes(); }, null, startTimeSpan, periodTimeSpan);
+		}
+
+		private void PrimeroDeMes()
+		{
+			var hoy = DateTime.Now;
+
+			if (hoy.Day != 1) return;
+
+			int anio, mes;
+			if (hoy.Month == 1)
+			{
+				anio = hoy.Year - 1;
+				mes = 12;
+			}
+			else
+			{
+				anio = hoy.Year;
+				mes = hoy.Month - 1;
+			}
+
+			Recategorizar(mes, anio);			
+		}
+
+		private void Recategorizar(int mes, int anio)
+		{
+			var lista = ORM.Instancia.GetAllClientes();
+
+			Categoria categoria;
+			foreach (var cliente in lista)
+			{
+				categoria = ORM.Instancia.GetCatgoriaFor(cliente.ConsumoDelPeriodo(mes, anio).Consumo);
+				if (categoria != null)
+				{
+					cliente.Categoria = categoria;
+					ORM.Instancia.Update(cliente);
 				}
 			}
 		}

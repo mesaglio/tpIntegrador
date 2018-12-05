@@ -62,6 +62,14 @@ namespace tp_integrador.Models
 			return (u.password == password && u.usuario == usuario);
         }
 
+		public void CambiarContrasenia(string nuevoPassword)
+		{
+			if (password == nuevoPassword) return;
 
-    }
+			password = nuevoPassword;
+
+			ORM.Instancia.Update(this);
+		}
+
+	}
 }

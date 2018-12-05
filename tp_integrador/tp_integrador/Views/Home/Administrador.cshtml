@@ -1,18 +1,7 @@
-﻿@{
+﻿@model tp_integrador.Models.Administrador
+@{
 	ViewBag.Title = "Administrador";
 }
-@*
-<div class="jumbotron">
-	<p><h3>Aplicaciones</h3></p>
-
-
-	@Html.ActionLink("Cantidad de meses", "Listar", "Home", "/Home/listar", new { @class = "btn btn-primary btn-lg" })
-
-	@Html.ActionLink("Importar desde json", "JsonImport", "Home", "/Home/JsonImport", new { @class = "btn btn-primary btn-lg" })
-	@Html.ActionLink("Reportes", "Reporte", "Home", "/Home/Reporte", new { @class = "btn btn-primary btn-lg" })
-	@Html.ActionLink("Cargar Transformadores", "CargarTransformadores", "Home", "/Home/CargarTransformadores", new { @class = "btn btn-primary btn-lg" })
-</div>
-*@
 
 <!-- Bootstrap core CSS -->
 <link href="~/Content/bootstrap.min.css" rel="stylesheet">
@@ -26,70 +15,106 @@
 
 			<!-- SIDEBAR -->
 			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
+				<div class="sidebar-sticky">
 
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
-                                <span data-feather="home"></span>
-                                Consumo Hogares <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("AltaDispositivo", "Home")">
-                                <span data-feather="monitor"></span>
-                                Alta Dispositivos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("JsonImport", "Home")" class="nav-link">
-                                <span data-feather="user-plus"></span>
-                                Alta de Usuarios
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
-                                <span data-feather="file"></span>
-                                Cargar Archivo de Transformadores
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Listar", "Home")" class="nav-link">
-                                <span data-feather="edit"></span>
-                                Mis Datos
-                            </a>
-                        </li>
-                    </ul>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
+								<span data-feather="home"></span>
+								Consumo Hogares <span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("AltaDispositivo", "Home")">
+								<span data-feather="monitor"></span>
+								Alta Dispositivos
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("JsonImport", "Home")" class="nav-link">
+								<span data-feather="user-plus"></span>
+								Alta de Usuarios
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("CargarTransformadores", "Home")" class="nav-link">
+								<span data-feather="file"></span>
+								Cargar Archivo de Transformadores
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("ConsumoZonas", "Home")" class="nav-link">
+								<span data-feather="file"></span>
+								Consumos Por Zona
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("DatosAdministrador", "Home")" class="nav-link">
+								<span data-feather="edit"></span>
+								Mis Datos
+							</a>
+						</li>
+					</ul>
 
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Reportes</span>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a href="@Url.Action("ReportesPorCliente", "Home" )" class="nav-link">
-                                <span data-feather="file-text"></span>
-                                - Reportes por cliente -
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home" )">
-                                <span data-feather="file-text"></span>
-                                - Reporte por transformador -
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Reportes", "Home" )">
-                                <span data-feather="file-text"></span>
-                                - Reporte Inteligente vs Estandar -
-                            </a>
-                        </li>
-                    </ul>
+					<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+						<span>Reportes</span>
+					</h6>
+					<ul class="nav flex-column mb-2">
+						<li class="nav-item">
+							<a href="@Url.Action("ReportesPorCliente", "Home" )" class="nav-link">
+								<span data-feather="file-text"></span>
+								- Reportes por cliente -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home" )">
+								<span data-feather="file-text"></span>
+								- Reporte por transformador -
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="@Url.Action("Reportes", "Home" )">
+								<span data-feather="file-text"></span>
+								- Reporte Inteligente vs Estandar -
+							</a>
+						</li>
+					</ul>
 
-
-                </div>
+				</div>
 			</nav>
 			<!-- Fin Sidebar -->
 
+			<div class="container" style="overflow:auto;">
+
+				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+					<h1 class="display-4">Bienvenido @Html.DisplayFor(model => model.nombre)!</h1>					
+				</div>
+
+				<hr />
+				<div class="container" style="width:660px; margin-top:40px;">
+					<div class="card-deck mb-3 text-center">
+
+						<!-- Tiempo Trabajando -->
+						<div class="container" style="width:300px;">
+							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:200px;">
+								<div class="card-header">
+									<h4 class="my-0 font-weight-normal">Trabaja Aqui Hace</h4>
+								</div>
+								@{var meses = Model.CantMeses();}
+								<div class="card-body">
+									<h1 class="card-title pricing-card-title">@meses<small class="text-muted"> Meses</small></h1>
+									<ul class="list-unstyled mt-3 mb-4">
+										<li>Desde @Model.AltaSistema</li>										
+									</ul>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				
+
+			</div>
 
 
 		</div>
@@ -109,37 +134,6 @@
 			feather.replace()
 	</script>
 
-	<!-- Graphs -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-	<script>
-			var ctx = document.getElementById("myChart");
-			var myChart = new Chart(ctx, {
-				type: 'line',
-				data: {
-					labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-					datasets: [{
-						data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-						lineTension: 0,
-						backgroundColor: 'transparent',
-						borderColor: '#007bff',
-						borderWidth: 4,
-						pointBackgroundColor: '#007bff'
-					}]
-				},
-				options: {
-					scales: {
-						yAxes: [{
-							ticks: {
-								beginAtZero: false
-							}
-						}]
-					},
-					legend: {
-						display: false,
-					}
-				}
-			});
-	</script>
 </main>
 
 

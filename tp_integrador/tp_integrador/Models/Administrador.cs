@@ -13,6 +13,7 @@ namespace tp_integrador.Models
         public int CantMeses()
         {
             return Math.Abs(DateTime.Now.Year - AltaSistema.Year) * 12 + (DateTime.Now.Month - AltaSistema.Month);
+			
         }
 
         #region Carga de datos
@@ -140,9 +141,9 @@ namespace tp_integrador.Models
             this.nombre = admUpdate.nombre;
             this.domicilio = admUpdate.domicilio;
             
-            ORM.Instancia.Update(this);
-            
+            ORM.Instancia.Update(this);            
         }
-        #endregion
-    }
+		
+		#endregion
+	}
 }

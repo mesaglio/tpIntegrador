@@ -193,6 +193,7 @@
     <Compile Include="Models\CargarJson.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\ODM.cs" />
+    <Compile Include="Models\PasswordDataModel.cs" />
     <Compile Include="Models\Reporte.cs" />
     <Compile Include="Models\ReporteUser.cs" />
     <Compile Include="Models\ReporteDispo.cs" />
@@ -336,10 +337,9 @@
     <Content Include="Views\Cliente\AltaSensor.cshtml" />
     <Content Include="Views\Reportes\ReportePorTransformador.cshtml" />
     <Content Include="Views\Reportes\Reportes.cshtml" />
-    <Content Include="Views\Home\NuevoUsuario.cshtml" />
     <Content Include="Views\Home\AltaAdmin.cshtml" />
     <Content Include="Views\Home\AltaCliente.cshtml" />
-    <Content Include="Views\Home\Listar.cshtml" />
+    <Content Include="Views\Home\EditarAdministrador.cshtml" />
     <Content Include="Views\Cliente\EditarSensor.cshtml" />
     <Content Include="Views\Cliente\EditarRegla.cshtml" />
     <Content Include="Views\Cliente\EditarActuador.cshtml" />
@@ -347,6 +347,12 @@
     <Content Include="Views\Home\AltaDispositivo.cshtml" />
     <Content Include="Views\Home\ConsumoHogar.cshtml" />
     <Content Include="Views\Home\ConsultaConsumoHogar.cshtml" />
+    <Content Include="Views\Home\DatosAdministrador.cshtml" />
+    <Content Include="Views\Home\EditPasswordAdmin.cshtml" />
+    <Content Include="Views\Cliente\DatosCliente.cshtml" />
+    <Content Include="Views\Cliente\EditPasswordCliente.cshtml" />
+    <Content Include="Views\Home\EditarCliente.cshtml" />
+    <Content Include="Views\Home\ConsumoZonas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

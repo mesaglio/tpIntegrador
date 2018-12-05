@@ -1,4 +1,4 @@
-﻿
+﻿@model tp_integrador.Models.Administrador
 @{
 	ViewBag.Title = "JsonImport";
 }
@@ -43,7 +43,13 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Listar", "Home")" class="nav-link">
+							<a href="@Url.Action("ConsumoZonas", "Home")" class="nav-link">
+								<span data-feather="file"></span>
+								Consumos Por Zona
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("DatosAdministrador", "Home")" class="nav-link">
 								<span data-feather="edit"></span>
 								Mis Datos
 							</a>
@@ -86,6 +92,7 @@
 				</div>
 
 				<hr />
+				<!-- ALTA USUARIOS -->
 				<div class="container">
 					<div class="row text-center">
 						<div class="col-sm-6">@Html.ActionLink("Nuevo Cliente", "AltaCliente", null, new { @class = "btn btn-lg btn-block btn-primary col", style = "width:300px; float:right;" })</div>
@@ -94,6 +101,7 @@
 				</div>
 
 				<hr />
+				<!-- CARGAR USUARIOS POR JSON -->
 				<div class="container" style="width:760px;">
 					<div class="card-deck mb-3 text-center">
 
@@ -138,6 +146,25 @@
 						</div>
 
 					</div>
+				</div>
+				<hr />
+
+				<!-- MODIFICAR CLIENTES -->
+				<h4 for="country" class="mb-3" style="margin-top:20px;">Editar Clientes</h4>
+				<div class="container" style="margin-bottom:40px; width:500px;">
+					@using (Html.BeginForm("ModificarCliente", "Home", FormMethod.Post, new { @class = "row" }))
+					{
+						<fieldset style="width:390px;">
+							<select class="custom-select d-block w-100" name="idCliente" required>
+								<option value="">Seleccione un Cliente...</option>
+								@foreach (var item in Model.GetClientesIDUsername())
+								{
+									<option value=@item.Value>@item.Key</option>
+								}
+							</select>
+						</fieldset>
+						<button type="submit" class="btn btn-lg btn-block btn-primary" style="width:100px; height:30px;margin-left: 10px;align-self: center; font: 12px arial;">Editar</button>
+					}
 				</div>
 
 				@if (TempData["Mensaje"] != null)

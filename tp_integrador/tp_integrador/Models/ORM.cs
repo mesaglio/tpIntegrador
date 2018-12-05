@@ -509,16 +509,32 @@ namespace tp_integrador.Models
 			var data = Query(String.Format(query, idCategoria)).Tables[0];
 			if (data.Rows.Count == 0) return null;
 
+			return GetCategoriaFromData(data.Rows[0]);
+		}
+
+		public Categoria GetCatgoriaFor(double consumo)
+		{
+			var query = "SELECT * FROM SGE.Categoria WHERE '{0}' BETWEEN categ_consumo_min AND categ_consumo_max";
+			var data = Query(String.Format(query, consumo)).Tables[0];
+			if (data.Rows.Count != 0) return null;
+
+			return GetCategoriaFromData(data.Rows[0]);
+		}
+
+		private Categoria GetCategoriaFromData(DataRow data)
+		{			
 			int cmin, cmax;
 			decimal carfijo, carvar;
 
-			cmin = (Int16)data.Rows[0]["categ_consumo_min"];
-			cmax = (Int16)data.Rows[0]["categ_consumo_max"];
-			carfijo = (Decimal)data.Rows[0]["categ_cargoFijo"];
-			carvar = (Decimal)data.Rows[0]["categ_cargoVariable"];
+			string id = data["categ_idCategoria"].ToString();
 
-			return new Categoria(idCategoria, cmin, cmax, carfijo, carvar);
-		}
+			cmin = (Int16)data["categ_consumo_min"];
+			cmax = (Int16)data["categ_consumo_max"];
+			carfijo = (Decimal)data["categ_cargoFijo"];
+			carvar = (Decimal)data["categ_cargoVariable"];
+
+			return new Categoria(id, cmin, cmax, carfijo, carvar);
+		}				
 
 		// ------------------------------------ INSERTS ------------------------------------
 

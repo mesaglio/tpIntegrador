@@ -43,7 +43,13 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Listar", "Home")" class="nav-link">
+							<a href="@Url.Action("ConsumoZonas", "Home")" class="nav-link">
+								<span data-feather="file"></span>
+								Consumos Por Zona
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("DatosAdministrador", "Home")" class="nav-link">
 								<span data-feather="edit"></span>
 								Mis Datos
 							</a>
@@ -82,7 +88,7 @@
 				
 				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
 					<h1 class="display-4">Reportes Por Cliente</h1>
-					<p class="lead">Reporte del consumo actual de todos los clientes</p>
+					<p class="lead">Reporte del consumo actual y del periodo actual de todos los clientes</p>
 				</div>
 
 				<hr />
@@ -92,8 +98,10 @@
 						<thead>
 							<tr>
 								<th>Username</th>
+								<th>Categoria</th>
 								<th>Puntos</th>
-								<th>Consumo</th>								
+								<th>Consumo Actual</th>
+								<th>Consumo del Periodo</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -104,7 +112,9 @@
 									{
 										<tr>
 											<td>@Html.DisplayFor(model => cliente.usuario)</td>
+											<td>@Html.DisplayFor(model => cliente.Categoria.IdCategoria)</td>
 											<td>@Html.DisplayFor(model => cliente.Puntos)</td>
+											<td>@Html.Raw(cliente.ConsumoActual())</td>
 											<td>@Html.Raw(cliente.ConsumoDelPeriodoActual().Consumo)</td>
 										</tr>
 									}

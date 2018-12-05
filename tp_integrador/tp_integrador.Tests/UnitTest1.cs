@@ -225,7 +225,7 @@ namespace tp_integrador.Tests
             double consumo = 0;
             foreach (Zona zon in DAOzona.Instancia.zonas)
             {
-                consumo += zon.consumoZona();
+                consumo += zon.ConsumoZona();
             }
             //dom.generarTodosLosReportes();
             //dom.generarReporteTransformadores(hoy);
