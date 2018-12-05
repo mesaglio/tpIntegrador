@@ -21,10 +21,13 @@
 
 			@if (Session["Admin"] != null)
 			{
-				if ((Boolean)Session["Admin"]){@Html.ActionLink("SGE", "Administrador", "Home", null, new { @class = "navbar-brand" })}
-				else {@Html.ActionLink("SGE", "Cliente", "Home", null, new { @class = "navbar-brand" })}
-			}
-			else {@Html.ActionLink("SGE", "Index", "Home", null, new { @class = "navbar-brand" })}
+				if ((Boolean)Session["Admin"])
+				{@Html.ActionLink("SGE", "Administrador", "Home", null, new { @class = "navbar-brand" })}
+			else
+			{@Html.ActionLink("SGE", "Cliente", "Home", null, new { @class = "navbar-brand" })}
+	}
+	else
+	{@Html.ActionLink("SGE", "Index", "Home", null, new { @class = "navbar-brand" })}
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -35,15 +38,51 @@
 					<li class="nav-item">
 						@Html.ActionLink("Contacto", "Contact", "Home", null, new { @class = "nav-link" })
 					</li>
-
 					<li class="nav-item">
 						@Html.ActionLink("Mapa de Transformadores", "Maps", "Home", null, new { @class = "nav-link" })
 					</li>
+
+					@if (Session["IDUsuario"] != null)
+					{
+						if (!(Boolean)Session["Admin"])
+						{
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
+								<div class="dropdown-menu" aria-labelledby="dropdown01">
+									<a class="dropdown-item" href="@Url.Action("Cliente", "Home")">Estado del Hogar</a>
+									<a class="dropdown-item" href="@Url.Action("ConsumoPorPeriodo", "Cliente")">Consumo por Periodo</a>
+									<a class="dropdown-item" href="@Url.Action("CargarArchivoDispositivos", "Cliente")">Cargar Archivo de Dispositivo</a>
+									<a class="dropdown-item" href="@Url.Action("Simplex", "Cliente")">Simplex</a>
+									<a class="dropdown-item" href="@Url.Action("GestionarDispositivos", "Cliente")">Gestionar Dispositivos</a>
+									<a class="dropdown-item" href="@Url.Action("GestionarSensores", "Cliente")">Gestionar Sensores</a>
+									<a class="dropdown-item" href="@Url.Action("DatosCliente", "Cliente")">Mis Datos</a>
+								</div>
+							</li>
+						}
+						else
+						{
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
+								<div class="dropdown-menu" aria-labelledby="dropdown02">
+									<a class="dropdown-item" href="@Url.Action("ConsumoHogar", "Home")">Consumo Hogares</a>
+									<a class="dropdown-item" href="@Url.Action("AltaDispositivo", "Home")">Alta Dispositivos</a>
+									<a class="dropdown-item" href="@Url.Action("JsonImport", "Home")">Alta de Usuarios</a>
+									<a class="dropdown-item" href="@Url.Action("CargarTransformadores", "Home")">Cargar Archivo de Transformadores</a>
+									<a class="dropdown-item" href="@Url.Action("ConsumoZonas", "Home")">Consumos Por Zona</a>
+									<a class="dropdown-item" href="@Url.Action("DatosAdministrador", "Home")">Mis Datos</a>
+									<a class="dropdown-item" href="@Url.Action("ReportesPorCliente", "Home" )">Reportes por cliente</a>
+									<a class="dropdown-item" href="@Url.Action("ReportePorTransformador", "Home" )">Reporte por transformador</a>
+									<a class="dropdown-item" href="@Url.Action("Reportes", "Home" )">Reporte Inteligente vs Estandar</a>
+								</div>
+							</li>
+						}
+					}
 				</ul>
 
 				<form class="form-inline mt-2 mt-md-0">
 					@if (Session["IDUsuario"] == null) { }
-					else {@Html.ActionLink("Cerrar Sesión", "Logout", "Home", null, new { @class = "btn btn-outline-primary" })}
+					else
+					{@Html.ActionLink("Cerrar Sesión", "Logout", "Home", null, new { @class = "btn btn-outline-primary" })}
 				</form>
 
 			</div>
@@ -51,7 +90,7 @@
 	</header>
 
 	@RenderBody()
-	
+
 	<footer class="footer fixed-bottom">
 		<div class="container">
 			<span class="text-muted">@DateTime.Now.Year - Sistema de Gesti&oacute;n Energ&eacute;tica - EnCasaCompilaba</span>
@@ -65,6 +104,12 @@
 	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 	<script src="~/Scripts/popper.min.js"></script>
 	<script src="~/Scripts/bootstrap.min.js"></script>
+	
+	<!-- Icons -->
+	<script src="https://unpkg.com/feather-icons"></script>
+	<script>
+		feather.replace()
+	</script>
 
 	@RenderSection("scripts", required: false)
 </body>
