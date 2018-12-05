@@ -145,7 +145,7 @@
 								{
 									<tr>
 										<td style="width:68px;">
-											@Html.ActionLink("Eliminar", "BajaDispositivo", "Cliente", new { idD = item.IdDispositivo, idC = item.IdCliente, numero = item.Numero }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary" })
+											@Html.ActionLink("Eliminar", "BajaDispositivo", "Cliente", new { idD = item.IdDispositivo, idC = item.IdCliente, numero = item.Numero }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary", onclick = "return confirm('¿ Desea Eliminar el Dispositivo: " + item.Nombre + " ?');" })
 										</td>
 										<td>@Html.DisplayFor(modelItem => item.Nombre)</td>
 										@if (item.EsInteligente)
@@ -192,20 +192,6 @@
 
 		</div>
 	</div>
-
-	<!-- Bootstrap core JavaScript
-	================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-	<script src="~/Scripts/popper.min.js"></script>
-	<script src="~/Scripts/bootstrap.min.js"></script>
-
-	<!-- Icons -->
-	<script src="https://unpkg.com/feather-icons"></script>
-	<script>
-		feather.replace()
-	</script>
 
 </main>
 
