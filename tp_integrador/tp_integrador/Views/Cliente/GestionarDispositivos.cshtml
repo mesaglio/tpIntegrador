@@ -145,7 +145,7 @@
 								{
 									<tr>
 										<td style="width:68px;">
-											@Html.ActionLink("Eliminar", "BajaDispositivo", "Cliente", new { idD = item.IdDispositivo, idC = item.IdCliente, numero = item.Numero }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary" })
+											@Html.ActionLink("Eliminar", "BajaDispositivo", "Cliente", new { idD = item.IdDispositivo, idC = item.IdCliente, numero = item.Numero }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary", onclick = "return confirm('¿ Desea Eliminar el Dispositivo: " + item.Nombre + " ?');" })
 										</td>
 										<td>@Html.DisplayFor(modelItem => item.Nombre)</td>
 										@if (item.EsInteligente)

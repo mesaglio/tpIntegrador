@@ -108,7 +108,7 @@
 									{
 										<tr>
 											<td style="width:68px;">
-												@Html.ActionLink("Eliminar", "BajaSensor", "Cliente", new { idSensor = sensor.idSensor }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary" })
+												@Html.ActionLink("Eliminar", "BajaSensor", "Cliente", new { idSensor = sensor.idSensor }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary", onclick = "return confirm('¿ Desea Eliminar el Sensor: " + sensor.TipoSensor + " ?');" })
 											</td>
 											<td>@Html.DisplayFor(item => sensor.TipoSensor)</td>
 											<td>@Html.DisplayFor(item => sensor.Magnitud)</td>
@@ -180,7 +180,7 @@
 									{
 										<tr>
 											<td style="width:68px;">
-												@Html.ActionLink("Eliminar", "BajaRegla", "Cliente", new { idRegla = regla.idRegla }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary" })
+												@Html.ActionLink("Eliminar", "BajaRegla", "Cliente", new { idRegla = regla.idRegla }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary", onclick = "return confirm('¿ Desea Eliminar la Regla: " + regla.GetExpresion() + " ?');" })
 											</td>
 											<td>@Html.DisplayFor(modelRegla => regla.Detalle)</td>
 											<td>@Html.DisplayFor(modelRegla => regla.Operador)</td>
@@ -256,7 +256,7 @@
 									{
 										<tr>
 											<td style="width:68px;">
-												@Html.ActionLink("Eliminar", "BajaActuador", "Cliente", new { idActuador = actuador.IdActuador }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary" })
+												@Html.ActionLink("Eliminar", "BajaActuador", "Cliente", new { idActuador = actuador.IdActuador }, new { @style = "font: 12px arial; background-color:crimson; border-color:crimson; width:64px;", @class = "btn btn-sm btn-block btn-primary", onclick = "return confirm('¿ Desea Eliminar el Actuador: " + actuador.ActuadorTipo + " ?');" })
 											</td>
 											<td>@Html.DisplayFor(modelActuador => actuador.ActuadorTipo)</td>
 											@if (actuador.Dispositivos.Count != 0)
