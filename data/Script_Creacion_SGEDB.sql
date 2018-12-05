@@ -126,6 +126,7 @@ CREATE TABLE SGE.Sensor (
   sensor_idCliente INT NOT NULL,
   sensor_detalle VARCHAR(45),
   sensor_magnitud INT,
+  sensor_eliminado DATETIME,
   PRIMARY KEY (sensor_idSensor),
   FOREIGN KEY (sensor_idCliente) REFERENCES SGE.Cliente (clie_idUsuario))
 GO
@@ -183,6 +184,7 @@ CREATE TABLE SGE.DispositivoPorCliente (
   dpc_fechaEstado DATETIME,
   dpc_usoDiario TINYINT,
   dpc_convertido BIT NOT NULL,
+  dpc_eliminado DATETIME,
   PRIMARY KEY (dpc_idUsuario, dpc_idDispositivo, dpc_numero),
   FOREIGN KEY (dpc_idUsuario) REFERENCES SGE.Cliente (clie_idUsuario),
   FOREIGN KEY (dpc_idDispositivo) REFERENCES SGE.DispositivoGenerico (disp_idDispositivo))
@@ -232,13 +234,14 @@ CREATE TABLE SGE.ActuadorPorRegla (
 GO
 
 -- -----------------------------------------------------
--- Table SGE.ActuadorPorRegla
+-- Table SGE.EstadoSensor
 -- -----------------------------------------------------
 
 CREATE TABLE SGE.EstadoSensor (
+  esensor_idEstadoSensor INT IDENTITY,
   esensor_idSensor INT NOT NULL,
   esensor_magnitud INT NOT NULL,
-  PRIMARY KEY (esensor_idSensor, esensor_magnitud),
+  PRIMARY KEY (esensor_idEstadoSensor, esensor_idSensor, esensor_magnitud),
   FOREIGN KEY (esensor_idSensor) REFERENCES SGE.Sensor (sensor_idSensor))
 GO
 
@@ -246,15 +249,15 @@ GO
 -- Insert
 -- -----------------------------------------------------
 
-INSERT INTO SGE.Categoria VALUES ('R1',150,0,18.76,0.644)
-INSERT INTO SGE.Categoria VALUES ('R2',325,150,35.32,0.644)
-INSERT INTO SGE.Categoria VALUES ('R3',400,325,60.71,0.681)
-INSERT INTO SGE.Categoria VALUES ('R4',450,325,71.74,0.738)
-INSERT INTO SGE.Categoria VALUES ('R5',500,450,110.38,0.794)
-INSERT INTO SGE.Categoria VALUES ('R6',600,500,220.75,0.832)
-INSERT INTO SGE.Categoria VALUES ('R7',700,600,443.59,0.851)
-INSERT INTO SGE.Categoria VALUES ('R8',1400,700,545.96,0.851)
-INSERT INTO SGE.Categoria VALUES ('R9',1400,0,887.19,0.851)
+INSERT INTO SGE.Categoria VALUES ('R1',0,150,18.76,0.644)
+INSERT INTO SGE.Categoria VALUES ('R2',150,325,35.32,0.644)
+INSERT INTO SGE.Categoria VALUES ('R3',325,400,60.71,0.681)
+INSERT INTO SGE.Categoria VALUES ('R4',450,450,71.74,0.738)
+INSERT INTO SGE.Categoria VALUES ('R5',450,500,110.38,0.794)
+INSERT INTO SGE.Categoria VALUES ('R6',500,600,220.75,0.832)
+INSERT INTO SGE.Categoria VALUES ('R7',600,700,443.59,0.851)
+INSERT INTO SGE.Categoria VALUES ('R8',700,1400,545.96,0.851)
+INSERT INTO SGE.Categoria VALUES ('R9',1400,32767,887.19,0.851)
 
 INSERT INTO SGE.DispositivoGenerico VALUES('Aire-Acondicionado', '3500 frigorias',1, 0, 1.163)
 INSERT INTO SGE.DispositivoGenerico VALUES('Aire-Acondicionado', '2200 frigorias', 1, 1, 1.013)
@@ -301,10 +304,10 @@ INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974
 -- password: pepe123
 INSERT INTO SGE.Cliente VALUES (2, -34.604048, -58.381673, '9999999999', GETDATE(), '88888888', 'DNI', 'R1', 2, 1, 0)
 
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0)
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3, 0)
-INSERT INTO SGE.DispositivoPorCliente VALUES (2, 1, 1, 0, CONVERT(datetime,'2018-11-17 10:12:53:242',121), NULL, 0)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0, NULL)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0, NULL)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 14, 1, NULL, NULL, 3, 0, NULL)
+INSERT INTO SGE.DispositivoPorCliente VALUES (2, 1, 1, 0, CONVERT(datetime,'2018-11-17 10:12:53:242',121), NULL, 0, NULL)
 
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-12 20:12:53:242',121), CONVERT(datetime,'2018-03-13 06:02:13:345',121), 0)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 06:02:13:346',121), CONVERT(datetime,'2018-03-13 14:08:23:545',121), 1)
@@ -312,7 +315,7 @@ INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-13 
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 06:07:55:126',121), CONVERT(datetime,'2018-03-15 23:04:35:234',121), 1)
 INSERT INTO SGE.EstadoDispositivo VALUES (2, 8, 1, CONVERT(datetime,'2018-03-15 23:04:35:235',121), CONVERT(datetime,'2018-03-17 05:06:42:332',121), 0)
 
-INSERT INTO SGE.Sensor VALUES (2, 'Sensor Temperatura', 20)
+INSERT INTO SGE.Sensor VALUES (2, 'Sensor Temperatura', 20, NULL)
 INSERT INTO SGE.Regla VALUES (1, 'Temperatura', 30, '>', 'Encender')
 INSERT INTO SGE.Actuador VALUES (2, 'Actuardor-Temperatura')
 INSERT INTO SGE.ActuadorPorRegla VALUES (1, 1)

@@ -1,15 +1,15 @@
-﻿@model tp_integrador.Models.Administrador
+﻿@model tp_integrador.Models.Cliente
 @{
-	ViewBag.Title = "Administrador";
+	ViewBag.Title = "ConsultaConsumoHogar";
 }
 
 <!-- Bootstrap core CSS -->
-<link href="~/Content/bootstrap.min.css" rel="stylesheet">
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
 <!-- Custom styles for this template -->
-<link href="~/Content/dashboard.css" rel="stylesheet">
+<link href="~/Content/dashboard.css" rel="stylesheet" />
 
-<main role="main" class="container" style="float:right;">
+<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
 		<div class="row">
 
@@ -21,7 +21,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
 								<span data-feather="home"></span>
-								Consumo Hogares <span class="sr-only">(current)</span>
+								Consumo Hogares
 							</a>
 						</li>
 						<li class="nav-item">
@@ -31,9 +31,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("JsonImport", "Home")" class="nav-link">
+							<a href="@Url.Action("JsonImport", "Home")" class="nav-link active">
 								<span data-feather="user-plus"></span>
-								Alta de Usuarios
+								Alta de Usuarios <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
@@ -61,19 +61,19 @@
 					</h6>
 					<ul class="nav flex-column mb-2">
 						<li class="nav-item">
-							<a href="@Url.Action("ReportesPorCliente", "Home" )" class="nav-link">
+							<a href="@Url.Action("ReportesPorCliente", "Home")" class="nav-link">
 								<span data-feather="file-text"></span>
 								- Reportes por cliente -
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home" )">
+							<a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home")">
 								<span data-feather="file-text"></span>
 								- Reporte por transformador -
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="@Url.Action("Reportes", "Home" )">
+							<a class="nav-link" href="@Url.Action("Reportes", "Home")">
 								<span data-feather="file-text"></span>
 								- Reporte Inteligente vs Estandar -
 							</a>
@@ -87,35 +87,68 @@
 			<div class="container" style="overflow:auto;">
 
 				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-					<h1 class="display-4">Bienvenido @Html.DisplayFor(model => model.nombre)!</h1>					
+					<h1 class="display-4">Cliente : @Html.DisplayFor(model => model.usuario)</h1>
 				</div>
 
 				<hr />
 				<div class="container" style="width:660px; margin-top:40px;">
 					<div class="card-deck mb-3 text-center">
 
-						<!-- Tiempo Trabajando -->
+						<!-- ULTIMAS MEDICIONES -->
 						<div class="container" style="width:300px;">
-							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:200px;">
+							<!-- CONSUMO ACTUAL -->
+							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:335px;">
 								<div class="card-header">
-									<h4 class="my-0 font-weight-normal">Trabaja Aqui Hace</h4>
+									<h4 class="my-0 font-weight-normal">Consumo Actual</h4>
 								</div>
-								@{var meses = Model.CantMeses();}
+								@{var consumoactual = Model.ConsumoActual();}
 								<div class="card-body">
-									<h1 class="card-title pricing-card-title">@meses<small class="text-muted"> Meses</small></h1>
+									<h1 class="card-title pricing-card-title">@consumoactual<small class="text-muted">kw/h</small></h1>
 									<ul class="list-unstyled mt-3 mb-4">
-										<li>Desde @Model.AltaSistema</li>										
+										<li>De sus Dispositivos Inteligentes</li>
+										<li>&nbsp;</li>
+										<li>&nbsp;</li>
+										<li>&nbsp;</li>
+										<li>+ <b style="font-size:large">@Model.ConsumoEstandarDiario()</b>kw.</li>
+										<li>De sus Dispositivos Estandar (Por dia)</li>
 									</ul>
 								</div>
 							</div>
 						</div>
-						
+
+
+						<!-- CONSUMO DEL PERIODO -->
+						<div class="container" style="width:330px;">
+							@{var periododata = Model.ConsumoDelPeriodoActual();}
+							<!-- CONSUMO PERIODO -->
+							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:335px;">
+								<div class="card-header">
+									<h4 class="my-0 font-weight-normal">Consumidos</h4>
+								</div>
+								<div class="card-body" ">
+									<h1 class="card-title pricing-card-title"><span id="number">@String.Format("{0:0.0000}", periododata.Consumo)</span><small class="text-muted">kw</small></h1>
+									<ul class="list-unstyled mt-3 mb-4">
+										<li>Desde el: @periododata.FechaInicio</li>
+										<li>Hasta el: @periododata.FechaFin</li>
+										<li>De sus Dispositivos Inteligentes</li>
+										<li>&nbsp;</li>
+										<li>+ <b style="font-size:large">@(Model.ConsumoEstandarDiario() * periododata.TotalDias())</b>kw.</li>
+										<li>De sus Dispositivos Estandar (Por periodo)</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
-				
+
+
+				<hr />
+				<div class="row">
+					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "ConsumoHogar", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
+				</div>
 
 			</div>
-
 
 		</div>
 	</div>
@@ -131,7 +164,7 @@
 	<!-- Icons -->
 	<script src="https://unpkg.com/feather-icons"></script>
 	<script>
-			feather.replace()
+		feather.replace()
 	</script>
 
 </main>

@@ -55,6 +55,12 @@
 								Gestionar Sensores
 							</a>
 						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("DatosCliente", "Cliente")" class="nav-link">
+								<span data-feather="edit"></span>
+								Mis Datos
+							</a>
+						</li>
 					</ul>
 				</div>
 			</nav>
@@ -75,18 +81,22 @@
                             <script>
                                 function clearcache()
                                 {
-                                    sessionStorage.removeItem('json');
+                                    
+                                    var anio = sessionStorage.getItem("anio") - 1;
+                                    sessionStorage.removeItem("anio");
+                                    if (anio > 1000) { sessionStorage.setItem("anio", anio.toString) };
                                     getObjet(1);
+                                    location.reload(true);
                                 }
                             </script>
 
-                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()" href="@Url.Action("ConsumoPorPeriodoAnterior", "Cliente")"> Anterior</a></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()" > Anterior</a></button>
 
                             <button class="btn btn-sm btn-outline-secondary">
 
                                 <a href="@Url.Action("ConsumoPorPeriodo", "Cliente")"><span data-feather="calendar"></span> @Session["anio"] </a>
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()" href="@Url.Action("ConsumoPorPeriodoProximo", "Cliente")">Proximo</a></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()">Proximo</a></button>
 
                         </div>
 					</div>
@@ -115,13 +125,12 @@
 
 	<!-- Graphs -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-	<script>
+    <script>
 
         var getObjet = function (idclietne) {
-            
-            anio =  @Session["anio"];
 
-            return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '","anio":"'+anio+'"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
+            if ((sessionStorage.getItem("anio") == null)  ) sessionStorage.setItem("anio", @Session["anio"]);
+            return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '","anio":"' +  sessionStorage.getItem("anio") + '"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
                 "credentials": "omit", "headers":
                     {
                         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
@@ -135,24 +144,24 @@
         }
         function findkey(key, array)
         {
-      
-       
+
+
                 for (var i = 0; i < array.length; i++) {
                     if (array[i].Mes === key) {
                         return array[i].ConsumoTotal;
                     }
                 }
-       
+
 
         }
-        
-        
+
+
         //getObjet(@Model.idUsuario);
          getObjet(1);
         var json = sessionStorage.getItem('json');
         var obj = JSON.parse(json);
         sessionStorage.removeItem('json');
-        if (obj == null)
+        if (obj == null || obj.length === 0)
         {
             var consumo = [, , , , , , , , , , ,];
             alert("No hay reportes para esas fechas");
@@ -162,7 +171,7 @@
         {
             var consumo = [findkey('Enero', obj), findkey('Febrero', obj), findkey('Marzo', obj), findkey('Abril', obj), findkey('Mayo', obj), findkey('Junio', obj), findkey('Julio', obj), findkey('Agosto', obj), findkey('Septiembre', obj), findkey('Octubre', obj), findkey('Noviembre', obj), findkey('Diciembre', obj)];
         }
-        var etiqueta = [       "Enero",               "Febrero",               "Marzo",               "Abril",               "Mayo",               "Junio",               "Julio",               "Agosto",               "Septiembre",               "Octubre",               "Noviembre",                "Diciembre"]
+        var etiqueta = [           "Enero",               "Febrero",               "Marzo",               "Abril",               "Mayo",               "Junio",               "Julio",               "Agosto",               "Septiembre",               "Octubre",               "Noviembre",                "Diciembre"]
         var dato = 1 ;
 
 		var ctx = document.getElementById("myChart");
@@ -192,7 +201,7 @@
 				}
 			}
 		});
-	</script>
+    </script>
 
 </main>
 

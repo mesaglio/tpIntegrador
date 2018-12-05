@@ -32,6 +32,7 @@ namespace tp_integrador.Models
 		{
 			ORM.Instancia.Insert(new EstadoSensor(idSensor, Magnitud));
 			Magnitud = magnitud;
+			ORM.Instancia.Update(this);
 			Notify();
 		}
 

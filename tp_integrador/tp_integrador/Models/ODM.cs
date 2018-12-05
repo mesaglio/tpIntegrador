@@ -9,6 +9,94 @@ namespace tp_integrador.Models
 {
     public class ODM
     {
+        private static ODM _instancia;
+        private ODM() { }
+        public static ODM Instancia
+        {
+            get
+            {
+                if (_instancia == null) _instancia = new ODM();
+                return _instancia;
+            }
+        }
+        public void generarTodosLosReportes()
+        {
+            DateTime hoy = DateTime.Today;
+            this.mapeo();
+            //DateTime hoy = new DateTime(2018, 04, 01);
+            //DateTime hoy = new DateTime(2018, 05, 01);
+            if (hoy.Day == 01)
+            {
+
+                DateTime fechaDeLosReportes = hoy.AddMonths(-1);
+                //chequear que ya no esten hechos los reportes
+                if (noHayReportes(fechaDeLosReportes))
+                {
+                    // si no esta hechos hay que hacerlos
+                    this.generarReporteDeDispositivos(fechaDeLosReportes);
+                    this.generarReporteDeUsuario(fechaDeLosReportes);
+                    this.generarReporteTransformadores(fechaDeLosReportes);
+                }
+                }
+        }
+        public void generarReporteTransformadores(DateTime fechaDelReporte)
+        {
+
+            List<Zona> zonas = ORM.Instancia.GetAllZonas();
+            List<Transformador> transformadores = new List<Transformador>();
+            foreach(Zona z in zonas) //traigo todas las zonas
+            {
+                List<Transformador> trans = ORM.Instancia.GetTransformadores(z.idZona);
+                foreach(Transformador t in trans) //traigo todos los 
+                {
+                    transformadores.Add(t);
+                }
+            }
+            //todos los transformadores en transoformadores
+            foreach(Transformador t in transformadores)
+            {
+                string consumo = t.CantidadEnergia().ToString();
+                ReporteTransf reporte = new ReporteTransf(t.id.ToString(),fechaDelReporte.Year.ToString(),fechaDelReporte.Month.ToString(), consumo);//ver tema de las fechas, falta anio mes
+                this.agregarReporteTransf(this.conection(), reporte);
+            }
+            
+        }
+        public void generarReporteDeUsuario(DateTime fechaDelReporte)//2018/03/01
+        {
+            // fin del mes del reporte
+            DateTime finDelMes = fechaDelReporte.AddMonths(1).AddDays(-1);//2018/03/31
+            //todos los clientes
+            List<Cliente> clientes = ORM.Instancia.GetAllClientes();
+            foreach(Cliente cli in clientes)
+            {
+                
+                string consumo = cli.ConsumoDelPeriodo(fechaDelReporte,finDelMes).Consumo.ToString(); // mes anterior de la fecha actual
+                ReporteUser reporte = new ReporteUser(cli.idUsuario.ToString(), fechaDelReporte.Year.ToString(), fechaDelReporte.Month.ToString(), consumo);
+                this.agregarReporteUser(this.conection(), reporte);
+            }
+        }
+        public void generarReporteDeDispositivos(DateTime fechaDelReporte)
+        {
+            DateTime finDelReporte = fechaDelReporte.AddMonths(1).AddDays(-1);
+            //todos los dispositivos
+            List<Dispositivo> dispositivos = ORM.Instancia.GetAllDispositivos();
+            List<Estandar> estandar = dispositivos.OfType<Estandar>().ToList();
+            List<Inteligente> inteligentes = dispositivos.OfType<Inteligente>().ToList();
+           foreach(Estandar d in estandar)
+                {   //Estandar
+                    string consumo = d.ConsumoEstimado().ToString();
+                    ReporteDispo reporte = new ReporteDispo(d.IdDispositivo.ToString(), fechaDelReporte.Year.ToString(), fechaDelReporte.Month.ToString(), consumo);
+                    this.agregarReporteDispo(this.conection(), reporte);
+                }
+                foreach(Inteligente d in inteligentes)
+                {   //inteligente
+                    string consumo = d.ConsumoDesdeHasta(fechaDelReporte, finDelReporte).ToString(); // mes anterior
+                    ReporteDispo reporte = new ReporteDispo(d.IdDispositivo.ToString(), fechaDelReporte.Month.ToString(), fechaDelReporte.Year.ToString(), consumo);
+                    this.agregarReporteDispo(this.conection(), reporte);
+                }
+            
+                
+        }
         public void mapeo()
         {
             BsonClassMap.RegisterClassMap<Reporte>();
@@ -79,6 +167,15 @@ namespace tp_integrador.Models
                     reportesT.DeleteOne(filtroT);
                     break;
             }
+        }
+        public bool noHayReportes(DateTime primerDiaDelMesDelReporte)
+        {
+            var data = this.conection();
+            var builderU = Builders<ReporteUser>.Filter;
+            var filtroU = builderU.Eq("anio", primerDiaDelMesDelReporte.Year) & builderU.Eq("mes", primerDiaDelMesDelReporte.Month);
+            var reportesU = data.GetCollection<ReporteUser>("userreportes");
+            var filtrado = reportesU.Find(filtroU);
+            return (filtrado.Count() == 0);
         }
             
         

@@ -1,15 +1,15 @@
 ﻿@model tp_integrador.Models.Administrador
 @{
-	ViewBag.Title = "Administrador";
+	ViewBag.Title = "DatosAdministrador";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <!-- Bootstrap core CSS -->
-<link href="~/Content/bootstrap.min.css" rel="stylesheet">
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
 <!-- Custom styles for this template -->
-<link href="~/Content/dashboard.css" rel="stylesheet">
+<link href="~/Content/dashboard.css" rel="stylesheet" />
 
-<main role="main" class="container" style="float:right;">
+<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
 		<div class="row">
 
@@ -21,7 +21,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="@Url.Action("ConsumoHogar", "Home")">
 								<span data-feather="home"></span>
-								Consumo Hogares <span class="sr-only">(current)</span>
+								Consumo Hogares
 							</a>
 						</li>
 						<li class="nav-item">
@@ -49,9 +49,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("DatosAdministrador", "Home")" class="nav-link">
+							<a href="@Url.Action("DatosAdministrador", "Home")" class="nav-link active">
 								<span data-feather="edit"></span>
-								Mis Datos
+								Mis Datos <span class="sr-only">(current)</span>
 							</a>
 						</li>
 					</ul>
@@ -61,19 +61,19 @@
 					</h6>
 					<ul class="nav flex-column mb-2">
 						<li class="nav-item">
-							<a href="@Url.Action("ReportesPorCliente", "Home" )" class="nav-link">
+							<a href="@Url.Action("ReportesPorCliente", "Home")" class="nav-link">
 								<span data-feather="file-text"></span>
 								- Reportes por cliente -
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home" )">
+							<a class="nav-link" href="@Url.Action("ReportePorTransformador", "Home")">
 								<span data-feather="file-text"></span>
 								- Reporte por transformador -
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="@Url.Action("Reportes", "Home" )">
+							<a class="nav-link" href="@Url.Action("Reportes", "Home")">
 								<span data-feather="file-text"></span>
 								- Reporte Inteligente vs Estandar -
 							</a>
@@ -84,38 +84,61 @@
 			</nav>
 			<!-- Fin Sidebar -->
 
-			<div class="container" style="overflow:auto;">
+			<div class="container" style="margin-top:20px; overflow:auto;">
 
-				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-					<h1 class="display-4">Bienvenido @Html.DisplayFor(model => model.nombre)!</h1>					
-				</div>
-
-				<hr />
-				<div class="container" style="width:660px; margin-top:40px;">
+				<div class="container" style="width:400px;">
 					<div class="card-deck mb-3 text-center">
 
-						<!-- Tiempo Trabajando -->
-						<div class="container" style="width:300px;">
-							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:200px;">
-								<div class="card-header">
-									<h4 class="my-0 font-weight-normal">Trabaja Aqui Hace</h4>
-								</div>
-								@{var meses = Model.CantMeses();}
-								<div class="card-body">
-									<h1 class="card-title pricing-card-title">@meses<small class="text-muted"> Meses</small></h1>
-									<ul class="list-unstyled mt-3 mb-4">
-										<li>Desde @Model.AltaSistema</li>										
-									</ul>
+						<!-- Alta Admin -->
+						<div class="card mb-4 shadow-sm" style="max-width:400px;">
+							<div class="card-header">
+								<h4 class="mb3">Datos</h4>
+							</div>
+							<div class="card-body">
+								<div class="file-field">
+
+									<div class="form-horizontal">
+
+										<div class="table-responsive">
+											<table class="table table-striped justify-content-">
+												<tbody>
+													<tr>
+														<td><b>Nombre</b></td>
+														<td>@Html.DisplayFor(model => model.nombre)</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td><b>Apellido</b></td>
+														<td>@Html.DisplayFor(model => model.apellido)</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td><b>Domicilio</b></td>
+														<td>@Html.DisplayFor(model => model.domicilio)</td>
+														<td></td>
+													</tr>													
+												</tbody>
+											</table>
+										</div>
+
+									</div>
+
 								</div>
 							</div>
 						</div>
-						
+
 					</div>
 				</div>
-				
+
+				<div class="container">
+					<div class="row text-center">
+						<div class="col-sm-6">@Html.ActionLink("Editar Datos", "EditarAdministrador", null, new { @class = "btn btn-lg btn-block btn-primary col", style = "width:300px; float:right;" })</div>
+						<div class="col-sm-6">@Html.ActionLink("Cambiar Contraseña", "EditPasswordAdmin", null, new { @class = "btn btn-lg btn-block btn-primary col", style = "width:300px; float:left;" })</div>
+					</div>
+				</div>
+
 
 			</div>
-
 
 		</div>
 	</div>
@@ -131,9 +154,7 @@
 	<!-- Icons -->
 	<script src="https://unpkg.com/feather-icons"></script>
 	<script>
-			feather.replace()
+		feather.replace()
 	</script>
 
 </main>
-
-

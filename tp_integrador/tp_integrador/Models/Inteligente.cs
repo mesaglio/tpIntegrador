@@ -111,9 +111,8 @@ namespace tp_integrador.Models
         }
 
 		public double ConsumoEnElPeriodo(PeriodoData periodoData)
-		{
-			if (!periodoData.EsElActual()) return 0; //Traer Datos de Mongo
-			else return ConsumoDesdeHasta(periodoData.FechaInicio, periodoData.FechaFin);
+		{			
+			return ConsumoDesdeHasta(periodoData.FechaInicio, periodoData.FechaFin);
 		}
 		
 		public void BajarTemperatura()

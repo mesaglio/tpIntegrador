@@ -53,6 +53,12 @@
 								Gestionar Sensores
 							</a>
 						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("DatosCliente", "Cliente")" class="nav-link">
+								<span data-feather="edit"></span>
+								Mis Datos
+							</a>
+						</li>
 					</ul>
 				</div>
 			</nav>
@@ -62,8 +68,8 @@
 				<p class="lead">Cargue sus dispositivos de forma sencilla a traves de un archivo json.</p>
 			</div>
 
-			<div class="container">
-				<div class="card-deck mb-3 text-center" style="margin-left:175px;">
+			<div class="container" style="width:760px;">
+				<div class="card-deck mb-3 text-center">
 
 					<!-- Inteligentes -->
 					<div class="card mb-4 shadow-sm" style="max-width:350px;">
@@ -111,7 +117,7 @@
 			@if (Model)
 			{
 				<div class="container" style="width:700px;">
-					<div class="alert alert-success" role="alert">
+					<div class="alert @TempData["MsgState"]" role="alert">
 						<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
 					</div>
 				</div>

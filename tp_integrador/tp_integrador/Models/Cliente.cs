@@ -23,7 +23,9 @@ namespace tp_integrador.Models
 
         public List<Dispositivo> DispositivosInteligentes => dispositivos.FindAll(i => i.EsInteligente);
         public List<Dispositivo> DispositivosEstandar => dispositivos.FindAll(i => !i.EsInteligente);
-        //TODO: verificar si funciona estandar
+		//TODO: verificar si funciona estandar
+
+		public Cliente() { }
 
         public Cliente(int id, string name, string lastname, string home, Location coords, string user, string clave, string phone, DateTime alta, Categoria categ, string doc_t, string doc_n, bool simplex, List<Dispositivo> disp = null) : base(id, name, lastname, home, user, clave)
         {
@@ -185,13 +187,66 @@ namespace tp_integrador.Models
 				total += disp.ConsumoEnElPeriodo(periodo);
 			}
 
+			var eliminadosEnElPeriodo = ORM.Instancia.GetDispositivosEliminadosEn(periodo);
+
+			foreach (var disp in eliminadosEnElPeriodo.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnElPeriodo(periodo);
+			}
+
 			periodo.Consumo = total;
 			return periodo;
 		}
 
-		public List<Sensor> MisSensores()
+		private PeriodoData ConsumoDelPeriodo(PeriodoData periodo)
+		{
+			double total = 0;
+
+			foreach (var disp in dispositivos.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnElPeriodo(periodo);
+			}
+
+			var eliminadosEnElPeriodo = ORM.Instancia.GetDispositivosEliminadosEn(periodo);
+
+			foreach (var disp in eliminadosEnElPeriodo.OfType<Inteligente>())
+			{
+				total += disp.ConsumoEnElPeriodo(periodo);
+			}
+
+			periodo.Consumo = total;
+			return periodo;
+		}
+
+		public PeriodoData ConsumoDelPeriodo(int numero, int anio)
+		{
+			var periodo = new PeriodoData();
+			periodo.Periodo((Byte)numero, anio);
+
+			return ConsumoDelPeriodo(periodo);
+		}
+
+		public PeriodoData ConsumoDelPeriodo(DateTime desde, DateTime hasta)
+        {
+            var periodo = new PeriodoData();
+            periodo.Periodo((byte)desde.Month, desde.Year);
+
+			return ConsumoDelPeriodo(periodo);
+        }
+
+        public List<Sensor> MisSensores()
 		{
 			return DAOSensores.Instancia.FindAllFromCliente(idUsuario);
+		}
+
+		public List<Regla> MisReglas()
+		{
+			return DAOSensores.Instancia.FindReglasCliente(idUsuario);
+		}
+
+		public List<Actuador> MisActuadores()
+		{
+			return DAOSensores.Instancia.FindActuadoresCliente(idUsuario);
 		}
 
 		public bool NuevoSensor(Sensor nuevo)
@@ -207,8 +262,94 @@ namespace tp_integrador.Models
 			return true;
 		}
 
-        #region INTERFAZ CONTROLLER
-        public SimplexResult RunSimplex()
+		public bool NuevaRegla(Regla nueva)
+		{
+			var idRegla = ORM.Instancia.GetReglaID(nueva.idSensor, nueva.Detalle, nueva.Valor, nueva.Operador, nueva.Accion);
+			if (idRegla != -1) return false;
+
+			var regla = new Regla(0,nueva.idSensor, nueva.Detalle, nueva.Operador, nueva.Valor, nueva.Accion, nueva.Actuadores);
+			DAOSensores.Instancia.CargarNuevaRegla(regla);
+
+			return true;
+		}
+
+		public bool NuevoActuador(Actuador nuevo)
+		{
+			var idActuador = ORM.Instancia.GetActuadorID(idUsuario, nuevo.ActuadorTipo);
+			if (idActuador != -1) return false;
+
+			var actuador = new Actuador(0, nuevo.ActuadorTipo, nuevo.Reglas, idUsuario, nuevo.Dispositivos);
+			DAOSensores.Instancia.CargarNuevoActuador(actuador);
+
+			return true;
+		}
+
+		public bool ModificarSensor(Sensor modificado)
+		{
+			var dbSensor = ORM.Instancia.GetSensor(idUsuario, modificado.TipoSensor);
+			if (dbSensor != null) return false;
+
+			DAOSensores.Instancia.ModificarSensor(modificado);
+			return true;
+		}
+
+		public bool ModificarRegla(Regla modificada)
+		{
+			var idRegla = ORM.Instancia.GetReglaID(modificada.idSensor, modificada.Detalle, modificada.Valor, modificada.Operador, modificada.Accion);
+			if (idRegla != -1 && idRegla != modificada.idRegla) return false;
+			
+			return DAOSensores.Instancia.ModificarRegla(modificada);			
+		}
+
+		public bool ModificarActuador(Actuador modificado)
+		{
+			var idActuador = ORM.Instancia.GetActuadorID(idUsuario, modificado.ActuadorTipo);
+			if (idActuador != -1 && idActuador != modificado.IdActuador) return false;
+
+			if (modificado.Reglas.Count == 0) return false;
+
+			DAOSensores.Instancia.ModificarActuador(modificado);
+			return true;
+		}
+
+		public void EliminarActuador(Actuador actuador)
+		{
+			DAOSensores.Instancia.EliminarActuador(actuador);
+		}
+
+		public void EliminarRegla(Regla regla)
+		{
+			DAOSensores.Instancia.EliminarRegla(regla);
+		}
+
+		public void EliminarSensor(Sensor sensor)
+		{
+			DAOSensores.Instancia.EliminarSensor(sensor);
+		}
+
+		public void EliminarDispositivo(int idDispositivo, int idCliente, int numero)
+		{
+			var dispositivo = BuscarDispositivo(idDispositivo, idCliente, numero);
+			if (dispositivo.EsInteligente) DAOSensores.Instancia.QuitarDispositivoDeActuadores(dispositivo);
+			
+			dispositivos.Remove(dispositivo);
+			ORM.Instancia.Delete(dispositivo);
+		}
+
+		public void UpdateMyData(Cliente modificado)
+		{
+			nombre = modificado.nombre;
+			apellido = modificado.apellido;
+			domicilio = modificado.domicilio;
+			Telefono = modificado.Telefono;
+			Documento_numero = modificado.Documento_numero;
+			Documento_tipo = modificado.Documento_tipo;
+
+			ORM.Instancia.Update(this);
+		}
+
+		#region INTERFAZ CONTROLLER
+		public SimplexResult RunSimplex()
         {
             SIMPLEX sim = new SIMPLEX();
 			

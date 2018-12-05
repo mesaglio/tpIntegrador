@@ -7,12 +7,20 @@ namespace tp_integrador.Models
 {
 	public class EstadoSensor
 	{
+		public int IdEstadoSensor { get; set; }
 		public int IdSensor { get; set; }
 		public int Magnitud { get; set; }
 
-		public EstadoSensor(int id, int magnitud)
+		public EstadoSensor(int idSensor, int magnitud)
 		{
-			IdSensor = id;
+			IdSensor = idSensor;
+			Magnitud = magnitud;
+		}
+
+		public EstadoSensor(int idEstadoSensor, int idSensor, int magnitud)
+		{
+			IdEstadoSensor = idEstadoSensor;
+			IdSensor = idSensor;
 			Magnitud = magnitud;
 		}
 	}

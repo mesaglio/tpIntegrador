@@ -55,6 +55,12 @@
 								Gestionar Sensores
 							</a>
 						</li>
+						<li class="nav-item">
+							<a href="@Url.Action("DatosCliente", "Cliente")" class="nav-link">
+								<span data-feather="edit"></span>
+								Mis Datos
+							</a>
+						</li>
 					</ul>
 				</div>
 			</nav>
@@ -100,12 +106,9 @@
 												</div>
 											</div>
 											<hr />
-											<div class="row" style="text-align:left">
-												<label class="control-label col-md-2" style="word-wrap:normal">Uso Diario:</label>
-												<div class="col-md-10">
-													@Html.TextBoxFor(model => model.usoDiario, new { @class = "form-control", required = true })
-													@Html.ValidationMessageFor(model => model.usoDiario, "", new { @class = "text-danger" })
-												</div>
+											<div>												
+												@Html.TextBoxFor(model => model.usoDiario, new { @class = "form-control", placeholder = "Uso Diario", @id = "usoDiario", required = true })
+												@Html.ValidationMessageFor(model => model.usoDiario, "", new { @class = "text-danger" })												
 											</div>
 											<hr />
 											<div class="container" style="width:200px;">

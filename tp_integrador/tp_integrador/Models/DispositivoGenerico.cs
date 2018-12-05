@@ -13,7 +13,9 @@ namespace tp_integrador.Models
 		public bool Inteligente { get; set; }
 		public bool Bajoconsumo { get; set; }
 		public double Consumo { get; set; }
-				
+		
+		public DispositivoGenerico() { }
+
 		public DispositivoGenerico(int ID, string dispositivo, string concreto, bool inteligente, bool bajoconsumo, double consumo)
 		{
 			Dispositivo = dispositivo;
@@ -24,6 +26,7 @@ namespace tp_integrador.Models
 			this.Consumo = consumo;
 		}
 
-		public string getNombreEntero() => (Inteligente ? "[Inteligente]" : "[Estandar]") + " " + Dispositivo + " " + Concreto;
+		public string getNombreEntero() => Dispositivo + " " + Concreto;
+		public string getNombreEnteroConEtiqueta() => (Inteligente ? "[Inteligente]" : "[Estandar]") + " " + Dispositivo + " " + Concreto;
 	}
 }

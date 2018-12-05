@@ -40,6 +40,7 @@ namespace tp_integrador.Models
 			if (type == typeof(EstadoDispositivo)) GuardarEstado(unaClase);
 			if (type == typeof(DispositivoGenerico)) GuardarTemplate(unaClase);
 			if (type == typeof(EstadoSensor)) GuardarEstadoSensor(unaClase);
+			if (type == typeof(Transformador)) GuardarTransformador(unaClase);
 		}
 
 		public void Update(dynamic unaClase)
@@ -57,7 +58,11 @@ namespace tp_integrador.Models
 
 		public void Delete(dynamic unaClase)
 		{
-
+			var type = unaClase.GetType();
+			if (type == typeof(Inteligente) || type == typeof(Estandar)) EliminarDispositivo(unaClase);
+			if (type == typeof(Sensor)) EliminarSensor(unaClase);
+			if (type == typeof(Actuador)) EliminarActuador(unaClase);
+			if (type == typeof(Regla)) EliminarRegla(unaClase);
 		}
 
 		#region Usuario
@@ -146,11 +151,10 @@ namespace tp_integrador.Models
 			return lista;
 		}
 
-		public List<Cliente> GetClientesAutoSimplex()
+		private List<Cliente> GetClientes(string query)
 		{
 			var lista = new List<Cliente>();
-
-			var query = "SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) WHERE clie_autoSimplex = 1";
+						
 			var data = Query(query).Tables[0];
 			if (data.Rows.Count == 0) return lista;
 
@@ -185,6 +189,38 @@ namespace tp_integrador.Models
 				Location coordenadas = new Location(latitud, longitud);
 
 				lista.Add(new Cliente(idCliente, nombre, apellido, domicilio, coordenadas, username, password, telefono, fechaAlta, GetCategoria(categoria), docTipo, docNum, autoSimplex, dispositivos));
+			}
+
+			return lista;
+		}
+
+		public List<Cliente> GetAllClientes()
+		{
+			return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario)");
+		}
+
+        public List<Cliente> GetAllMyClientes( string idtrafo)
+        {
+            return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) Where clie_transformador ="+ idtrafo);
+        }
+
+        public List<Cliente> GetClientesAutoSimplex()
+		{
+			return GetClientes("SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario) WHERE clie_autoSimplex = 1");			
+		}
+
+
+		public Dictionary<string, int> GetClientesIDUsername()
+		{
+			var lista = new Dictionary<string, int>();
+
+			var query = "SELECT * FROM SGE.Usuario JOIN SGE.Cliente ON (usua_idUsuario = clie_idUsuario)";
+			var data = Query(query).Tables[0];
+			if (data.Rows.Count == 0) return lista;
+
+			foreach (DataRow row in data.Rows)
+			{
+				lista.Add(row["usua_username"].ToString(), (Int32)row["clie_idUsuario"]);
 			}
 
 			return lista;
@@ -277,9 +313,11 @@ namespace tp_integrador.Models
 
 		public List<Dispositivo> GetAllDispositivos()
 		{
-			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo)";
+			var lista = new List<Dispositivo>();
+
+			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) WHERE dpc_eliminado IS NULL";
 			var data = Query(query).Tables[0];
-			if (data.Rows.Count == 0) return null;
+			if (data.Rows.Count == 0) return lista;
 
 			return GetDispositivosFromData(data);
 		}
@@ -362,6 +400,18 @@ namespace tp_integrador.Models
 			return lista;
 		}
 
+		public List<Dispositivo> GetDispositivosEliminadosEn(PeriodoData periodo)
+		{
+			var lista = new List<Dispositivo>();
+
+			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) WHERE dpc_eliminado BETWEEN CONVERT(DATETIME,'{0}',121) AND CONVERT(DATETIME,'{1}',121)";
+			var data = Query(String.Format(query, periodo.FechaInicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), periodo.FechaFin.ToString("yyyy-MM-dd HH:mm:ss.mmm"))).Tables[0];
+			if (data.Rows.Count == 0) return lista;
+
+			return GetDispositivosFromData(data);
+		}
+
+
 		// ------------------------------------ INSERTS ------------------------------------
 
 		public void GuardarDispositivo(dynamic disp)
@@ -376,8 +426,8 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
 			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121),'{5}', '{6}')";
-			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), DBNull.Value, disp.Convertido ? 1 : 0));
+			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', CONVERT(DATETIME,'{4}',121), NULL, '{5}', NULL)";
+			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), disp.Convertido ? 1 : 0));
 		}
 
 		private void GuardarEstandar(Estandar disp)
@@ -385,8 +435,8 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
 			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', '{3}', '{4}','{5}', '{6}')";
-			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, DBNull.Value, DBNull.Value, disp.usoDiario, 0));
+			query = "INSERT INTO SGE.DispositivoPorCliente VALUES ('{0}', '{1}', '{2}', NULL, NULL,'{3}', '{4}', NULL)";
+			Query(String.Format(query, disp.IdCliente, disp.IdDispositivo, disp.Numero, disp.usoDiario, 0));
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
@@ -403,7 +453,7 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
 			if (Query(String.Format(query, disp.IdDispositivo, disp.IdCliente, disp.Numero)).Tables[0].Rows.Count == 0) return;
 
-			query = "UPDATE SGE.DispositivoPorCliente SET dpc_estado = '{0}', dpc_fechaEstado = CONVERT(DATETIME,'{1}',121), dpc_convertido = '{5}' WHERE dpc_idDispositivo = '{2}' AND dpc_idUsuario = '{3}' AND dpc_numero = '{4}'";
+			query = "UPDATE SGE.DispositivoPorCliente SET dpc_estado = '{0}', dpc_fechaEstado = CONVERT(DATETIME,'{1}',121), dpc_convertido = '{5}', dpc_usoDiario = NULL WHERE dpc_idDispositivo = '{2}' AND dpc_idUsuario = '{3}' AND dpc_numero = '{4}'";
 			Query(String.Format(query, disp.Estado, disp.fechaEstado.ToString("yyyy-MM-dd HH:mm:ss.mmm"), disp.IdDispositivo, disp.IdCliente, disp.Numero, disp.Convertido ? 1 : 0));
 
 		}
@@ -419,6 +469,34 @@ namespace tp_integrador.Models
 
 		// ------------------------------------ DELETE ------------------------------------
 
+		private void EliminarDispositivo(dynamic dispositivo)
+		{
+			var type = dispositivo.GetType();
+			if (type == typeof(Inteligente)) EliminarInteligente(dispositivo);
+			if (type == typeof(Estandar)) EliminarEstandar(dispositivo);
+		}
+
+		private void EliminarInteligente(Inteligente dispositivo)
+		{
+			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
+			if (Query(String.Format(query, dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero)).Tables[0].Rows.Count == 0) return;
+
+			query = "DELETE FROM SGE.DispositivoPorActuador WHERE dpa_dpc_idDispositivo = '{0}' AND dpa_dpc_idUsuario = '{1}' AND dpa_dpc_numero = '{2}'";
+			Query(String.Format(query, dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero));
+
+			query = "UPDATE SGE.DispositivoPorCliente SET dpc_eliminado = CONVERT(DATETIME,'{0}',121) WHERE dpc_idDispositivo = '{1}' AND dpc_idUsuario = '{2}' AND dpc_numero = '{3}'";
+			Query(String.Format(query, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.mmm"), dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero));
+		}
+
+		private void EliminarEstandar(Estandar dispositivo)
+		{
+			var query = "SELECT * FROM SGE.DispositivoPorCliente WHERE dpc_idDispositivo = '{0}' AND dpc_idUsuario = '{1}' AND dpc_numero = '{2}'";
+			if (Query(String.Format(query, dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero)).Tables[0].Rows.Count == 0) return;
+
+			query = "UPDATE SGE.DispositivoPorCliente SET dpc_eliminado = CONVERT(DATETIME,'{0}',121) WHERE dpc_idDispositivo = '{1}' AND dpc_idUsuario = '{2}' AND dpc_numero = '{3}'";
+			Query(String.Format(query, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.mmm"), dispositivo.IdDispositivo, dispositivo.IdCliente, dispositivo.Numero));
+		}
+
 		#endregion
 
 		#region Categoria
@@ -431,16 +509,32 @@ namespace tp_integrador.Models
 			var data = Query(String.Format(query, idCategoria)).Tables[0];
 			if (data.Rows.Count == 0) return null;
 
+			return GetCategoriaFromData(data.Rows[0]);
+		}
+
+		public Categoria GetCatgoriaFor(double consumo)
+		{
+			var query = "SELECT * FROM SGE.Categoria WHERE '{0}' BETWEEN categ_consumo_min AND categ_consumo_max";
+			var data = Query(String.Format(query, consumo)).Tables[0];
+			if (data.Rows.Count != 0) return null;
+
+			return GetCategoriaFromData(data.Rows[0]);
+		}
+
+		private Categoria GetCategoriaFromData(DataRow data)
+		{			
 			int cmin, cmax;
 			decimal carfijo, carvar;
 
-			cmin = (Int16)data.Rows[0]["categ_consumo_min"];
-			cmax = (Int16)data.Rows[0]["categ_consumo_max"];
-			carfijo = (Decimal)data.Rows[0]["categ_cargoFijo"];
-			carvar = (Decimal)data.Rows[0]["categ_cargoVariable"];
+			string id = data["categ_idCategoria"].ToString();
 
-			return new Categoria(idCategoria, cmin, cmax, carfijo, carvar);
-		}
+			cmin = (Int16)data["categ_consumo_min"];
+			cmax = (Int16)data["categ_consumo_max"];
+			carfijo = (Decimal)data["categ_cargoFijo"];
+			carvar = (Decimal)data["categ_cargoVariable"];
+
+			return new Categoria(id, cmin, cmax, carfijo, carvar);
+		}				
 
 		// ------------------------------------ INSERTS ------------------------------------
 
@@ -636,7 +730,7 @@ namespace tp_integrador.Models
 
 		public List<Sensor> GetAllSensores()
 		{
-			var query = "SELECT * FROM SGE.Sensor";
+			var query = "SELECT * FROM SGE.Sensor WHERE sensor_eliminado IS NULL";
 			var data = Query(query).Tables[0];			
 
 			return GetSensoresFromData(data);
@@ -675,7 +769,7 @@ namespace tp_integrador.Models
 			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idCliente = '{0}' AND sensor_detalle = '{1}'";
 			if (Query(String.Format(query, sensor.idCliente, sensor.TipoSensor)).Tables[0].Rows.Count != 0) return;
 
-			query = "INSERT INTO SGE.Sensor VALUES ('{0}', '{1}', '{2}')";
+			query = "INSERT INTO SGE.Sensor VALUES ('{0}', '{1}', '{2}', NULL)";
 			Query(String.Format(query, sensor.idCliente, sensor.TipoSensor, sensor.Magnitud));
 
 			if (sensor.Observadores.Count == 0) return;
@@ -691,7 +785,7 @@ namespace tp_integrador.Models
 		private void ActualizarSensor(Sensor sensor)
 		{
 			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idSensor = '{0}'";
-			if (Query(String.Format(query, sensor.idSensor)).Tables[0].Rows.Count != 0) return;
+			if (Query(String.Format(query, sensor.idSensor)).Tables[0].Rows.Count == 0) return;
 
 			query = "UPDATE SGE.Sensor SET sensor_detalle = '{0}', sensor_magnitud = '{1}' WHERE sensor_idSensor = '{2}'";
 			Query(String.Format(query, sensor.TipoSensor, sensor.Magnitud, sensor.idSensor));
@@ -699,20 +793,29 @@ namespace tp_integrador.Models
 
 		// ------------------------------------ DELETE ------------------------------------
 
-		#endregion
+		private void EliminarSensor(Sensor sensor)
+		{
+			var query = "SELECT * FROM SGE.Sensor WHERE sensor_idSensor = '{0}'";
+			if (Query(String.Format(query, sensor.idSensor)).Tables[0].Rows.Count == 0) return;
 
+			query = "UPDATE SGE.Sensor SET sensor_eliminado = CONVERT(DATETIME,'{0}',121) WHERE sensor_idSensor = '{1}'";
+			Query(String.Format(query, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.mmm"), sensor.idSensor));
+		}
+		
+		#endregion
+		
 		#region Regla
 
 		// ------------------------------------ SELECT ------------------------------------
 
-		private int GetReglaID(int idSensor, string detalle, int valor, string operador, string accion)
+		public int GetReglaID(int idSensor, string detalle, int valor, string operador, string accion)
 		{
 			var query = "SELECT * FROM SGE.Regla WHERE regla_idSensor = '{0}' AND regla_detalle = '{1}' AND regla_valor = '{2}' AND regla_operador = '{3}' AND regla_accion = '{4}'";
 			var data = Query(String.Format(query, idSensor, detalle, valor, operador, accion)).Tables[0];
 			if (data.Rows.Count == 1) return (Int32)data.Rows[0]["regla_idRegla"];
 
 			return -1;
-		}
+		}		
 
 		private List<Regla> GetReglas(int idSensor)
 		{
@@ -756,24 +859,32 @@ namespace tp_integrador.Models
 			Query(String.Format(query, regla.idSensor, regla.Detalle, regla.Valor, regla.Operador, regla.Accion));
 
 			regla.idRegla = GetReglaID(regla.idSensor, regla.Detalle, regla.Valor, regla.Operador, regla.Accion);
-
-			foreach (Actuador a in regla.Actuadores)
-			{
-				GuardarActuador(a);
-			}
 		}
 
 		// ------------------------------------ UPDATES ------------------------------------
 
 		private void ActualizarRegla(Regla regla)
 		{
-			if (GetReglaID(regla.idSensor, regla.Detalle, regla.Valor, regla.Operador, regla.Accion) == -1) return;
-
-			var query = "UPDATE SGE.Regla SET regla_detalle = '{0}', regla_valor = '{1}', regla_operador = '{2}', regla_accion = '{3}' WHERE regla_idRegla = '{4}'";
-			Query(String.Format(query, regla.Detalle, regla.Valor, regla.Operador, regla.Accion, regla.idRegla));
+			var query = "UPDATE SGE.Regla SET regla_detalle = '{0}', regla_valor = '{1}', regla_operador = '{2}', regla_accion = '{3}', regla_idSensor = '{4}' WHERE regla_idRegla = '{5}'";
+			Query(String.Format(query, regla.Detalle, regla.Valor, regla.Operador, regla.Accion, regla.idSensor, regla.idRegla));
 		}
 
 		// ------------------------------------ DELETE ------------------------------------
+
+		private void EliminarRegla(Regla regla)
+		{
+			var query = "SELECT * FROM SGE.Regla WHERE regla_idRegla = '{0}'";
+			if (Query(String.Format(query, regla.idRegla)).Tables[0].Rows.Count == 0) return;
+
+			query = "DELETE FROM SGE.ActuadorPorRegla WHERE apr_idRegla = '{0}' AND apr_idActuador = '{1}'";
+			foreach (var actua in regla.Actuadores)
+			{
+				Query(String.Format(query, regla.idRegla, actua.IdActuador));
+			}
+
+			query = "DELETE FROM SGE.Regla WHERE regla_idRegla = '{0}'";
+			Query(String.Format(query, regla.idRegla));			
+		}
 
 		#endregion
 
@@ -816,7 +927,7 @@ namespace tp_integrador.Models
 			return new Actuador(id, detalle, reglas, cliente, GetDispositivosOfActuador(id));
 		}
 
-		private int GetActuadorID(int idCliente, string detalle)
+		public int GetActuadorID(int idCliente, string detalle)
 		{
 			var query = "SELECT * FROM SGE.Actuador WHERE actua_idCliente = '{0}' AND actua_detalle = '{1}'";
 			var data = Query(String.Format(query, idCliente, detalle)).Tables[0];
@@ -857,7 +968,7 @@ namespace tp_integrador.Models
 
 			foreach (Inteligente di in actua.Dispositivos)
 			{
-				query = "SELECT * FROM SGE.DispositivoPorActuador WHERE dpa_dpc_idActuador = '{0}' AND dpa_dpc_idUsuario = '{1}' AND dpa_dpc_idDispositivo = '{2}' AND dpa_dpc_numero = '{3}'";
+				query = "SELECT * FROM SGE.DispositivoPorActuador WHERE dpa_idActuador = '{0}' AND dpa_dpc_idUsuario = '{1}' AND dpa_dpc_idDispositivo = '{2}' AND dpa_dpc_numero = '{3}'";
 				if (Query(String.Format(query, actua.IdActuador, di.IdCliente, di.IdDispositivo, di.Numero)).Tables[0].Rows.Count == 0)
 				{
 					query = "INSERT INTO SGE.DispositivoPorActuador VALUES ('{0}', '{1}', '{2}', '{3}')";
@@ -884,27 +995,65 @@ namespace tp_integrador.Models
 				dbReglas.Add((Int32)row["apr_idRegla"]);
 			}
 
-			foreach (int regla in actua.Reglas)
+			var nuevas = actua.Reglas.FindAll(x => !dbReglas.Contains(x));
+			var quitar = dbReglas.FindAll(x => !actua.Reglas.Contains(x));
+
+			foreach (int regla in nuevas)
 			{
-				if (!dbReglas.Contains(regla))
-				{
-					query = "INSERT INTO SGE.ActuadorPorRegla VALUES ('{0}', '{1}')";
-					Query(String.Format(query, regla, actua.IdActuador));
-				}
+				query = "INSERT INTO SGE.ActuadorPorRegla VALUES ('{0}', '{1}')";
+				Query(String.Format(query, regla, actua.IdActuador));
 			}
 
-			foreach (Inteligente di in actua.Dispositivos)
-			{
-				query = "SELECT * FROM SGE.DispositivoPorActuador WHERE dpa_dpc_idActuador = '{0}' AND dpa_dpc_idUsuario = '{1}' AND dpa_dpc_idDispositivo = '{2}' AND dpa_dpc_numero = '{3}'";
-				if (Query(String.Format(query, actua.IdActuador, di.IdCliente, di.IdDispositivo, di.Numero)).Tables[0].Rows.Count == 0)
-				{
-					query = "INSERT INTO SGE.DispositivoPorActuador VALUES ('{0}', '{1}', '{2}', '{3}')";
-					Query(String.Format(query, actua.IdActuador, di.IdCliente, di.IdDispositivo, di.Numero));
-				}
+			query = "DELETE FROM SGE.ActuadorPorRegla WHERE apr_idRegla = '{0}' AND apr_idActuador = '{1}'";
+			foreach (int regla in quitar)
+			{				
+				Query(String.Format(query, regla, actua.IdActuador));
 			}
+
+			query = "SELECT * FROM SGE.DispositivoPorActuador WHERE dpa_idActuador = '{0}'";
+			data = Query(String.Format(query, actua.IdActuador)).Tables[0];
+			var dbDispoPorActua = new List<(int idC, int idD, int num)>();
+			foreach (DataRow row in data.Rows)
+			{
+				dbDispoPorActua.Add(((Int32)row["dpa_dpc_idUsuario"], (Int32)row["dpa_dpc_idDispositivo"], (Int32)row["dpa_dpc_numero"]));
+			}
+
+			var nuevosDisp = actua.Dispositivos.FindAll(x => !dbDispoPorActua.Contains((x.IdCliente, x.IdDispositivo, x.Numero)));
+			var quitarDisp = dbDispoPorActua.FindAll(x => !actua.Dispositivos.Exists(z => z.IdCliente == x.idC && z.IdDispositivo == x.idD && z.Numero == x.num));
+
+			query = "INSERT INTO SGE.DispositivoPorActuador VALUES ('{0}', '{1}', '{2}', '{3}')";
+			foreach (Inteligente di in nuevosDisp)
+			{				
+				Query(String.Format(query, actua.IdActuador, di.IdCliente, di.IdDispositivo, di.Numero));
+			}
+
+			query = "DELETE FROM SGE.DispositivoPorActuador WHERE dpa_idActuador = '{0}' AND dpa_dpc_idUsuario = '{1}' AND dpa_dpc_idDispositivo = '{2}' AND dpa_dpc_numero = '{3}'";
+			foreach (var (idC, idD, num) in quitarDisp)
+			{				
+				Query(String.Format(query, actua.IdActuador, idC, idD, num));
+			}						
 		}
 
 		// ------------------------------------ DELETE ------------------------------------
+
+		private void EliminarActuador(Actuador actuador)
+		{
+			var query = "SELECT * FROM SGE.Actuador WHERE actua_idActuador = '{0}'";
+			if (Query(String.Format(query, actuador.IdActuador)).Tables[0].Rows.Count == 0) return;
+
+			query = "DELETE FROM SGE.DispositivoPorActuador WHERE dpa_idActuador = '{0}' AND dpa_dpc_idUsuario = '{1}' AND dpa_dpc_idDispositivo = '{2}' AND dpa_dpc_numero = '{3}'";
+			foreach (var dispo in actuador.Dispositivos)
+			{				
+				Query(String.Format(query, actuador.IdActuador, dispo.IdCliente, dispo.IdDispositivo, dispo.Numero));
+			}
+
+			query = "DELETE FROM SGE.ActuadorPorRegla WHERE apr_idActuador = '{0}'";
+			Query(String.Format(query, actuador.IdActuador));
+
+			query = "DELETE FROM SGE.Actuador WHERE actua_idActuador = '{0}'";
+			Query(String.Format(query, actuador.IdActuador));
+		}
+
 		#endregion
 
 		#region EstadoDispositivo
@@ -964,13 +1113,13 @@ namespace tp_integrador.Models
 		{
 			var lista = new List<EstadoSensor>();
 
-			var query = "SELECT * FROM SGE.EstadoSensor WHERE esensor_idSensor = '{0}'";
+			var query = "SELECT * FROM SGE.EstadoSensor WHERE esensor_idSensor = '{0} ORDER BY esensor_idEstadoSensor DESC'";
 			var data = Query(String.Format(query, idSensor)).Tables[0];
 			if (data.Rows.Count == 0) return lista;
 
 			foreach (DataRow row in data.Rows)
 			{
-				lista.Add(new EstadoSensor(idSensor, (Int32)row["esensor_magnitud"]));
+				lista.Add(new EstadoSensor((Int32)row["esensor_idEstadoSensor"], idSensor, (Int32)row["esensor_magnitud"]));
 			}
 
 			return lista;
@@ -1029,10 +1178,16 @@ namespace tp_integrador.Models
 
 		// ------------------------------------ INSERTS ------------------------------------
 
+		public bool ExisteTemplate(DispositivoGenerico tdisp)
+		{
+			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_dispositivo = '{0}' AND disp_concreto = '{1}' AND disp_inteligente = '{2}' AND disp_bajoConsumo = '{3}'";
+			return (Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0, tdisp.Bajoconsumo ? 1 : 0)).Tables[0].Rows.Count != 0);			
+		}
+
 		private void GuardarTemplate(DispositivoGenerico tdisp)
 		{
-			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_dispositivo = '{0}' AND disp_concreto = '{1}' AND disp_inteligente = '{2}'";
-			if (Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0)).Tables[0].Rows.Count != 0) return;
+			var query = "SELECT * FROM SGE.DispositivoGenerico WHERE disp_dispositivo = '{0}' AND disp_concreto = '{1}' AND disp_inteligente = '{2}' AND disp_bajoConsumo = '{3}'";
+			if (Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0, tdisp.Bajoconsumo ? 1 : 0)).Tables[0].Rows.Count != 0) return;
 
 			query = "INSERT INTO SGE.DispositivoGenerico VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
 			Query(String.Format(query, tdisp.Dispositivo, tdisp.Concreto, tdisp.Inteligente ? 1 : 0, tdisp.Bajoconsumo ? 1 : 0, tdisp.Consumo));
@@ -1083,7 +1238,7 @@ namespace tp_integrador.Models
 			var dataAdapter = new SqlDataAdapter(q, conn);			
 			var commandBuilder = new SqlCommandBuilder(dataAdapter);
 			var ds = new DataSet();
-			dataAdapter.Fill(ds);			
+			dataAdapter.Fill(ds);
 			return ds;			
 		}
 

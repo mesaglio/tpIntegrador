@@ -125,6 +125,9 @@
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -185,9 +188,12 @@
     </Compile>
     <Compile Include="Models\Actuador.cs" />
     <Compile Include="Models\Administrador.cs" />
+    <Compile Include="Models\AMActuadorModel.cs" />
+    <Compile Include="Models\AMReglaModel.cs" />
     <Compile Include="Models\CargarJson.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\ODM.cs" />
+    <Compile Include="Models\PasswordDataModel.cs" />
     <Compile Include="Models\Reporte.cs" />
     <Compile Include="Models\ReporteUser.cs" />
     <Compile Include="Models\ReporteDispo.cs" />
@@ -320,16 +326,33 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\CargarTransformadores.cshtml" />
-    <Content Include="Views\Home\LoadTransformadoresJson.cshtml" />
     <Content Include="Views\Home\Administrador.cshtml" />
     <Content Include="Views\Cliente\Cliente.cshtml" />
-    <Content Include="Views\Reportes\Reportes.cshtml" />
+    <Content Include="Views\Reportes\ReportesPorCliente.cshtml" />
     <Content Include="Views\Cliente\EditarEstandar.cshtml" />
     <Content Include="Views\Cliente\ConsumoPorPeriodo.cshtml" />
     <Content Include="Views\Cliente\GestionarSensores.cshtml" />
     <Content Include="Views\Cliente\RespuestaSimplex.cshtml" />
     <Content Include="Views\Cliente\AltaRegla.cshtml" />
     <Content Include="Views\Cliente\AltaSensor.cshtml" />
+    <Content Include="Views\Reportes\ReportePorTransformador.cshtml" />
+    <Content Include="Views\Reportes\Reportes.cshtml" />
+    <Content Include="Views\Home\AltaAdmin.cshtml" />
+    <Content Include="Views\Home\AltaCliente.cshtml" />
+    <Content Include="Views\Home\EditarAdministrador.cshtml" />
+    <Content Include="Views\Cliente\EditarSensor.cshtml" />
+    <Content Include="Views\Cliente\EditarRegla.cshtml" />
+    <Content Include="Views\Cliente\EditarActuador.cshtml" />
+    <Content Include="Views\Cliente\AltaActuador.cshtml" />
+    <Content Include="Views\Home\AltaDispositivo.cshtml" />
+    <Content Include="Views\Home\ConsumoHogar.cshtml" />
+    <Content Include="Views\Home\ConsultaConsumoHogar.cshtml" />
+    <Content Include="Views\Home\DatosAdministrador.cshtml" />
+    <Content Include="Views\Home\EditPasswordAdmin.cshtml" />
+    <Content Include="Views\Cliente\DatosCliente.cshtml" />
+    <Content Include="Views\Cliente\EditPasswordCliente.cshtml" />
+    <Content Include="Views\Home\EditarCliente.cshtml" />
+    <Content Include="Views\Home\ConsumoZonas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

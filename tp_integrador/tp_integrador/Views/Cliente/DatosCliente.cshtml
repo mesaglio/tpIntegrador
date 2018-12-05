@@ -1,7 +1,7 @@
-﻿@model tp_integrador.Models.Sensor
+﻿@model tp_integrador.Models.Cliente
 
 @{
-	ViewBag.Title = "AltaSensor";
+	ViewBag.Title = "DatosCliente";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,14 +11,12 @@
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet" />
 
-<link type="text/css" rel="stylesheet" href="~/Content/chosen.css" />
-
 <main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
 		<div class="row">
 
 			<!-- SIDEBAR -->
-			<nav class="col-md-2 d-none d-md-block bg-light sidebar" style="height:auto">
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
 				<div class="sidebar-sticky">
 					<ul class="nav flex-column">
 						<li class="nav-item">
@@ -52,58 +50,80 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
 								<span data-feather="wifi"></span>
-								Gestionar Sensores <span class="sr-only">(current)</span>
+								Gestionar Sensores
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("DatosCliente", "Cliente")" class="nav-link">
+							<a href="@Url.Action("DatosCliente", "Cliente")" class="nav-link active">
 								<span data-feather="edit"></span>
-								Mis Datos
+								Mis Datos <span class="sr-only">(current)</span>
 							</a>
 						</li>
 					</ul>
 				</div>
 			</nav>
+			<!-- Fin Sidebar -->
 
-			<div class="container" style="margin-left:20px; margin-top:30px; overflow:auto;">
+			<div class="container" style="margin-top:20px; overflow:auto;">
 
-				<div class="container" style="width:500px;">
+				<div class="container" style="width:600px;">
 					<div class="card-deck mb-3 text-center">
 
-						<!-- Alta Sensor -->
-						<div class="card mb-4 shadow-sm" style="max-width:500px;">
+						<!-- Alta Admin -->
+						<div class="card mb-4 shadow-sm" style="max-width:600px;">
 							<div class="card-header">
-								<h4 class="mb3">Nuevo Sensor</h4>
+								<h4 class="mb3">Datos de @Html.DisplayFor(model => model.usuario)</h4>
 							</div>
 							<div class="card-body">
 								<div class="file-field">
-									@using (Html.BeginForm())
-									{
-										@Html.AntiForgeryToken()
 
-										<div class="form-horizontal">
+									<div class="form-horizontal">
+										
+										<div class="table-responsive">										
+											<table class="table table-striped justify-content-">
+												<tbody>
+													<tr>
+														<td><b>Nombre</b></td>
+														<td>@Html.DisplayFor(model => model.nombre)</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td><b>Apellido</b></td>
+														<td>@Html.DisplayFor(model => model.apellido)</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td><b>Domicilio</b></td>
+														<td>@Html.DisplayFor(model => model.domicilio)</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td><b>Documento</b></td>
+														<td>@Html.Raw(Model.Documento_tipo + " " + Model.Documento_numero)</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td><b>Telefono</b></td>
+														<td>@Html.DisplayFor(model => model.Telefono)</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td><b>Categoria</b></td>
+														<td>@Html.DisplayFor(model => model.Categoria.IdCategoria)</td>
+														<td></td>
+													</tr>
+													<tr>
+														<td><b>Puntos</b></td>
+														<td>@Html.DisplayFor(model => model.Puntos)</td>
+														<td></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>																		
+									</div>
 
-											@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-											@Html.HiddenFor(model => model.idSensor)
-
-											<div>
-												@Html.EditorFor(model => model.TipoSensor, new { htmlAttributes = new { @class = "form-control", placeholder = "Tipo del Sensor..", required = true } })
-												@Html.ValidationMessageFor(model => model.TipoSensor, "", new { @class = "text-danger" })												
-											</div>
-
-											@Html.HiddenFor(model => model.idCliente)
-											@Html.HiddenFor(model => model.Magnitud)
-
-											<hr />
-											<div class="container" style="width:200px;">
-												<div>
-													<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
-												</div>
-											</div>
-										</div>
-									}
 								</div>
 							</div>
 						</div>
@@ -111,18 +131,10 @@
 					</div>
 				</div>
 
-				@if (TempData["Mensaje"] != null)
-				{
-					<div class="container" style="width:700px;">
-						<div class="alert alert-danger" role="alert">
-							<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
-						</div>
+				<div class="container">
+					<div class="row text-center">						
+						<div class="col-sm-6">@Html.ActionLink("Cambiar Contraseña", "EditPasswordAdmin", null, new { @class = "btn btn-lg btn-block btn-primary col", style = "width:300px; float:left;" })</div>
 					</div>
-				}
-
-				<hr />
-				<div class="row">
-					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "GestionarSensores", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
 				</div>
 
 
@@ -146,4 +158,3 @@
 	</script>
 
 </main>
-

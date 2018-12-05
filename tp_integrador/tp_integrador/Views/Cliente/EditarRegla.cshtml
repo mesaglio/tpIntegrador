@@ -1,8 +1,8 @@
 ﻿@model tp_integrador.Models.AMReglaModel
 
 @{
-	ViewBag.Title = "AltaRegla";
-	Layout = "~/Views/Shared/_Layout.cshtml";	
+	ViewBag.Title = "EditarRegla";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!-- Bootstrap core CSS -->
@@ -75,7 +75,7 @@
 						<!-- Alta Sensor -->
 						<div class="card mb-4 shadow-sm" style="max-width:572px;">
 							<div class="card-header">
-								<h4 class="mb3">Nueva Regla</h4>
+								<h4 class="mb3">Modificar Regla</h4>
 							</div>
 							<div class="card-body">
 								<div class="file-field">
@@ -95,7 +95,7 @@
 											&nbsp;
 											@Html.DropDownListFor(model => model.Regla.Operador, Model.Operadores, "Elija un Operador...", new { @class = "custom-select d-block w-100", required = true })
 											&nbsp;
-											<div>
+											<div>												
 												@Html.TextBoxFor(model => model.Regla.Valor, new { @class = "form-control", placeholder = "Valor de Control", @id = "valor", required = true })
 												@Html.ValidationMessageFor(model => model.Regla.Valor, "", new { @class = "text-danger" })												
 											</div>
@@ -106,12 +106,12 @@
 											&nbsp;
 											<div>
 												@Html.ListBoxFor(model => model.ActuadoresID, Model.Actuadores, new { @class = "chosen-select", data_placeholder = "(Opcional) Seleccione Actuadores Existentes...", style = "width:500px;" })
-											</div>																		
-										
+											</div>
+											
 											<hr />
 											<div class="container" style="width:200px;">
 												<div>
-													<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+													<input type="submit" value="Guardar" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
 												</div>
 											</div>
 										</div>

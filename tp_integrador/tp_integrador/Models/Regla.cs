@@ -15,6 +15,8 @@ namespace tp_integrador.Models
 		public int Valor { get; set; }
         public List<Actuador> Actuadores { get; set; }
 
+		public Regla() { }
+
 		public Regla(int regla, int sensor, string detalle, string operador, int valor, string accion, List<Actuador> actuadores)
 		{
 			idRegla = regla;
@@ -62,7 +64,17 @@ namespace tp_integrador.Models
 
 		public string GetExpresion()
 		{
-			return Detalle + " " + Operador + " " + Valor + " => " + Accion;
+			return "[ " + Detalle + " " + Operador + " " + Valor + " ] => " + Accion;
+		}
+
+		public void AgregarActuador(Actuador actuador)
+		{
+			Actuadores.Add(actuador);			
+		}
+
+		public void QuitarActuador(Actuador actuador)
+		{
+			Actuadores.Remove(actuador);			
 		}
     }
 }

@@ -1,6 +1,8 @@
-﻿@model tp_integrador.Models.Cliente
+﻿@model tp_integrador.Models.Sensor
+
 @{
-	ViewBag.Title = "Simplex";
+	ViewBag.Title = "EditarSensor";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!-- Bootstrap core CSS -->
@@ -9,7 +11,7 @@
 <!-- Custom styles for this template -->
 <link href="~/Content/dashboard.css" rel="stylesheet" />
 
-<link href="~/Content/switch.css" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="~/Content/chosen.css" />
 
 <main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
@@ -38,9 +40,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link active">
+							<a href="@Url.Action("Simplex", "Cliente")" class="nav-link">
 								<span data-feather="clock"></span>
-								Simplex <span class="sr-only">(current)</span>
+								Simplex
 							</a>
 						</li>
 						<li class="nav-item">
@@ -50,9 +52,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link">
+							<a href="@Url.Action("GestionarSensores", "Cliente")" class="nav-link active">
 								<span data-feather="wifi"></span>
-								Gestionar Sensores
+								Gestionar Sensores <span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
@@ -65,33 +67,63 @@
 				</div>
 			</nav>
 
-			<div class="container" style="margin-left:20px; overflow:auto;">
+			<div class="container" style="margin-left:20px; margin-top:30px; overflow:auto;">
 
-				<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-					<h1 class="display-4">Ahorro Simplex</h1>
-					<p class="lead">Calcule de qué manera distribuir el consumo de sus dispositivos para lograr un consumo eficiente.</p>
+				<div class="container" style="width:500px;">
+					<div class="card-deck mb-3 text-center">
 
-					<hr />
-					<div class="container" style="width:400px;">
-						<a href="@Url.Action("CalculoSimplex", "Cliente")" style="width:400px;" class="btn btn-lg btn-block btn-primary">Calcular Simplex</a>
+						<!-- Alta Sensor -->
+						<div class="card mb-4 shadow-sm" style="max-width:500px;">
+							<div class="card-header">
+								<h4 class="mb3">Editar Sensor</h4>
+							</div>
+							<div class="card-body">
+								<div class="file-field">
+									@using (Html.BeginForm())
+									{
+										@Html.AntiForgeryToken()
+
+										<div class="form-horizontal">
+
+											@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+											@Html.HiddenFor(model => model.idSensor)
+											@Html.HiddenFor(model => model.idCliente)
+
+											<div>
+												@Html.EditorFor(model => model.TipoSensor, new { htmlAttributes = new { @class = "form-control", placeholder = "Tipo del Sensor..", required = true } })
+												@Html.ValidationMessageFor(model => model.TipoSensor, "", new { @class = "text-danger" })
+											</div>
+
+											<hr />
+											<div class="container" style="width:200px;">
+												<div>
+													<input type="submit" value="Modificar" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+												</div>
+											</div>
+										</div>
+									}
+								</div>
+							</div>
+						</div>
+
 					</div>
-
-					<hr />
-					<h1 class="display-4">Ahorro Automático</h1>
-					<p class="lead">Active el ahorro automático y el sistema se encargara de apagar los dispositivos que alcancen el limite simplex.</p>
-					<!-- Switch -->
-					<div class="container" style="width:180px; height:34px;">
-						@using (Html.BeginForm("AhorroAutomatico", "Cliente", FormMethod.Post))
-						{	
-							<label style="vertical-align:text-top; font-size:large; padding-right:10px;">Off</label>
-								<label class="switch">
-									<input type="checkbox" checked="@Model.AutoSimplex" onclick="this.form.submit()"/>
-									<span class="slider round"></span>
-								</label>
-							<label style="vertical-align:text-top; font-size:large; padding-left:10px;">On</label>
-						}
-					</div>					
 				</div>
+
+				@if (TempData["Mensaje"] != null)
+				{
+					<div class="container" style="width:700px;">
+						<div class="alert alert-danger" role="alert">
+							<strong>@TempData["Alerta"]</strong> @TempData["Mensaje"]
+						</div>
+					</div>
+				}
+
+				<hr />
+				<div class="row">
+					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "GestionarSensores", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
+				</div>
+
+
 			</div>
 
 		</div>
@@ -112,3 +144,4 @@
 	</script>
 
 </main>
+

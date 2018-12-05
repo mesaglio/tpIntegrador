@@ -1,8 +1,8 @@
-﻿@model tp_integrador.Models.AMReglaModel
+﻿@model tp_integrador.Models.AMActuadorModel
 
 @{
-	ViewBag.Title = "AltaRegla";
-	Layout = "~/Views/Shared/_Layout.cshtml";	
+	ViewBag.Title = "EditarActuador";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!-- Bootstrap core CSS -->
@@ -13,7 +13,7 @@
 
 <link type="text/css" rel="stylesheet" href="~/Content/chosen.css" />
 
-<main role="main" class="container" style="float:right;height:calc(100vh - 60px); overflow-y:auto; ">
+<main role="main" class="container" style="float:right; :calc(100vh - 60px); overflow-y:auto; ">
 	<div class="container-fluid">
 		<div class="row">
 
@@ -69,13 +69,13 @@
 
 			<div class="container" style="margin-left:20px; margin-top:10px; overflow:auto;">
 
-				<div class="container" style="width:572px;">
+				<div class="container" style="width:500px;">
 					<div class="card-deck mb-3 text-center">
 
 						<!-- Alta Sensor -->
-						<div class="card mb-4 shadow-sm" style="max-width:572px;">
+						<div class="card mb-4 shadow-sm" style="max-width:500px;">
 							<div class="card-header">
-								<h4 class="mb3">Nueva Regla</h4>
+								<h4 class="mb3">Nuevo Actuador</h4>
 							</div>
 							<div class="card-body">
 								<div class="file-field">
@@ -84,34 +84,28 @@
 										@Html.AntiForgeryToken()
 
 										<div class="form-horizontal">
-											@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+											@Html.HiddenFor(model => model.Actuador.IdActuador)
+											@Html.HiddenFor(model => model.Actuador.IdCliente)
 
 											<div>
-												@Html.EditorFor(model => model.Regla.Detalle, new { htmlAttributes = new { @class = "form-control", placeholder = "Tipo de Regla..", required = true } })
-												@Html.ValidationMessageFor(model => model.Regla.Detalle, "", new { @class = "text-danger" })
+												@Html.EditorFor(model => model.Actuador.ActuadorTipo, new { htmlAttributes = new { @class = "form-control", placeholder = "Tipo de Actuador..", required = true } })
+												@Html.ValidationMessageFor(model => model.Actuador.ActuadorTipo, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<div>
+												@Html.ListBoxFor(model => model.Actuador.Reglas, Model.ReglasCliente, new { @class = "chosen-select", data_placeholder = "(Opcional) Seleccione Dispositivos...", style = "width:428px;", required = true })
+											</div>
+											&nbsp;
+											<div>
+												@Html.ListBoxFor(model => model.DispositivosID, Model.DispositivosCliente, new { @class = "chosen-select", data_placeholder = "(Opcional) Seleccione Dispositivos...", style = "width:428px;" })
 											</div>
 
-											@Html.HiddenFor(model => model.Regla.idRegla)
-											&nbsp;
-											@Html.DropDownListFor(model => model.Regla.Operador, Model.Operadores, "Elija un Operador...", new { @class = "custom-select d-block w-100", required = true })
-											&nbsp;
-											<div>
-												@Html.TextBoxFor(model => model.Regla.Valor, new { @class = "form-control", placeholder = "Valor de Control", @id = "valor", required = true })
-												@Html.ValidationMessageFor(model => model.Regla.Valor, "", new { @class = "text-danger" })												
-											</div>
-											&nbsp;
-											@Html.DropDownListFor(model => model.Regla.Accion, Model.Acciones, "Elija una Accion...", new { @class = "custom-select d-block w-100", required = true })
-											&nbsp;
-											@Html.DropDownListFor(model => model.Regla.idSensor, Model.Sensores, "Elija un Sensor...", new { @class = "custom-select d-block w-100", required = true })
-											&nbsp;
-											<div>
-												@Html.ListBoxFor(model => model.ActuadoresID, Model.Actuadores, new { @class = "chosen-select", data_placeholder = "(Opcional) Seleccione Actuadores Existentes...", style = "width:500px;" })
-											</div>																		
-										
 											<hr />
 											<div class="container" style="width:200px;">
 												<div>
-													<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+													<input type="submit" value="Guardar" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
 												</div>
 											</div>
 										</div>
@@ -169,27 +163,6 @@
 		for (var selector in config) {
 			$(selector).chosen(config[selector]);
 		}
-	</script>
-
-	<!-- Numeric TextBox -->
-	<script>
-		$(document).ready(function () {
-			$("#valor").keydown(function (e) {
-				// Allow: backspace, delete, tab, escape, enter and .
-				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-					// Allow: Ctrl+A
-					(e.keyCode == 65 && e.ctrlKey === true) ||
-					// Allow: home, end, left, right
-					(e.keyCode >= 35 && e.keyCode <= 39)) {
-					// let it happen, don't do anything
-					return;
-				}
-				// Ensure that it is a number and stop the keypress
-				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-					e.preventDefault();
-				}
-			});
-		});
 	</script>
 
 </main>
