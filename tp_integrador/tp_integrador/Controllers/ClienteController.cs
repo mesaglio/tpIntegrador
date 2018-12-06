@@ -520,7 +520,7 @@ namespace tp_integrador.Controllers
 
 			var cliente = (Cliente)Session["Usuario"];
 
-			return View(cliente);
+			return View("DatosCliente", cliente);
 		}
 
 		public ActionResult EditPasswordCliente()

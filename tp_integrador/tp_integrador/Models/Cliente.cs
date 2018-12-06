@@ -102,17 +102,19 @@ namespace tp_integrador.Models
 
 			dispositivos.Add(nuevo);
 			ORM.Instancia.Insert(nuevo);
+			DAODispositivo.Instancia.CargarDispositivo(nuevo);
 
-            Puntos += 15;
-			ORM.Instancia.Update(this);
-        }
+			Puntos += 15;
+			ORM.Instancia.Update(this);			
+		}
 
         public void NuevoDispositivoEstandar(int idDisp, string nombre, double consumo, bool bajoconsumo, byte usoPromedio)
         {
 			Estandar nuevo = new Estandar(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, bajoconsumo, usoPromedio);
-			dispositivos.Add(nuevo);
 
+			dispositivos.Add(nuevo);
 			ORM.Instancia.Insert(nuevo);
+			DAODispositivo.Instancia.CargarDispositivo(nuevo);
         }
 
         public void ConvertirAInteligente(Estandar aparato)
@@ -129,10 +131,18 @@ namespace tp_integrador.Models
 
         public void AgregarDispositivoDesdeJson(Dispositivo dispositivo)
         {
-			dispositivo.Numero = CalcularNumero(nombre);
-            dispositivos.Add(dispositivo);
-			ORM.Instancia.Insert(dispositivo);
-			DAODispositivo.Instancia.CargarDispositivo(dispositivo);
+			Inteligente inteligente;
+			Estandar estandar;
+
+			if (dispositivo.EsInteligente)
+			{
+				inteligente = (Inteligente)dispositivo;
+				NuevoDispositivoInteligente(inteligente.IdDispositivo, inteligente.Nombre, inteligente.Consumo, inteligente.BajoConsumo);
+			} else
+			{
+				estandar = (Estandar)dispositivo;
+				NuevoDispositivoEstandar(estandar.IdDispositivo, estandar.Nombre, estandar.Consumo, estandar.BajoConsumo, estandar.usoDiario);
+			}			
 		}
 
         private int CalcularNumero(string nombre)
@@ -361,10 +371,8 @@ namespace tp_integrador.Models
         public void CargarDispositivos(HttpPostedFileBase file, int flag)
         {
             CargarJson cargar = new CargarJson();
-            if (flag == 1)
-                cargar.LoadJson<Inteligente>(file.InputStream);
-            else
-                cargar.LoadJson<Estandar>(file.InputStream);
+            if (flag == 1) cargar.LoadJson<Inteligente>(file.InputStream, idUsuario);
+            else cargar.LoadJson<Estandar>(file.InputStream, idUsuario);
         }
 
         public void AgregarDispositivoDeTemplate(int disp)

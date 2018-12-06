@@ -66,7 +66,7 @@ namespace tp_integrador.Models
 
         public void QuitarUsuario(int id)
         {
-            listusuarios.Remove(BuscarCliente(id));
+            listusuarios.RemoveAll(x => x.idUsuario == id);
         }
 				
 		public void IniciarAutoSimplex()

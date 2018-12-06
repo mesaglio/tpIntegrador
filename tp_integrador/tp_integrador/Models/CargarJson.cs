@@ -14,7 +14,7 @@ namespace tp_integrador.Models
         {			         
         }
 
-        public void LoadJson<T>(Stream path)
+        public void LoadJson<T>(Stream path, int id = 0)
         {
             Type type = typeof(T);
             string json = (new StreamReader(path)).ReadToEnd();
@@ -38,7 +38,7 @@ namespace tp_integrador.Models
 			{
 				foreach (var dispositivo in djson)
 				{
-					DAOUsuario.Instancia.BuscarCliente(dispositivo.IdCliente).AgregarDispositivoDesdeJson(dispositivo);
+					DAOUsuario.Instancia.BuscarCliente(id).AgregarDispositivoDesdeJson(dispositivo);
 				}
 			}
 			else if (type == typeof(Transformador))

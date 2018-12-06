@@ -24,15 +24,16 @@ namespace tp_integrador.Controllers
 			string p = model.password;
 
 			int sesionid = ORM.Instancia.GetIDUsuarioIfExists(model.usuario, HashThis.Instancia.GetHash(p));
-			Session["IDUsuario"] = sesionid;
-			//Usuarios u =  data.InicioSecion(model);
-			if ((int)Session["IDUsuario"] <= 0)
+						
+			if (sesionid <= 0)
 			{
 				ModelState.AddModelError(String.Empty,"Usuario y/o Contraseña incorecto/s");
 				return View("Index",model);
 			}
 			else
 			{
+				Session["IDUsuario"] = sesionid;
+
 				dynamic user = ORM.Instancia.GetUsuario((int)Session["IDUsuario"]);
 
 				Session["Usuario"] = user;
@@ -76,8 +77,10 @@ namespace tp_integrador.Controllers
 		public ActionResult Logout()
         {
 			if (!SessionStateOK()) return View("Index");
+			var id = (Int32)Session["IDUsuario"];
 
-			Session.Contents.RemoveAll();
+			DAOUsuario.Instancia.QuitarUsuario(id);
+			Session.Contents.RemoveAll();			
             return View("Index");
         }
 
