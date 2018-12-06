@@ -76,7 +76,7 @@
 					<div class="card-deck mb-3 text-center">
 
 						<!-- ULTIMAS MEDICIONES -->
-						<div class="container" style="width:300px;">
+						<div class="container" style="width:330px;">
 							<!-- CONSUMO ACTUAL -->
 							<div class="card mb-4 shadow-sm" style="max-width:300px; text-align:center; height:335px;">
 								<div class="card-header">
@@ -291,7 +291,7 @@
 		var i = @Html.Raw(Json.Encode(periododata.Consumo));
 		function increment() {
 			i += @Html.Raw(Json.Encode((consumoactual/3600)*10));
-			document.getElementById('number').innerHTML = i.toFixed(4).replace('.',',');
+			document.getElementById('number').innerHTML = i.toFixed(4).replace(',','.');
 		}
 		setInterval('increment()', 10000);
 	</script>
