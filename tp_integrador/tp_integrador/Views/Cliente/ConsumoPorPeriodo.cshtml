@@ -132,8 +132,8 @@
 
 
                 for (var i = 0; i < array.length; i++) {
-                    if (array[i].Mes === key) {
-                        return array[i].ConsumoTotal;
+                    if (array[i].mes === key) {
+                        return array[i].consumo;
                     }
                 }
 
@@ -154,7 +154,7 @@
         }
         else
         {
-            var consumo = [findkey('Enero', obj), findkey('Febrero', obj), findkey('Marzo', obj), findkey('Abril', obj), findkey('Mayo', obj), findkey('Junio', obj), findkey('Julio', obj), findkey('Agosto', obj), findkey('Septiembre', obj), findkey('Octubre', obj), findkey('Noviembre', obj), findkey('Diciembre', obj)];
+            var consumo = [findkey('1', obj), findkey('2', obj), findkey('3', obj), findkey('4', obj), findkey('5', obj), findkey('6', obj), findkey('7', obj), findkey('8', obj), findkey('9', obj), findkey('10', obj), findkey('11', obj), findkey('12', obj)];
         }
         var etiqueta = [           "Enero",               "Febrero",               "Marzo",               "Abril",               "Mayo",               "Junio",               "Julio",               "Agosto",               "Septiembre",               "Octubre",               "Noviembre",                "Diciembre"]
         var dato = 1 ;
