@@ -101,11 +101,11 @@ namespace tp_integrador.Models
 			Inteligente nuevo = new Inteligente(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, bajoconsumo, 0, DateTime.Now, false);
 
 			dispositivos.Add(nuevo);
-			ORM.Instancia.Insert(nuevo);
 			DAODispositivo.Instancia.CargarDispositivo(nuevo);
+			ORM.Instancia.Insert(nuevo);			
 
 			Puntos += 15;
-			ORM.Instancia.Update(this);			
+			ORM.Instancia.Update(this);
 		}
 
         public void NuevoDispositivoEstandar(int idDisp, string nombre, double consumo, bool bajoconsumo, byte usoPromedio)
@@ -113,8 +113,8 @@ namespace tp_integrador.Models
 			Estandar nuevo = new Estandar(idDisp, idUsuario, CalcularNumero(nombre), nombre, consumo, bajoconsumo, usoPromedio);
 
 			dispositivos.Add(nuevo);
-			ORM.Instancia.Insert(nuevo);
 			DAODispositivo.Instancia.CargarDispositivo(nuevo);
+			ORM.Instancia.Insert(nuevo);			
         }
 
         public void ConvertirAInteligente(Estandar aparato)

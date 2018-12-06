@@ -255,8 +255,10 @@ namespace tp_integrador.Models
 			if (GetIDUsuarioIfExists(cliente.usuario, cliente.password) != -1) return;
 			var trans = DAOzona.Instancia.AsignarTransformador(cliente);
 			if (trans == -1) return;
+
             Location l = getlocationbyapi(cliente.domicilio);
             cliente.Coordenadas = l;
+
             var query = "INSERT INTO SGE.Usuario VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.usuario, cliente.password));
 
@@ -286,7 +288,7 @@ namespace tp_integrador.Models
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.password, cliente.idUsuario));
 
 			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = CONVERT(DATETIME,'{1}',121), clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}', clie_autoSimplex = '{10}' WHERE clie_idUsuario = '{9}'";
-			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario, cliente.AutoSimplex));
+			Query(String.Format(query, cliente.Telefono, cliente.AltaServicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), cliente.Documento_numero, cliente.Documento_tipo, cliente.Categoria.IdCategoria, cliente.Puntos, DAOzona.Instancia.BuscarTransformadorDeCliente(cliente.idUsuario), (Int32)cliente.Coordenadas.Latitude, (Int32)cliente.Coordenadas.Longitude, cliente.idUsuario, cliente.AutoSimplex ? 1 : 0));
 		}
 
 		private void ActualizarAdministrador(Administrador admin)
