@@ -151,17 +151,25 @@ namespace tp_integrador.Controllers
 		[AllowAnonymous]
 		public ActionResult SelecTemplate_dis(int disp)
 		{
-			if (!SessionStateOK()) return View("Index");
-			if ((bool)Session["Admin"]) return PermisoDenegado();
-			Cliente unclietne = (Cliente)Session["Usuario"];
-
-			if (disp == 0) return View("Dashboard", model: unclietne);
-			else
+			try
 			{
-				unclietne.AgregarDispositivoDeTemplate(disp);
+				if (!SessionStateOK()) return View("Index");
+				if ((bool)Session["Admin"]) return PermisoDenegado();
+				Cliente unclietne = (Cliente)Session["Usuario"];
 
-				return View("GestionarDispositivos", model: unclietne);
+				if (disp == 0) return View("Dashboard", model: unclietne);
+				else
+				{
+					unclietne.AgregarDispositivoDeTemplate(disp);
+
+					return View("GestionarDispositivos", model: unclietne);
+				}
 			}
+			catch (Exception ex)
+			{
+				TempData["ERROR"] = ex.Message;
+				return PermisoDenegado();
+			}			
 		}
 
 		public ActionResult EstadoDispositivo(int idD, int idC, int numero)
@@ -229,13 +237,21 @@ namespace tp_integrador.Controllers
 		[AllowAnonymous]
 		public ActionResult AhorroAutomatico()
 		{
-			if (!SessionStateOK()) return View("Index");
-			if ((bool)Session["Admin"]) return PermisoDenegado();
+			try
+			{
+				if (!SessionStateOK()) return View("Index");
+				if ((bool)Session["Admin"]) return PermisoDenegado();
 
-			Cliente uncliente = (Cliente)Session["Usuario"];
-			uncliente.CambiarAutoSimplex();
+				Cliente uncliente = (Cliente)Session["Usuario"];
+				uncliente.CambiarAutoSimplex();
 
-			return View("Simplex", model: uncliente);
+				return View("Simplex", model: uncliente);
+			}
+			catch (Exception ex)
+			{
+				TempData["ERROR"] = ex.Message;
+				return PermisoDenegado();
+			}
 		}
 
 		public ActionResult AltaSensor()

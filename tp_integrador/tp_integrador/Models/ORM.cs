@@ -406,12 +406,12 @@ namespace tp_integrador.Models
 			return lista;
 		}
 
-		public List<Dispositivo> GetDispositivosEliminadosEn(PeriodoData periodo)
+		public List<Dispositivo> GetDispositivosEliminadosEnFrom(PeriodoData periodo, int idCliente)
 		{
 			var lista = new List<Dispositivo>();
 
-			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) WHERE dpc_eliminado BETWEEN CONVERT(DATETIME,'{0}',121) AND CONVERT(DATETIME,'{1}',121)";
-			var data = Query(String.Format(query, periodo.FechaInicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), periodo.FechaFin.ToString("yyyy-MM-dd HH:mm:ss.mmm"))).Tables[0];
+			var query = "SELECT * FROM SGE.DispositivoPorCliente JOIN SGE.DispositivoGenerico ON(dpc_idDispositivo = disp_idDispositivo) WHERE dpc_idUsuario = '{0}' AND dpc_eliminado BETWEEN CONVERT(DATETIME,'{1}',121) AND CONVERT(DATETIME,'{2}',121)";
+			var data = Query(String.Format(query, idCliente, periodo.FechaInicio.ToString("yyyy-MM-dd HH:mm:ss.mmm"), periodo.FechaFin.ToString("yyyy-MM-dd HH:mm:ss.mmm"))).Tables[0];
 			if (data.Rows.Count == 0) return lista;
 
 			return GetDispositivosFromData(data);

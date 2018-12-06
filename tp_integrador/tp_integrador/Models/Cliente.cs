@@ -190,22 +190,8 @@ namespace tp_integrador.Models
 		public PeriodoData ConsumoDelPeriodoActual()
 		{
 			var periodo = PeriodoActual();
-			double total = 0;
 
-			foreach (var disp in dispositivos.OfType<Inteligente>())
-			{
-				total += disp.ConsumoEnElPeriodo(periodo);
-			}
-
-			var eliminadosEnElPeriodo = ORM.Instancia.GetDispositivosEliminadosEn(periodo);
-
-			foreach (var disp in eliminadosEnElPeriodo.OfType<Inteligente>())
-			{
-				total += disp.ConsumoEnElPeriodo(periodo);
-			}
-
-			periodo.Consumo = total;
-			return periodo;
+			return ConsumoDelPeriodo(periodo);
 		}
 
 		private PeriodoData ConsumoDelPeriodo(PeriodoData periodo)
@@ -217,7 +203,7 @@ namespace tp_integrador.Models
 				total += disp.ConsumoEnElPeriodo(periodo);
 			}
 
-			var eliminadosEnElPeriodo = ORM.Instancia.GetDispositivosEliminadosEn(periodo);
+			var eliminadosEnElPeriodo = ORM.Instancia.GetDispositivosEliminadosEnFrom(periodo, idUsuario);
 
 			foreach (var disp in eliminadosEnElPeriodo.OfType<Inteligente>())
 			{
