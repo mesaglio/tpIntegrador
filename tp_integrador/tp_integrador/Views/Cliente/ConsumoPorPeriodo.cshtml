@@ -142,7 +142,7 @@
 
 
         //getObjet(@Model.idUsuario);
-         getObjet(1);
+        getObjet(Session["IDUsuario"]);
         var json = sessionStorage.getItem('json');
         var obj = JSON.parse(json);
         sessionStorage.removeItem('json');
