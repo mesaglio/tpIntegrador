@@ -83,32 +83,32 @@
 									{
 										@Html.AntiForgeryToken()
 
-									<div class="form-horizontal">
+										<div class="form-horizontal">
 
 
-										@Html.HiddenFor(model => model.Actuador.IdActuador)
-										@Html.HiddenFor(model => model.Actuador.IdCliente)
+											@Html.HiddenFor(model => model.Actuador.IdActuador)
+											@Html.HiddenFor(model => model.Actuador.IdCliente)
 
-										<div>
-											@Html.EditorFor(model => model.Actuador.ActuadorTipo, new { htmlAttributes = new { @class = "form-control", placeholder = "Tipo de Actuador..", required = true } })
-											@Html.ValidationMessageFor(model => model.Actuador.ActuadorTipo, "", new { @class = "text-danger" })											
-										</div>
-										&nbsp;
-										<div>
-											@Html.ListBoxFor(model => model.Actuador.Reglas, Model.ReglasCliente, new { @class = "chosen-select", data_placeholder = "Seleccione Reglas...", style = "width:428px;", required = true })
-										</div>
-										&nbsp;
-										<div>
-											@Html.ListBoxFor(model => model.DispositivosID, Model.DispositivosCliente, new { @class = "chosen-select", data_placeholder = "(Opcional) Seleccione Dispositivos...", style = "width:428px;" })
-										</div>
-
-										<hr />
-										<div class="container" style="width:200px;">
 											<div>
-												<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+												@Html.EditorFor(model => model.Actuador.ActuadorTipo, new { htmlAttributes = new { @class = "form-control", placeholder = "Tipo de Actuador..", required = true } })
+												@Html.ValidationMessageFor(model => model.Actuador.ActuadorTipo, "", new { @class = "text-danger" })
+											</div>
+											&nbsp;
+											<div>
+												@Html.ListBoxFor(model => model.Actuador.Reglas, Model.ReglasCliente, new { @class = "chosen-select", data_placeholder = "Seleccione Reglas...", style = "width:428px;", required = true })
+											</div>
+											&nbsp;
+											<div>
+												@Html.ListBoxFor(model => model.DispositivosID, Model.DispositivosCliente, new { @class = "chosen-select", data_placeholder = "(Opcional) Seleccione Dispositivos...", style = "width:428px;" })
+											</div>
+
+											<hr />
+											<div class="container" style="width:200px;">
+												<div>
+													<input type="submit" value="Crear" class="btn btn-lg btn-block btn-primary" style="background-color:crimson" />
+												</div>
 											</div>
 										</div>
-									</div>
 									}
 								</div>
 							</div>
@@ -136,6 +136,13 @@
 
 		</div>
 	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
 
 	<script src="~/Scripts/chosen.jquery.js" type="text/javascript"></script>
 	<script type="text/javascript">

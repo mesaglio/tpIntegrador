@@ -15,12 +15,10 @@ namespace tp_integrador.Models
 
 		public AMActuadorModel() { DispositivosID = new List<string>(); }
 
-		public void LoadDataFor(List<Dispositivo> dispositivos)
+		public void LoadDataFor(List<Dispositivo> dispositivos, int idCliente)
 		{
-			if (dispositivos.Count == 0) return;
-			var idCliente = dispositivos[0].IdCliente;
-
 			DispositivosCliente = new List<SelectListItem>();
+			ReglasCliente = new List<SelectListItem>();											
 
 			string value = "{0},{1},{2}";
 			foreach (var dispo in dispositivos.OfType<Inteligente>())
@@ -28,7 +26,6 @@ namespace tp_integrador.Models
 				DispositivosCliente.Add(new SelectListItem { Value = String.Format(value, dispo.IdDispositivo, dispo.IdCliente, dispo.Numero), Text = dispo.Nombre });
 			}
 
-			ReglasCliente = new List<SelectListItem>();
 			foreach (var regla in DAOSensores.Instancia.FindReglasCliente(idCliente))
 			{
 				ReglasCliente.Add(new SelectListItem { Value = regla.idRegla.ToString(), Text = regla.GetExpresion() });

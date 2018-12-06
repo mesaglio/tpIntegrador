@@ -89,7 +89,7 @@
 				</div>
 			</nav>
 			<!-- Fin Sidebar -->
-						
+
 			<div class="container" style="margin-top:10px; overflow:auto;">
 
 				<div class="container" style="width:600px;">
@@ -135,11 +135,11 @@
 												@Html.ValidationMessageFor(model => model.Documento_tipo, "", new { @class = "text-danger" })
 											</div>
 											&nbsp;
-											<div>												
-												@Html.TextBoxFor(model => model.Documento_numero, new { @class = "form-control", placeholder = "Numero de Documento", @id="docnum", required = true })
+											<div>
+												@Html.TextBoxFor(model => model.Documento_numero, new { @class = "form-control", placeholder = "Numero de Documento", @id = "docnum", required = true })
 												@Html.ValidationMessageFor(model => model.Documento_numero, "", new { @class = "text-danger" })
 											</div>
-											&nbsp;											
+											&nbsp;
 											<div>
 												@Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", placeholder = "Telefono", @id = "telefono", required = true })
 												@Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
@@ -190,7 +190,14 @@
 
 		</div>
 	</div>
-	
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
+
 	<!-- Numeric TextBox -->
 	<script>
 		$(document).ready(function () {
@@ -223,8 +230,8 @@
 				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
 					e.preventDefault();
 				}
-			});	
-		});		
+			});
+		});
 	</script>
 
 </main>

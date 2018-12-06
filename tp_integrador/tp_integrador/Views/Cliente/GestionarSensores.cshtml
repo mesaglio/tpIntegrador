@@ -73,7 +73,7 @@
 				</div>
 
 				<hr />
-				<h4 for="country" class="mb-3" style="margin-top:30px;">Agregar..</h4>					
+				<h4 for="country" class="mb-3" style="margin-top:30px;">Agregar..</h4>
 				<div class="row">
 					<div class="col-sm">@Html.ActionLink("Nuevo Sensor", "AltaSensor", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
 					<div class="col-sm">@Html.ActionLink("Nueva Regla", "AltaRegla", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
@@ -194,9 +194,9 @@
 											{
 												<td>[Regla Sin Actuadores]</td>
 											}
-												<td style="width:100px; height:15px;">
-													@Html.ActionLink("Editar", "EditarRegla", "Cliente", new { idRegla = regla.idRegla }, new { @style = "font: 12px arial;", @class = "btn btn-sm btn-block btn-primary" })
-												</td>
+											<td style="width:100px; height:15px;">
+												@Html.ActionLink("Editar", "EditarRegla", "Cliente", new { idRegla = regla.idRegla }, new { @style = "font: 12px arial;", @class = "btn btn-sm btn-block btn-primary" })
+											</td>
 										</tr>
 										if (regla.Actuadores.Count > 1)
 										{
@@ -261,15 +261,15 @@
 											<td>@Html.DisplayFor(modelActuador => actuador.ActuadorTipo)</td>
 											@if (actuador.Dispositivos.Count != 0)
 											{
-												<td>@Html.DisplayFor(modelActuador=> actuador.Dispositivos[0].Nombre)</td>
+												<td>@Html.DisplayFor(modelActuador => actuador.Dispositivos[0].Nombre)</td>
 											}
 											else
 											{
 												<td>[Actuador Sin Dispositivos]</td>
 											}
-												<td style="width:100px; height:15px;">
-													@Html.ActionLink("Editar", "EditarActuador", "Cliente", new { idActuador = actuador.IdActuador }, new { @style = "font: 12px arial;", @class = "btn btn-sm btn-block btn-primary" })
-												</td>
+											<td style="width:100px; height:15px;">
+												@Html.ActionLink("Editar", "EditarActuador", "Cliente", new { idActuador = actuador.IdActuador }, new { @style = "font: 12px arial;", @class = "btn btn-sm btn-block btn-primary" })
+											</td>
 										</tr>
 										if (actuador.Dispositivos.Count > 1)
 										{
@@ -308,6 +308,13 @@
 
 		</div>
 	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
 
 </main>
 

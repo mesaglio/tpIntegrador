@@ -66,7 +66,7 @@
 			</nav>
 
 			<div class="container" style="margin-left:20px; margin-top:30px; overflow:auto;">
-								
+
 				<div class="container" style="width:500px;">
 					<div class="card-deck mb-3 text-center">
 
@@ -106,9 +106,9 @@
 												</div>
 											</div>
 											<hr />
-											<div>												
+											<div>
 												@Html.TextBoxFor(model => model.usoDiario, new { @class = "form-control", placeholder = "Uso Diario", @id = "usoDiario", required = true })
-												@Html.ValidationMessageFor(model => model.usoDiario, "", new { @class = "text-danger" })												
+												@Html.ValidationMessageFor(model => model.usoDiario, "", new { @class = "text-danger" })
 											</div>
 											<hr />
 											<div class="container" style="width:200px;">
@@ -125,17 +125,24 @@
 
 					</div>
 				</div>
-				
+
 				<div class="row">
-					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "GestionarDispositivos", null, new { @class = "btn btn-lg btn-block btn-primary col"})</div>
+					<div class="col-sm-3" style="width:100px;">@Html.ActionLink("Volver", "GestionarDispositivos", null, new { @class = "btn btn-lg btn-block btn-primary col" })</div>
 					<div class="col-sm-6"></div>
-					<div class="col-sm-3">@Html.ActionLink("Convertir a Inteligente", "ConvertirEstandar", new { idD = Model.IdDispositivo, idC = Model.IdCliente, numero = Model.Numero}, new { @class = "btn btn-lg btn-block btn-primary col", @style="background-color:crimson"})</div>
+					<div class="col-sm-3">@Html.ActionLink("Convertir a Inteligente", "ConvertirEstandar", new { idD = Model.IdDispositivo, idC = Model.IdCliente, numero = Model.Numero }, new { @class = "btn btn-lg btn-block btn-primary col", @style = "background-color:crimson" })</div>
 				</div>
 
 			</div>
 
 		</div>
 	</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+	<script src="~/Scripts/popper.min.js"></script>
 
 	<!-- Numeric TextBox -->
 	<script>

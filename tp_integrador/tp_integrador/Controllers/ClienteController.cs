@@ -310,7 +310,7 @@ namespace tp_integrador.Controllers
 			var cliente = (Cliente)Session["Usuario"];
 
 			var model = new AMActuadorModel();
-			model.LoadDataFor(cliente.dispositivos);
+			model.LoadDataFor(cliente.dispositivos, cliente.idUsuario);
 
 			return View("AltaActuador", model);
 		}
@@ -335,7 +335,7 @@ namespace tp_integrador.Controllers
 			{
 				TempData["Alerta"] = "Actuador No Guardado.";
 				TempData["Mensaje"] = "Ese Tipo de Actuador ya existe, intente con otro.";
-				data.LoadDataFor(cliente.dispositivos);
+				data.LoadDataFor(cliente.dispositivos, cliente.idUsuario);
 				return View("AltaActuador", data);
 			}
 
@@ -424,7 +424,7 @@ namespace tp_integrador.Controllers
 			if (cliente.idUsuario != actuador.IdCliente) return PermisoDenegado();
 
 			var model = new AMActuadorModel();
-			model.LoadDataFor(cliente.dispositivos);
+			model.LoadDataFor(cliente.dispositivos, cliente.idUsuario);
 			model.Actuador = actuador;
 			model.SelectReglasDispositivos();
 
@@ -451,7 +451,7 @@ namespace tp_integrador.Controllers
 			{
 				TempData["Alerta"] = "Actuador No Modificado.";
 				TempData["Mensaje"] = "Ese Tipo de Actuador ya existe, intente con otro.";
-				data.LoadDataFor(cliente.dispositivos);
+				data.LoadDataFor(cliente.dispositivos, cliente.idUsuario);
 				return View("EditarActuador", data);
 			}
 

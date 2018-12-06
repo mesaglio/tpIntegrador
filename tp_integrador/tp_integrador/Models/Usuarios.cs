@@ -16,7 +16,7 @@ namespace tp_integrador.Models
         public string password { get; set; }
         private bool islogin { get; set; }
         public bool esadmin { get; set; }
-
+		public bool CambioContrasenia { get; set; }
         public bool Esadmin() { return esadmin; }   
 
         public Usuarios()
@@ -40,6 +40,7 @@ namespace tp_integrador.Models
             password = clave;
             islogin = false;
             esadmin = false;
+			CambioContrasenia = false;
 		}
 
         public bool IsAuthenticated()
@@ -65,7 +66,7 @@ namespace tp_integrador.Models
 		public void CambiarContrasenia(string nuevoPassword)
 		{
 			if (password == nuevoPassword) return;
-
+			CambioContrasenia = true;
 			password = nuevoPassword;
 
 			ORM.Instancia.Update(this);

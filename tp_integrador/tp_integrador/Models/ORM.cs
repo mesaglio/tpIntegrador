@@ -277,7 +277,8 @@ namespace tp_integrador.Models
 
 		private void ActualizarCliente(Cliente cliente)
 		{
-			if (GetIDUsuarioIfExists(cliente.usuario, cliente.password) == -1) return;
+			if (GetIDUsuarioIfExists(cliente.usuario, cliente.password) == -1) if (!cliente.CambioContrasenia) return;
+
             Location l = getlocationbyapi(cliente.domicilio);
             cliente.Coordenadas = l;
 
@@ -290,12 +291,12 @@ namespace tp_integrador.Models
 
 		private void ActualizarAdministrador(Administrador admin)
 		{
-			if (GetIDUsuarioIfExists(admin.usuario, admin.password) == -1) return;
+			if (GetIDUsuarioIfExists(admin.usuario, admin.password) == -1) if (!admin.CambioContrasenia) return;
 
 			var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
 			Query(String.Format(query, admin.nombre, admin.apellido, admin.domicilio, admin.password, admin.idUsuario));
 
-			query = "UPDATE SGE.Administrador SET admin_fechaAlta = CONVERT(DATETIME,'{0}',121) WHERE usua_idUsuario = '{1}'";
+			query = "UPDATE SGE.Administrador SET admin_fechaAlta = CONVERT(DATETIME,'{0}',121) WHERE admin_idUsuario = '{1}'";
 			Query(String.Format(query, admin.AltaSistema.ToString("yyyy-MM-dd HH:mm:ss.mmm"), admin.idUsuario));
 		}
 
@@ -623,7 +624,7 @@ namespace tp_integrador.Models
 		private void GuardarTransformador(Transformador t)
 		{
 			var query = "SELECT * FROM SGE.Transformador WHERE trans_zona = '{0}' AND trans_latitud = '{1}' AND trans_longitud = '{2}'";
-			if (Query(String.Format(query, t.idZona, (Int32)t.location.Latitude, (Int32)t.location.Longitude)).Tables[0].Rows.Count == 0) return;
+			if (Query(String.Format(query, t.idZona, (Int32)t.location.Latitude, (Int32)t.location.Longitude)).Tables[0].Rows.Count != 0) return;
 
 			query = "INSERT INTO SGE.Transformador VALUES ('{0}', '{1}', '{2}', '{3}')";
 			Query(String.Format(query, t.EstaActivo ? 1 : 0, (Int32)t.location.Latitude, (Int32)t.location.Longitude, t.idZona));

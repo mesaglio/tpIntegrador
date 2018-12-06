@@ -111,7 +111,7 @@ namespace tp_integrador.Controllers
 
             Administrador adm = (Administrador)Session["Usuario"];
 
-            return View(adm);
+            return View("DatosAdministrador", adm);
         }
 
 		public ActionResult EditarAdministrador()
