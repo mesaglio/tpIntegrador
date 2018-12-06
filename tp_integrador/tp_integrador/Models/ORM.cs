@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace tp_integrador.Models
@@ -253,8 +255,9 @@ namespace tp_integrador.Models
 			if (GetIDUsuarioIfExists(cliente.usuario, cliente.password) != -1) return;
 			var trans = DAOzona.Instancia.AsignarTransformador(cliente);
 			if (trans == -1) return;
-
-			var query = "INSERT INTO SGE.Usuario VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
+            Location l = getlocationbyapi(cliente.domicilio);
+            cliente.Coordenadas = l;
+            var query = "INSERT INTO SGE.Usuario VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.usuario, cliente.password));
 
 			cliente.idUsuario = GetIDUsuarioIfExists(cliente.usuario, cliente.password);
@@ -275,8 +278,10 @@ namespace tp_integrador.Models
 		private void ActualizarCliente(Cliente cliente)
 		{
 			if (GetIDUsuarioIfExists(cliente.usuario, cliente.password) == -1) return;
+            Location l = getlocationbyapi(cliente.domicilio);
+            cliente.Coordenadas = l;
 
-			var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
+            var query = "UPDATE SGE.Usuario SET usua_nombre = '{0}', usua_apellido = '{1}', usua_domicilio = '{2}', usua_password = '{3}' WHERE usua_idUsuario = '{4}'";
 			Query(String.Format(query, cliente.nombre, cliente.apellido, cliente.domicilio, cliente.password, cliente.idUsuario));
 
 			query = "UPDATE SGE.Cliente SET clie_telefono = '{0}', clie_fechaAlta = CONVERT(DATETIME,'{1}',121), clie_doc_numero = '{2}', clie_doc_tipo = '{3}', clie_categoria = '{4}', clie_puntos = '{5}', clie_transformador = '{6}', clie_latitud = '{7}', clie_longitud = '{8}', clie_autoSimplex = '{10}' WHERE clie_idUsuario = '{9}'";
@@ -1319,8 +1324,102 @@ namespace tp_integrador.Models
 
         #endregion
 
+        public Location getlocationbyapi(string direccion)
+        {
+             string url = "http://www.mapquestapi.com/geocoding/v1/address?key=bVQyl1XhrO9qxrh15EKSunKM4ipFRDq3&location=";
+            string pais = ",Argentina";
+
+            WebRequest request = WebRequest.Create(url + direccion+ pais);
+            WebResponse response = request.GetResponse();
+            Stream datastream = response.GetResponseStream();
+            StreamReader lector = new StreamReader(datastream);
+            string str = lector.ReadToEnd();
+
+            RootObject p = new RootObject();
+            p = Newtonsoft.Json.JsonConvert.DeserializeObject<RootObject>(str);
+
+            LatLng latLng = p.results.First().locations.First().latLng;
+
+            return new Location(latLng.lat,latLng.lng);
+        }
+
     }
 
+    public class Copyright
+    {
+        public string text { get; set; }
+        public string imageUrl { get; set; }
+        public string imageAltText { get; set; }
+    }
 
+    public class Info
+    {
+        public int statuscode { get; set; }
+        public Copyright copyright { get; set; }
+        public List<object> messages { get; set; }
+    }
+
+    public class Options
+    {
+        public int maxResults { get; set; }
+        public bool thumbMaps { get; set; }
+        public bool ignoreLatLngInput { get; set; }
+    }
+
+    public class ProvidedLocation
+    {
+        public string location { get; set; }
+    }
+
+    public class LatLng
+    {
+        public double lat { get; set; }
+        public double lng { get; set; }
+    }
+
+    public class DisplayLatLng
+    {
+        public double lat { get; set; }
+        public double lng { get; set; }
+    }
+
+    public class Location2
+    {
+        public string street { get; set; }
+        public string adminArea6 { get; set; }
+        public string adminArea6Type { get; set; }
+        public string adminArea5 { get; set; }
+        public string adminArea5Type { get; set; }
+        public string adminArea4 { get; set; }
+        public string adminArea4Type { get; set; }
+        public string adminArea3 { get; set; }
+        public string adminArea3Type { get; set; }
+        public string adminArea1 { get; set; }
+        public string adminArea1Type { get; set; }
+        public string postalCode { get; set; }
+        public string geocodeQualityCode { get; set; }
+        public string geocodeQuality { get; set; }
+        public bool dragPoint { get; set; }
+        public string sideOfStreet { get; set; }
+        public string linkId { get; set; }
+        public string unknownInput { get; set; }
+        public string type { get; set; }
+        public LatLng latLng { get; set; }
+        public DisplayLatLng displayLatLng { get; set; }
+        public string mapUrl { get; set; }
+    }
+
+    public class Result
+    {
+        public ProvidedLocation providedLocation { get; set; }
+        public List<Location2> locations { get; set; }
+    }
+
+    public class RootObject
+    {
+        public Info info { get; set; }
+        public Options options { get; set; }
+        public List<Result> results { get; set; }
+    }
 }
 
