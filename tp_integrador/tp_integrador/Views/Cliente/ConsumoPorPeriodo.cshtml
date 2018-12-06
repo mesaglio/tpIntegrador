@@ -90,13 +90,12 @@
                                 }
                             </script>
 
-                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()" > Anterior</a></button>
+                    
 
-                            <button class="btn btn-sm btn-outline-secondary">
 
-                                <a href="@Url.Action("ConsumoPorPeriodo", "Cliente")"><span data-feather="calendar"></span> @Session["anio"] </a>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary"><a onclick="clearcache()">Proximo</a></button>
+                                <a><span data-feather="calendar"></span> @Session["anio"] </a>
+                            
+             
 
                         </div>
 					</div>
@@ -116,7 +115,7 @@
         var getObjet = function (idclietne) {
 
             if ((sessionStorage.getItem("anio") == null)  ) sessionStorage.setItem("anio", @Session["anio"]);
-            return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '","anio":"' +  sessionStorage.getItem("anio") + '"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
+            return fetch('https://api.mlab.com/api/1/databases/sgemdb/collections/userreportes?q={"clienteID":"' + idclietne + '","anio":"2018"}&apiKey=lZbj4PTHkMtHbLlhbRfd_Lk-MbI70FR-', {
                 "credentials": "omit", "headers":
                     {
                         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
@@ -150,7 +149,7 @@
         if (obj == null || obj.length === 0)
         {
             var consumo = [, , , , , , , , , , ,];
-            alert("No hay reportes para esas fechas");
+            
 
         }
         else
