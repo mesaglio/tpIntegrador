@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json.Linq;
+using System.Net;
+using System.IO;
 
 namespace tp_integrador.Models
 {
@@ -13,7 +16,7 @@ namespace tp_integrador.Models
         public int CantMeses()
         {
             return Math.Abs(DateTime.Now.Year - AltaSistema.Year) * 12 + (DateTime.Now.Month - AltaSistema.Month);
-			
+
         }
 
         #region Carga de datos
@@ -56,27 +59,27 @@ namespace tp_integrador.Models
         }
         public bool NuevoAdministrador(Administrador administrador)
         {
-			var contrasenia = HashThis.Instancia.GetHash(administrador.password);
-			if(ORM.Instancia.GetIDUsuarioIfExists(administrador.usuario, contrasenia) != -1) return false;
+            var contrasenia = HashThis.Instancia.GetHash(administrador.password);
+            if (ORM.Instancia.GetIDUsuarioIfExists(administrador.usuario, contrasenia) != -1) return false;
 
-			var nuevoAdmin = new Administrador(0, administrador.nombre, administrador.apellido, administrador.domicilio, administrador.usuario, contrasenia, DateTime.Now);
+            var nuevoAdmin = new Administrador(0, administrador.nombre, administrador.apellido, administrador.domicilio, administrador.usuario, contrasenia, DateTime.Now);
 
             ORM.Instancia.Insert(nuevoAdmin);
-			return true;
+            return true;
         }
 
-		public bool NuevoCliente(Cliente cliente)
-		{
-			var contrasenia = HashThis.Instancia.GetHash(cliente.password);
-			if (ORM.Instancia.GetIDUsuarioIfExists(cliente.usuario, contrasenia) != -1) return false;
-						
-			var coordenadas = new Location(-34.553750, -58.468923);
-			//TODO: Buscar como conseguir Goolge API Key Gratis o alguna forma alternativa de obtener las coordenadas reales
-			var nuevoCliente = new Cliente(0, cliente.nombre, cliente.apellido, cliente.domicilio, coordenadas, cliente.usuario, contrasenia, cliente.Telefono, DateTime.Now, ORM.Instancia.GetCategoria("R1"), cliente.Documento_tipo, cliente.Documento_numero, false);
+        public bool NuevoCliente(Cliente cliente)
+        {
+            var contrasenia = HashThis.Instancia.GetHash(cliente.password);
+            if (ORM.Instancia.GetIDUsuarioIfExists(cliente.usuario, contrasenia) != -1) return false;
 
-			ORM.Instancia.Insert(nuevoCliente);
-			return true;
-		}				
+            var coordenadas = new Location(-34.553750, -58.468923);
+            //TODO: Buscar como conseguir Goolge API Key Gratis o alguna forma alternativa de obtener las coordenadas reales
+            var nuevoCliente = new Cliente(0, cliente.nombre, cliente.apellido, cliente.domicilio, coordenadas, cliente.usuario, contrasenia, cliente.Telefono, DateTime.Now, ORM.Instancia.GetCategoria("R1"), cliente.Documento_tipo, cliente.Documento_numero, false);
+
+            ORM.Instancia.Insert(nuevoCliente);
+            return true;
+        }
 
         public Cliente BuscarCliente(int id)
         {
@@ -88,11 +91,11 @@ namespace tp_integrador.Models
             DAOUsuario.Instancia.QuitarUsuario(id);
         }
 
-		public Dictionary<string, int> GetClientesIDUsername()
-		{
-			return ORM.Instancia.GetClientesIDUsername();
-		}
-		
+        public Dictionary<string, int> GetClientesIDUsername()
+        {
+            return ORM.Instancia.GetClientesIDUsername();
+        }
+
         #region Reportes
         public List<Transformador> GetTransformadors()
         {
@@ -125,25 +128,29 @@ namespace tp_integrador.Models
             vs.Add(inte);
             vs.Add(esta);
             return vs;
-            }
+        }
 
         public bool NuevoTemplateDisp(DispositivoGenerico dispositivo)
         {
-			if (ORM.Instancia.ExisteTemplate(dispositivo)) return false;
+            if (ORM.Instancia.ExisteTemplate(dispositivo)) return false;
 
             ORM.Instancia.Insert(dispositivo);
-			return true;
+            return true;
         }
 
         public void UpdateMyData(Administrador admUpdate)
         {
+
             this.apellido = admUpdate.apellido;
             this.nombre = admUpdate.nombre;
             this.domicilio = admUpdate.domicilio;
-            
-            ORM.Instancia.Update(this);            
+
+
+            ORM.Instancia.Update(this);
         }
-		
-		#endregion
-	}
+
+        #endregion
+
+    }
+
 }
