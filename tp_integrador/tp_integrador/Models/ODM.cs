@@ -9,6 +9,7 @@ namespace tp_integrador.Models
 {
     public class ODM
     {
+        bool mapeado = true;
         private static ODM _instancia;
         private ODM() { }
         public static ODM Instancia
@@ -21,8 +22,14 @@ namespace tp_integrador.Models
         }
         public void generarTodosLosReportes()
         {
+            
             DateTime hoy = DateTime.Today;
-            this.mapeo();
+            if (mapeado)
+            {
+                this.mapeo();
+                mapeado = false;
+            }
+            
             //DateTime hoy = new DateTime(2018, 04, 01);
             //DateTime hoy = new DateTime(2018, 05, 01);
             if (hoy.Day == 01)

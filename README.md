@@ -52,9 +52,13 @@ Casos de prueba:
 
 ### 4
 
-- [ ] Diagrama de arquitectura.
+- [x] Diagrama de arquitectura.
 
 - [ ] Documento de diseño de interfaz: el documento deberá especificar de forma clara: tecnologías utilizadas, URLs, pantallas y la navegación entre ellas.
 
-- [ ] Implementacion de pantallas enunciadas: Login, Administrador, Mapas y Cliente.
+- [ ] Implementacion de pantallas enunciadas: 
+ - [X]     Login
+ - [ ]     Administrador
+ - [X]     Mapas 
+ - [ ]     Cliente.
 
