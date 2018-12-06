@@ -294,15 +294,25 @@ INSERT INTO SGE.Transformador VALUES (3, -34.604048, -58.381673, 1)
 INSERT INTO SGE.Transformador VALUES (1, -34.553750, -58.468923, 1)
 INSERT INTO SGE.Transformador VALUES (4, -34.661431, -58.410289, 1)
 
-INSERT INTO SGE.Usuario VALUES ('pepe', 'pepon', 'calle 123', 'pepe', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8') 
+INSERT INTO SGE.Usuario VALUES ('pepe', 'perez', 'Buenos Aires, Rivadavia 1554', 'pepe', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4') 
 -- username: pepe 
--- password: pepe123
+-- password: 1234
 INSERT INTO SGE.Administrador VALUES (1, CONVERT(datetime, '2018-9-15 18:20:23:000', 121))
 
-INSERT INTO SGE.Usuario VALUES ('popo', 'popon', 'calle falsa 123', 'popo', '974a2be4c0f6db85c78778e367e905f6f4c1b3524505872ade3ddae1d9ef43b8')
--- username: popo
--- password: pepe123
-INSERT INTO SGE.Cliente VALUES (2, -34.604048, -58.381673, '9999999999', GETDATE(), '88888888', 'DNI', 'R1', 2, 1, 0)
+INSERT INTO SGE.Usuario VALUES ('marco', 'polo', 'Buenos Aires, Av. Acoyte 555', 'marco', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4')
+-- username: marco
+-- password: 1234
+INSERT INTO SGE.Cliente VALUES (2, -34.612051, -58.438716, '9999999999', GETDATE(), '88888888', 'DNI', 'R1', 45, 1, 0)
+
+INSERT INTO SGE.Usuario VALUES ('juan', 'mesaglio', 'Buenos Aires, Av. Acoyte 555', 'juan', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4')
+INSERT INTO SGE.Cliente VALUES (3, -34.612051, -58.438716, '44554455', GETDATE(), '45999999', 'DNI', 'R1', 0, 1, 0)
+INSERT INTO SGE.Usuario VALUES ('nico', 'perez', 'Buenos Aires, Av. Acoyte 555', 'nico', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4')
+INSERT INTO SGE.Cliente VALUES (4, -34.612051, -58.438716, '44554325', GETDATE(), '45992329', 'DNI', 'R1', 0, 1, 0)
+
+INSERT INTO SGE.Usuario VALUES ('lucas', 'lopez', 'Buenos Aires, Av. Acoyte 555', 'lucas', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4')
+INSERT INTO SGE.Administrador VALUES (5, CONVERT(datetime, '2018-9-15 18:20:23:000', 121))
+INSERT INTO SGE.Usuario VALUES ('martin', 'lopez', 'Buenos Aires, Av. Acoyte 555', 'martin', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4')
+INSERT INTO SGE.Administrador VALUES (6, CONVERT(datetime, '2018-9-15 18:20:23:000', 121))
 
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 8, 1, 0, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0, NULL)
 INSERT INTO SGE.DispositivoPorCliente VALUES (2, 9, 1, 1, CONVERT(datetime,'2018-10-29 20:12:53:242',121), NULL, 0, NULL)

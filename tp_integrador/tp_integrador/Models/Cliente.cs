@@ -338,10 +338,12 @@ namespace tp_integrador.Models
 		}
 
 		public void EliminarDispositivo(int idDispositivo, int idCliente, int numero)
-		{
+		{			
 			var dispositivo = BuscarDispositivo(idDispositivo, idCliente, numero);
 			if (dispositivo.EsInteligente) DAOSensores.Instancia.QuitarDispositivoDeActuadores(dispositivo);
-			
+				
+			DAODispositivo.Instancia.QuitarDispositivo(dispositivo);
+
 			dispositivos.Remove(dispositivo);
 			ORM.Instancia.Delete(dispositivo);
 		}
