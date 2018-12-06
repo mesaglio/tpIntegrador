@@ -242,7 +242,7 @@ namespace tp_integrador.Controllers
 				if (!SessionStateOK()) return View("Index");
 				if ((bool)Session["Admin"]) return PermisoDenegado();
 
-				Cliente uncliente = (Cliente)Session["Usuario"];
+				Cliente uncliente = null;//(Cliente)Session["Usuario"];
 				uncliente.CambiarAutoSimplex();
 
 				return View("Simplex", model: uncliente);
