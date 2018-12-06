@@ -115,7 +115,7 @@
 									@using (Html.BeginForm("CargarArchivoClientes", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 									{
 										<label for="upload" class="btn btn-sm btn-primary">Buscar..</label>
-										<input type="file" class="text-center form-control-file custom_file" id="upload-clie" name="user_file" style="display:none" accept=".json">
+										<input type="file" class="text-center form-control-file custom_file" id="upload" name="user_file" style="display:none" accept=".json">
 										<label for="file_default">No se ha seleccionado ningun archivo. </label>
 										<label for="file_name"><b></b></label>
 
@@ -134,10 +134,10 @@
 								<div class="file-field">
 									@using (Html.BeginForm("CargarArchivoAdmins", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 									{
-										<label for="upload_est" class="btn btn-sm btn-primary">Buscar..</label>
-										<input type="file" class="text-center form-control-file custom_file" id="upload-admin" name="user_file" style="display:none" accept=".json">
-										<label for="file_default_est">No se ha seleccionado ningun archivo. </label>
-										<label for="file_name_est"><b></b></label>
+										<label for="upload_admin" class="btn btn-sm btn-primary">Buscar..</label>
+										<input type="file" class="text-center form-control-file custom_file" id="upload_admin" name="user_file" style="display:none" accept=".json">
+										<label for="file_default_admin">No se ha seleccionado ningun archivo. </label>
+										<label for="file_name_admin"><b></b></label>
 
 										<button type="submit" class="btn btn-lg btn-block btn-outline-primary">Cargar</button>
 									}
@@ -181,9 +181,11 @@
 		</div>
 	</div>
 
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
 	<script>
 		$('#upload').change(function () {
-			var filename = $('#upload-clie').val();
+			var filename = $('#upload').val();
 			if (filename.substring(3, 11) == 'fakepath') {
 				filename = filename.substring(12);
 			} // For Remove fakepath
@@ -196,14 +198,14 @@
 	</script>
 	<script>
 		$('#upload').change(function () {
-			var filename = $('#upload-admin').val();
+			var filename = $('#upload_admin').val();
 			if (filename.substring(3, 11) == 'fakepath') {
 				filename = filename.substring(12);
 			} // For Remove fakepath
-			$("label[for='file_name'] b").html(filename);
-			$("label[for='file_default']").text('Selected File: ');
+			$("label[for='file_name_admin'] b").html(filename);
+			$("label[for='file_default_admin']").text('Selected File: ');
 			if (filename == "") {
-				$("label[for='file_default']").text('No File Choosen');
+				$("label[for='file_default_admin']").text('No File Choosen');
 			}
 		});
 	</script>
